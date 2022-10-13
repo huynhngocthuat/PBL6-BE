@@ -1,0 +1,46 @@
+import { Model } from "sequelize";
+
+export const HashtagModel = (sequelize, DataTypes) => {
+  class Hashtag extends Model {
+    static associate(models) {
+      this.hasMany(models.VideoHashtag, {
+        foreignKey: "hashtagId",
+        as: "videoHashtags",
+      });
+    }
+  }
+
+  Hashtag.init(
+    {
+      id: {
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
+        allowNull: false,
+        primaryKey: true,
+      },
+      name: {
+        type: DataTypes.STRING(100),
+        allowNull: false,
+      },
+      createdAt: {
+        type: DataTypes.DATE,
+        allowNull: true,
+      },
+      updatedAt: {
+        type: DataTypes.DATE,
+        allowNull: true,
+      },
+      deletedAt: {
+        type: DataTypes.DATE,
+        allowNull: true,
+      },
+    },
+    {
+      sequelize,
+      modelName: "Hashtag",
+      tableName: "Hashtags",
+    }
+  );
+
+  return Hashtag;
+};
