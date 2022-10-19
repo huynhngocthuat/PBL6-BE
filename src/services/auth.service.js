@@ -5,10 +5,11 @@ import { userSignupResponse } from "commons/responses";
 import db from "models";
 
 class AuthService {
-  constructor(UsersService, model) {
+  constructor(UsersService) {
     this.usersService = UsersService;
     this.signUp = this.signUp.bind(this);
-    this.model = model;
+    this.signIn = this.signIn.bind(this);
+    this.confirmEmail = this.confirmEmail.bind(this);
   }
 
   async signUp(data) {
@@ -32,7 +33,7 @@ class AuthService {
   }
 
   async signIn({ email, password }) {
-    const user = await this.usersService.getUserByEmail(email);
+    const user = this.usersService.getUserByEmail(email);
 
     if (!user) {
       throw new Error("User does not exist");
@@ -44,10 +45,18 @@ class AuthService {
       throw new Error("Incorrect password");
     }
 
-    const token = jwt.sign({ id: user.id });
+    const token = jwt.sign({
+      id: user.id,
+    });
 
-    return { token };
+    return {
+      token,
+    };
+  }
+
+  async confirmEmail(confirmToken) {
+    return this.usersService.confirmEmail(confirmToken);
   }
 }
 
-export default new AuthService(UsersService, db.OauthAccessToken);
+export default new AuthService(UsersService);

@@ -15,6 +15,14 @@ export class UsersRepository extends BaseRepository {
       },
     });
   }
+
+  async getUserByConfirmToken(confirmToken) {
+    return await this.model.findOne({
+      where: {
+        confirmToken,
+      },
+    });
+  }
 }
 
 export default new UsersRepository(User);
