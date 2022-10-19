@@ -3,9 +3,10 @@ import Response from "helpers/response";
 
 class AuthController {
   constructor(service) {
+    this.service = service;
     this.login = this.login.bind(this);
     this.register = this.register.bind(this);
-    this.service = service;
+    this.confirmEmail = this.confirmEmail.bind(this);
   }
 
   async register(req, res) {
@@ -21,6 +22,15 @@ class AuthController {
     try {
       const data = await this.service.signIn(req.login);
       return Response.success(res, { docs: data });
+    } catch (error) {
+      return Response.error(res, error);
+    }
+  }
+
+  async confirmEmail(req, res) {
+    try {
+      await this.service.confirmEmail(req.params.confirmToken);
+      return Response.success(res, { docs: "Email confirmed" });
     } catch (error) {
       return Response.error(res, error);
     }

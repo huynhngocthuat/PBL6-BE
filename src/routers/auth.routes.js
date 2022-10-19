@@ -54,4 +54,10 @@ router.post(
 
 router.get("/login", authValidation.loginValidation, authController.login);
 
+router.get(
+  "/confirm/:confirmToken",
+  authValidation.confirmEmailValidation,
+  authController.confirmEmail
+);
+
 export default router;

@@ -38,7 +38,22 @@ const loginValidation = (req, res, next) => {
   next();
 };
 
+const confirmEmailValidation = (req, res, next) => {
+  const schema = Joi.object({
+    confirmToken: Joi.string().required(),
+  });
+
+  if (schema.validate(req.params).error) {
+    return Response.error(res, {
+      message: schema.validate(req.params).error.details[0].message,
+    });
+  }
+
+  next();
+};
+
 export const authValidation = {
   registerValidation,
   loginValidation,
+  confirmEmailValidation,
 };
