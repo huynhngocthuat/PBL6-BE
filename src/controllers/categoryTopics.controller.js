@@ -1,6 +1,6 @@
 import { CategoryTopicsService } from "services";
 import Response from "helpers/response";
-import * as CONSTANTS from "constants";
+import { httpCodes } from "constants";
 
 class CategoryTopicsController {
   constructor(service) {
@@ -17,7 +17,7 @@ class CategoryTopicsController {
       return Response.success(
         res,
         { docs: categoryTopic },
-        CONSTANTS.STATUS_OK
+        httpCodes.STATUS_OK
       );
     } catch (error) {
       return Response.error(res, error, 400);
@@ -32,10 +32,9 @@ class CategoryTopicsController {
       return Response.success(
         res,
         { docs: categoryTopics },
-        CONSTANTS.STATUS_OK
+        httpCodes.STATUS_OK
       );
     } catch (error) {
-      console.log("controller", error);
       return Response.error(res, error, 400);
     }
   }
@@ -45,7 +44,7 @@ class CategoryTopicsController {
       const id = req.params.id;
       const data = await this.service.update(id, req.body);
       if (data) {
-        return Response.success(res, { docs: data }, CONSTANTS.STATUS_OK);
+        return Response.success(res, { docs: data }, httpCodes.STATUS_OK);
       }
     } catch (error) {
       return Response.error(res, error, 400);
@@ -57,7 +56,7 @@ class CategoryTopicsController {
       const id = req.params.id;
       console.log(id);
       const data = await this.service.delete(id);
-      return Response.success(res, { docs: data }, CONSTANTS.STATUS_OK);
+      return Response.success(res, { docs: data }, httpCodes.STATUS_OK);
     } catch (error) {
       return Response.error(res, error, 400);
     }

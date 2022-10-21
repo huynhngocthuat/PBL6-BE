@@ -1,6 +1,7 @@
 // https://github.com/cryptlex/rest-api-response-format
+import { httpCodes } from "constants";
 export default class Response {
-  static success(res, data, status = 200) {
+  static success(res, data, status = httpCodes.STATUS_OK) {
     res.status(status);
     if (data) {
       return res.json({
@@ -16,14 +17,14 @@ export default class Response {
     });
   }
 
-  static error(res, error, status = 400) {
+  static error(res, error, status = httpCodes.STATUS_BAD_REQUEST) {
     res.status(status);
     return res.json({
       success: "failed",
       error: {
-        message: error.message,
-        code: error.code,
-        errors: error.errors,
+        message: error.message || null,
+        code: error.code | httpCodes.STATUS_BAD_REQUEST,
+        errors: error.errors || null,
       },
     });
   }

@@ -1,5 +1,4 @@
 import { CategoryTopicsRepository } from "repositories";
-import * as CONSTANTS from "constants";
 
 class CategoryTopicsService {
   constructor(repo) {
@@ -43,6 +42,14 @@ class CategoryTopicsService {
       return await this.repo.delete(id);
     } catch (error) {
       throw new Error("CategoryTopic not delete");
+    }
+  }
+
+  async getCategoryByCondition(condition) {
+    try {
+      return await this.repo.getByCondition(condition);
+    } catch (error) {
+      throw new Error("Cant get category by condition");
     }
   }
 }

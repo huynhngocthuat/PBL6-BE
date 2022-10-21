@@ -1,4 +1,4 @@
-import * as CONSTANTS from "constants";
+import { roles, notiTypes } from "constants";
 
 export default {
   async up(queryInterface, Sequelize) {
@@ -44,21 +44,21 @@ export default {
           notNull: true,
         },
       },
-      resetPasswordToken: {
-        type: Sequelize.STRING,
+      verifyCode: {
+        type: Sequelize.INTEGER,
         allowNull: true,
       },
-      resetPasswordSendAt: {
+      verifyCodeSendAt: {
         type: Sequelize.DATE,
         allowNull: true,
       },
       role: {
         type: Sequelize.ENUM(
-          CONSTANTS.USER_ROLE,
-          CONSTANTS.AUTHOR_ROLE,
-          CONSTANTS.ADMIN_ROLE
+          roles.USER_ROLE,
+          roles.AUTHOR_ROLE,
+          roles.ADMIN_ROLE
         ),
-        defaultValue: CONSTANTS.USER_ROLE,
+        defaultValue: roles.USER_ROLE,
         allowNull: false,
       },
       createdAt: {
@@ -178,11 +178,23 @@ export default {
         allowNull: false,
       },
       type: {
-        type: Sequelize.ENUM(CONSTANTS.SYSTEM_NOTI, CONSTANTS.COMMENT_NOTI),
-        defaultValue: CONSTANTS.SYSTEM_NOTI,
+        type: Sequelize.ENUM(
+          notiTypes.PAY_FOR_COURSE,
+          notiTypes.PAY_FOR_USER,
+          notiTypes.LIKE_VIDEO,
+          notiTypes.COMMENT_VIDEO,
+          notiTypes.RATING_VIDEO,
+          notiTypes.USER_SUBSCRIBE_COURSE,
+          notiTypes.USER_REQUEST_ACTIVE,
+          notiTypes.ADMIN_ACTIVE_USER,
+          notiTypes.ADMIN_DEACTIVATE_USER,
+          notiTypes.ADMIN_ACTIVE_COURSE,
+          notiTypes.ADMIN_DEACTIVATE_COURSE
+        ),
+        defaultValue: notiTypes.SYSTEM_NOTI,
         allowNull: false,
       },
-      objectTableId: {
+      objecttableId: {
         type: Sequelize.UUID,
         allowNull: false,
       },
