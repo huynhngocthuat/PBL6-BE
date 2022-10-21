@@ -38,6 +38,8 @@ export const EmotionReactModel = (sequelize, DataTypes) => {
       sequelize,
       modelName: "EmotionReact",
       tableName: "EmotionReacts",
+      paranoid: true,
+      deletedAt: "deletedAt",
     }
   );
 

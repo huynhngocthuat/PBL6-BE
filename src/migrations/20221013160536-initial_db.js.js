@@ -44,7 +44,7 @@ export default {
           notNull: true,
         },
       },
-      resetPasswordToke: {
+      resetPasswordToken: {
         type: Sequelize.STRING,
         allowNull: true,
       },
@@ -252,6 +252,10 @@ export default {
         type: Sequelize.DECIMAL(11, 10),
         defaultValue: 0,
         allowNull: false,
+      },
+      thumnailUrl: {
+        type: Sequelize.TEXT,
+        allowNull: true,
       },
       description: {
         type: Sequelize.TEXT,

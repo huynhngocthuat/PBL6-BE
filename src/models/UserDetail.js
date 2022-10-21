@@ -52,6 +52,8 @@ export const UserDetailModel = (sequelize, DataTypes) => {
       sequelize,
       modelName: "UserDetail",
       tableName: "UserDetails",
+      paranoid: true,
+      deletedAt: "deletedAt",
     }
   );
 

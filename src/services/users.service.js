@@ -22,7 +22,7 @@ class UsersService {
     try {
       const user = await this.repo.create(data);
       const confirmToken = uuidv4();
-      const userWithConfirmToken = await this.repo.update(user.id, {
+      const userWithConfirmToken = await this.repo.updateByPk(user.id, {
         confirmToken,
       });
       const html = `
@@ -45,7 +45,7 @@ class UsersService {
         throw new Error("User not found");
       }
 
-      await this.repo.update(user.id, {
+      await this.repo.updateByPk(user.id, {
         isActivated: true,
         confirmedAt: new Date(),
         confirmToken: null,

@@ -7,7 +7,7 @@ export class BaseRepository {
     return await this.model.create(data);
   }
 
-  async update(id, data) {
+  async updateByPk(id, data) {
     const itemUpdate = await this.get(id);
     if (!itemUpdate) {
       throw new Error("Item update not found");
@@ -16,15 +16,45 @@ export class BaseRepository {
     return await itemUpdate.save();
   }
 
+  async updateByCondition(condition, data) {
+    try {
+      return await this.model.update(
+        { ...data },
+        {
+          where: { ...condition },
+          returning: true,
+        }
+      );
+    } catch (error) {
+      console.log("Error when update", error);
+    }
+  }
+
   async delete(id) {
-    return await this.model.destroy({ where: { id } });
+    try {
+      return await this.model.destroy({
+        where: {
+          id: id,
+        },
+      });
+    } catch (error) {
+      console.log("Error when delete", error);
+    }
   }
 
   async get(id) {
-    return await this.model.findByPk(id);
+    try {
+      return await this.model.findByPk(id);
+    } catch (error) {
+      console.log("Error when get", error);
+    }
   }
 
   async getAll() {
-    return await this.model.find();
+    try {
+      return await this.model.findAll();
+    } catch (error) {
+      console.log("Error when get all", error);
+    }
   }
 }

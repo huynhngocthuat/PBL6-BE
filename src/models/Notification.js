@@ -58,6 +58,8 @@ export const NotificationModel = (sequelize, DataTypes) => {
       sequelize,
       modelName: "Notification",
       tableName: "Notifications",
+      paranoid: true,
+      deletedAt: "deletedAt",
     }
   );
 

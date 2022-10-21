@@ -80,7 +80,7 @@ export const UserModel = (sequelize, DataTypes) => {
           notNull: true,
         },
       },
-      resetPasswordToke: {
+      resetPasswordToken: {
         type: DataTypes.STRING,
         allowNull: true,
       },
@@ -107,6 +107,7 @@ export const UserModel = (sequelize, DataTypes) => {
       modelName: "User",
       tableName: "Users",
       timestamps: true,
+      paranoid: true,
       deletedAt: "deletedAt",
     }
   );

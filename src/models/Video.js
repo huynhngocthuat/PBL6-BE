@@ -80,6 +80,8 @@ export const VideoModel = (sequelize, DataTypes) => {
       sequelize,
       modelName: "Video",
       tableName: "Videos",
+      paranoid: true,
+      deletedAt: "deletedAt",
     }
   );
 
