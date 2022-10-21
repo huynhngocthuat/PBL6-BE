@@ -1,5 +1,5 @@
 import { Model } from "sequelize";
-import * as CONSTANTS from "constants";
+import { roles } from "constants";
 
 export const UserModel = (sequelize, DataTypes) => {
   class User extends Model {
@@ -80,21 +80,21 @@ export const UserModel = (sequelize, DataTypes) => {
           notNull: true,
         },
       },
-      resetPasswordToken: {
-        type: DataTypes.STRING,
+      verifyCode: {
+        type: DataTypes.INTEGER,
         allowNull: true,
       },
-      resetPasswordSendAt: {
+      verifyCodeSendAt: {
         type: DataTypes.DATE,
         allowNull: true,
       },
       role: {
         type: DataTypes.ENUM(
-          CONSTANTS.USER_ROLE,
-          CONSTANTS.AUTHOR_ROLE,
-          CONSTANTS.ADMIN_ROLE
+          roles.USER_ROLE,
+          roles.AUTHOR_ROLE,
+          roles.ADMIN_ROLE
         ),
-        defaultValue: CONSTANTS.USER_ROLE,
+        defaultValue: roles.USER_ROLE,
         allowNull: false,
       },
       deletedAt: {

@@ -33,7 +33,14 @@ const models = [
   VideoViewModel,
 ];
 
+const Op = Sequelize.Op;
+const operatorsAliases = {
+  $iLike: Op.iLike,
+  $not: Op.not,
+};
+
 const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
+  operatorsAliases: operatorsAliases,
   host: dbConfig.HOST,
   dialect: dbConfig.dialect,
 
