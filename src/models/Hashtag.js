@@ -39,6 +39,8 @@ export const HashtagModel = (sequelize, DataTypes) => {
       sequelize,
       modelName: "Hashtag",
       tableName: "Hashtags",
+      paranoid: true,
+      deletedAt: "deletedAt",
     }
   );
 

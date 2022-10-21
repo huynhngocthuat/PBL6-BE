@@ -39,6 +39,8 @@ export const CategoryTopicModel = (sequelize, DataTypes) => {
       sequelize,
       modelName: "CategoryTopic",
       tableName: "CategoryTopics",
+      paranoid: true,
+      deletedAt: "deletedAt",
     }
   );
 

@@ -38,6 +38,8 @@ export const VideoHashtagModel = (sequelize, DataTypes) => {
       tableName: "VideoHashtags",
       timestamps: true,
       underscored: true,
+      paranoid: true,
+      deletedAt: "deletedAt",
     }
   );
 

@@ -42,6 +42,8 @@ export const OauthAccessTokenModel = (sequelize, DataTypes) => {
       tableName: "OauthAccessTokens",
       timestamps: true,
       underscored: true,
+      paranoid: true,
+      deletedAt: "deletedAt",
     }
   );
 
