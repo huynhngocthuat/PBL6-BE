@@ -13,6 +13,10 @@ export const CourseModel = (sequelize, DataTypes) => {
         foreignKey: "courseId",
         as: "subscribes",
       });
+      this.hasMany(models.CourseHashtag, {
+        foreignKey: "courseId",
+        as: "courseHashtags",
+      });
     }
   }
 

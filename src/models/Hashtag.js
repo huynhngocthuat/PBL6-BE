@@ -3,9 +3,9 @@ import { Model } from "sequelize";
 export const HashtagModel = (sequelize, DataTypes) => {
   class Hashtag extends Model {
     static associate(models) {
-      this.hasMany(models.VideoHashtag, {
+      this.hasMany(models.CourseHashtag, {
         foreignKey: "hashtagId",
-        as: "videoHashtags",
+        as: "courseHashtags",
       });
     }
   }
