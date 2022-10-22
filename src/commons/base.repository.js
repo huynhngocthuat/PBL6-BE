@@ -1,10 +1,24 @@
+import logger from "configs/winston.config";
+
+import { errors, infors } from "constants";
+
 export class BaseRepository {
   constructor(model) {
     this.model = model;
   }
 
   async create(data) {
-    return await this.model.create(data);
+    try {
+      const data = await this.model.create(data);
+      logger.info(infors.INFO_CREATE_AT_REPO_SUCCESS.format(this.model.name));
+
+      return data;
+    } catch (error) {
+      logger.error(
+        `${errors.ERR_CREATE_AT_REPO.format(this.model.name)} - ${error}`
+      );
+      throw new Error(error);
+    }
   }
 
   async updateByPk(id, data) {
@@ -20,63 +34,113 @@ export class BaseRepository {
 
   async updateByCondition(condition, data) {
     try {
-      return await this.model.update(
+      const data = await this.model.update(
         { ...data },
         {
           where: { ...condition },
           returning: true,
         }
       );
+      logger.info(
+        infors.INFO_UPDATE_BY_CONDITION_AT_REPO_SUCCESS.format(this.model.name)
+      );
+
+      return data;
     } catch (error) {
-      console.log("Error when update", error);
+      logger.error(
+        `${errors.ERR_UPDATE_BY_CONDITION_AT_REPO.format(
+          this.model.name
+        )} - ${error}`
+      );
+      throw new Error(error);
     }
   }
 
   async delete(id) {
     try {
-      return await this.model.destroy({
+      const data = await this.model.destroy({
         where: {
           id: id,
         },
       });
+      logger.info(infors.INFO_DELETE_AT_REPO_SUCCESS.format(this.model.name));
+
+      return data;
     } catch (error) {
-      console.log("Error when delete", error);
+      logger.error(
+        `${errors.ERR_DELETE_AT_REPO.format(this.model.name)} - ${error}`
+      );
+      throw new Error(error);
     }
   }
 
   async get(id) {
     try {
-      return await this.model.findByPk(id);
+      const data = await this.model.findByPk(id);
+      logger.info(
+        infors.INFO_GET_BY_ID_AT_REPO_SUCCESS.format(this.model.name)
+      );
+
+      return data;
     } catch (error) {
-      console.log("Error when get", error);
+      logger.error(
+        `${errors.ERR_GET_BY_ID_AT_REPO.format(this.model.name)} - ${error}`
+      );
+      throw new Error(error);
     }
   }
 
   async getAll() {
     try {
-      return await this.model.findAll();
+      const data = await this.model.findAll();
+      logger.info(infors.INFO_GET_AT_REPO_SUCCESS.format(this.model.name));
+
+      return data;
     } catch (error) {
-      console.log("Error when get all", error);
+      logger.error(
+        `${errors.ERR_GET_AT_REPO.format(this.model.name)} - ${error}`
+      );
+      throw new Error(error);
     }
   }
 
   async getByCondition(condition) {
     try {
-      return await this.model.findOne({
+      const data = await this.model.findOne({
         where: { ...condition },
       });
-    } catch (err) {
-      console.log("Cannot get by condition", err);
+      logger.info(
+        infors.INFO_GET_ONE_BY_CONDITION_AT_REPO_SUCCESS.format(this.model.name)
+      );
+
+      return data;
+    } catch (error) {
+      logger.error(
+        `${errors.ERR_GET_ONE_BY_CONDITION_AT_REPO.format(
+          this.model.name
+        )} - ${error}`
+      );
+      throw new Error(error);
     }
   }
 
   async getAllByCondition(condition) {
     try {
-      return await this.model.findAll({
+      const data = await this.model.findAll({
         where: { ...condition },
       });
-    } catch (err) {
-      console.log("Cannot get all by condition", err);
+      logger.info(
+        infors.INFO_GET_ALL_BY_CONDITION_AT_REPO_SUCCESS.format(this.model.name)
+      );
+
+      return data;
+    } catch (error) {
+      logger.error(
+        `${errors.ERR_GET_ALL_BY_CONDITION_AT_REPO.format(
+          this.model.name
+        )} - ${error}`
+      );
+      throw new Error(error);
     }
   }
 }

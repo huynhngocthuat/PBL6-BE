@@ -13,7 +13,7 @@ class CategoryTopicsService {
     try {
       return await this.repo.create(data);
     } catch (error) {
-      throw new Error("CategoryTopic not created");
+      throw new Error(error);
     }
   }
 
@@ -24,7 +24,7 @@ class CategoryTopicsService {
       }
       return await this.repo.getAll();
     } catch (error) {
-      throw new Error("Can not get category topic");
+      throw new Error(error);
     }
   }
 
@@ -33,7 +33,7 @@ class CategoryTopicsService {
       return await this.repo.updateByPk(id, data);
     } catch (error) {
       console.log(error);
-      throw new Error("CategoryTopic not update");
+      throw new Error(error);
     }
   }
 
@@ -41,7 +41,7 @@ class CategoryTopicsService {
     try {
       return await this.repo.delete(id);
     } catch (error) {
-      throw new Error("CategoryTopic not delete");
+      throw new Error(error);
     }
   }
 
@@ -49,7 +49,7 @@ class CategoryTopicsService {
     try {
       return await this.repo.getByCondition(condition);
     } catch (error) {
-      throw new Error("Cant get category by condition");
+      throw new Error(error);
     }
   }
 }
