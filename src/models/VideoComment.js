@@ -36,7 +36,7 @@ export const VideoCommentModel = (sequelize, DataTypes) => {
     {
       sequelize,
       modelName: "VideoComment",
-      tableName: "VideoComments",
+      tableName: "JVideoComments",
       paranoid: true,
       deletedAt: "deletedAt",
     }

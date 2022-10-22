@@ -13,7 +13,7 @@ import { UserModel } from "./User";
 import { UserDetailModel } from "./UserDetail";
 import { VideoModel } from "./Video";
 import { VideoCommentModel } from "./VideoComment";
-import { VideoHashtagModel } from "./VideoHashtag";
+import { VideoHashtagModel } from "./CourseHashtag";
 import { VideoViewModel } from "./VideoView";
 
 const models = [
