@@ -1,6 +1,6 @@
 import { CategoryTopicsService } from "services";
 import Response from "helpers/response";
-import { httpCodes } from "constants";
+import { httpCodes, errors } from "constants";
 
 class CategoryTopicsController {
   constructor(service) {
@@ -14,13 +14,18 @@ class CategoryTopicsController {
   async create(req, res) {
     try {
       const categoryTopic = await this.service.create(req.body);
+
       return Response.success(
         res,
         { docs: categoryTopic },
         httpCodes.STATUS_OK
       );
     } catch (error) {
-      return Response.error(res, error, 400);
+      return Response.error(
+        res,
+        errors.ERR_WHILE_CREATE.format("category topic"),
+        400
+      );
     }
   }
 
@@ -35,7 +40,11 @@ class CategoryTopicsController {
         httpCodes.STATUS_OK
       );
     } catch (error) {
-      return Response.error(res, error, 400);
+      return Response.error(
+        res,
+        errors.ERR_WHILE_GET.format("category topic"),
+        400
+      );
     }
   }
 
@@ -43,22 +52,31 @@ class CategoryTopicsController {
     try {
       const id = req.params.id;
       const data = await this.service.update(id, req.body);
+
       if (data) {
         return Response.success(res, { docs: data }, httpCodes.STATUS_OK);
       }
     } catch (error) {
-      return Response.error(res, error, 400);
+      return Response.error(
+        res,
+        errors.ERR_WHILE_UPDATE.format("category topic"),
+        400
+      );
     }
   }
 
   async delete(req, res) {
     try {
       const id = req.params.id;
-      console.log(id);
       const data = await this.service.delete(id);
+
       return Response.success(res, { docs: data }, httpCodes.STATUS_OK);
     } catch (error) {
-      return Response.error(res, error, 400);
+      return Response.error(
+        res,
+        errors.ERR_WHILE_DELETE.format("category topic"),
+        400
+      );
     }
   }
 }

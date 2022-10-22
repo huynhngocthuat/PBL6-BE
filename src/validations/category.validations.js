@@ -39,7 +39,7 @@ export async function ValidatorNameUpdate(req, res, next) {
 
     if (data) {
       const categoryTopic = json(data);
-      console.log("categoryTopic", categoryTopic);
+
       // name's category topic like old name to pass
       if (categoryTopic.name === name) {
         next();
@@ -54,7 +54,7 @@ export async function ValidatorNameUpdate(req, res, next) {
         const data = await categoryTopicService.getCategoryByCondition(
           condition
         );
-
+        console.log(data);
         // return error if the update name has existed
         if (data) {
           Response.error(res, {

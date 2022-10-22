@@ -3,10 +3,6 @@ import { CategoryTopicsRepository } from "repositories";
 class CategoryTopicsService {
   constructor(repo) {
     this.repo = repo;
-    this.create = this.create.bind(this);
-    this.update = this.update.bind(this);
-    this.delete = this.delete.bind(this);
-    this.get = this.get.bind(this);
   }
 
   async create(data) {
@@ -32,7 +28,6 @@ class CategoryTopicsService {
     try {
       return await this.repo.updateByPk(id, data);
     } catch (error) {
-      console.log(error);
       throw new Error(error);
     }
   }

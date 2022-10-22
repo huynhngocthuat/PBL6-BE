@@ -7,9 +7,9 @@ export class BaseRepository {
     this.model = model;
   }
 
-  async create(data) {
+  async create(input) {
     try {
-      const data = await this.model.create(data);
+      const data = await this.model.create(input);
       logger.info(infors.INFO_CREATE_AT_REPO_SUCCESS.format(this.model.name));
 
       return data;
@@ -32,10 +32,10 @@ export class BaseRepository {
     return await itemUpdate.save();
   }
 
-  async updateByCondition(condition, data) {
+  async updateByCondition(condition, input) {
     try {
       const data = await this.model.update(
-        { ...data },
+        { ...input },
         {
           where: { ...condition },
           returning: true,
