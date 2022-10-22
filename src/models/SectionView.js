@@ -1,28 +1,23 @@
 const { Model } = require("sequelize");
 
-export const SectionModel = (sequelize, DataTypes) => {
-  class Section extends Model {
+export const SectionViewModel = (sequelize, DataTypes) => {
+  class SectionView extends Model {
     static associate(models) {
-      this.hasMany(models.Video, { foreignKey: "sectionId", as: "videos" });
-      this.belongsTo(models.Course, { foreignKey: "courseId", as: "course" });
-      this.hasMany(models.SectionView, {
+      this.belongsTo(models.Section, {
         foreignKey: "sectionId",
-        as: "sectionViews",
+        as: "section",
       });
+      this.belongsTo(models.User, { foreignKey: "userId", as: "user" });
     }
   }
 
-  Section.init(
+  SectionView.init(
     {
       id: {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
         allowNull: false,
         primaryKey: true,
-      },
-      name: {
-        type: DataTypes.STRING(100),
-        allowNull: false,
       },
       createdAt: {
         type: DataTypes.DATE,
@@ -39,12 +34,12 @@ export const SectionModel = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: "Section",
-      tableName: "Sections",
+      modelName: "SectionView",
+      tableName: "SectionViews",
       paranoid: true,
       deletedAt: "deletedAt",
     }
   );
 
-  return Section;
+  return SectionView;
 };
