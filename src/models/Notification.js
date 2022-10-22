@@ -69,7 +69,7 @@ export const NotificationModel = (sequelize, DataTypes) => {
     {
       sequelize,
       modelName: "Notification",
-      tableName: "Notifications",
+      tableName: "JNotifications",
       paranoid: true,
       deletedAt: "deletedAt",
     }

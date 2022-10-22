@@ -161,7 +161,7 @@ export default {
       },
     });
 
-    await queryInterface.createTable("Notifications", {
+    await queryInterface.createTable("JNotifications", {
       id: {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
@@ -307,7 +307,7 @@ export default {
       },
     });
 
-    await queryInterface.createTable("Subscribes", {
+    await queryInterface.createTable("JSubscribes", {
       id: {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
@@ -439,7 +439,7 @@ export default {
       },
     });
 
-    await queryInterface.createTable("EmotionReacts", {
+    await queryInterface.createTable("JEmotionReacts", {
       id: {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
@@ -532,7 +532,7 @@ export default {
       },
     });
 
-    await queryInterface.createTable("VideoComments", {
+    await queryInterface.createTable("JVideoComments", {
       id: {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
@@ -639,16 +639,16 @@ export default {
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable("CourseHashtags");
     await queryInterface.dropTable("Hashtags");
-    await queryInterface.dropTable("VideoComments");
-    await queryInterface.dropTable("EmotionReacts");
+    await queryInterface.dropTable("JVideoComments");
+    await queryInterface.dropTable("JEmotionReacts");
     await queryInterface.dropTable("VideoViews");
     await queryInterface.dropTable("Videos");
     await queryInterface.dropTable("Videos");
     await queryInterface.dropTable("Sections");
-    await queryInterface.dropTable("Subscribes");
+    await queryInterface.dropTable("JSubscribes");
     await queryInterface.dropTable("Courses");
     await queryInterface.dropTable("CategoryTopics");
-    await queryInterface.dropTable("Notifications");
+    await queryInterface.dropTable("JNotifications");
     await queryInterface.dropTable("UserDetails");
     await queryInterface.dropTable("OauthAccessTokens");
     await queryInterface.dropTable("Users");
