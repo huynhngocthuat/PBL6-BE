@@ -23,10 +23,6 @@ export const VideoModel = (sequelize, DataTypes) => {
         foreignKey: "videoId",
         as: "videoViews",
       });
-      this.hasMany(models.VideoHashtag, {
-        foreignKey: "videoId",
-        as: "videoHashtags",
-      });
     }
   }
 

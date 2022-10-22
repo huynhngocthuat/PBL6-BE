@@ -598,18 +598,18 @@ export default {
       },
     });
 
-    await queryInterface.createTable("VideoHashtags", {
+    await queryInterface.createTable("CourseHashtags", {
       id: {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
         allowNull: false,
         primaryKey: true,
       },
-      videoId: {
+      courseId: {
         type: Sequelize.UUID,
         allowNull: false,
         references: {
-          model: "Videos",
+          model: "Courses",
           key: "id",
         },
       },
@@ -637,7 +637,7 @@ export default {
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("VideoHashtags");
+    await queryInterface.dropTable("CourseHashtags");
     await queryInterface.dropTable("Hashtags");
     await queryInterface.dropTable("VideoComments");
     await queryInterface.dropTable("EmotionReacts");
