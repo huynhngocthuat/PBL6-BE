@@ -34,6 +34,10 @@ export const UserModel = (sequelize, DataTypes) => {
         foreignKey: "userId",
         as: "videoViews",
       });
+      this.hasMany(models.SectionView, {
+        foreignKey: "userId",
+        as: "sectionViews",
+      });
     }
   }
 

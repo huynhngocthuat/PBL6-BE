@@ -13,8 +13,9 @@ import { UserModel } from "./User";
 import { UserDetailModel } from "./UserDetail";
 import { VideoModel } from "./Video";
 import { VideoCommentModel } from "./VideoComment";
-import { VideoHashtagModel } from "./CourseHashtag";
+import { CourseHashtagModel } from "./CourseHashtag";
 import { VideoViewModel } from "./VideoView";
+import { SectionViewModel } from "./SectionView";
 
 const models = [
   CategoryTopicModel,
@@ -29,8 +30,9 @@ const models = [
   UserDetailModel,
   VideoModel,
   VideoCommentModel,
-  VideoHashtagModel,
+  CourseHashtagModel,
   VideoViewModel,
+  SectionViewModel,
 ];
 
 const Op = Sequelize.Op;
