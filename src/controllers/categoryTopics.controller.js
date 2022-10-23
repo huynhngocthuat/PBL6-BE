@@ -1,6 +1,6 @@
 import { CategoryTopicsService } from "services";
 import Response from "helpers/response";
-import { httpCodes } from "constants";
+import { httpCodes, errors } from "constants";
 
 class CategoryTopicsController {
   constructor(service) {
@@ -20,7 +20,11 @@ class CategoryTopicsController {
         httpCodes.STATUS_OK
       );
     } catch (error) {
-      return Response.error(res, error, 400);
+      return Response.error(
+        res,
+        errors.WHILE_CREATE.format("category topic"),
+        400
+      );
     }
   }
 
@@ -35,7 +39,11 @@ class CategoryTopicsController {
         httpCodes.STATUS_OK
       );
     } catch (error) {
-      return Response.error(res, error, 400);
+      return Response.error(
+        res,
+        errors.WHILE_GET.format("category topic"),
+        400
+      );
     }
   }
 
@@ -47,18 +55,26 @@ class CategoryTopicsController {
         return Response.success(res, { docs: data }, httpCodes.STATUS_OK);
       }
     } catch (error) {
-      return Response.error(res, error, 400);
+      return Response.error(
+        res,
+        errors.WHILE_UPDATE.format("category topic"),
+        400
+      );
     }
   }
 
   async delete(req, res) {
     try {
       const id = req.params.id;
-      console.log(id);
       const data = await this.service.delete(id);
+
       return Response.success(res, { docs: data }, httpCodes.STATUS_OK);
     } catch (error) {
-      return Response.error(res, error, 400);
+      return Response.error(
+        res,
+        errors.WHILE_DELETE.format("category topic"),
+        400
+      );
     }
   }
 }

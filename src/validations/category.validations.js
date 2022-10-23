@@ -19,7 +19,7 @@ export async function ValidatorName(req, res, next) {
     // if the name categoryTopic already existed response error
     if (categoryTopic) {
       return Response.error(res, {
-        message: messages.MESS_EXISTED_NAME.format("category topic"),
+        message: messages.EXISTED_NAME.format("category topic"),
       });
     }
 
@@ -39,7 +39,6 @@ export async function ValidatorNameUpdate(req, res, next) {
 
     if (data) {
       const categoryTopic = json(data);
-      console.log("categoryTopic", categoryTopic);
       // name's category topic like old name to pass
       if (categoryTopic.name === name) {
         next();
@@ -54,12 +53,12 @@ export async function ValidatorNameUpdate(req, res, next) {
         const data = await categoryTopicService.getCategoryByCondition(
           condition
         );
-
+        console.log(data);
         // return error if the update name has existed
         if (data) {
           Response.error(res, {
-            errors: errors.ERR_WHILE_UPDATE.format("category topic"),
-            message: messages.MESS_EXISTED_NAME.format("category topic"),
+            errors: errors.WHILE_UPDATE.format("category topic"),
+            message: messages.EXISTED_NAME.format("category topic"),
           });
         } else {
           next();
@@ -67,13 +66,13 @@ export async function ValidatorNameUpdate(req, res, next) {
       }
     } else {
       return Response.error(res, {
-        errors: errors.ERR_WHILE_UPDATE.format("category topic"),
-        message: messages.MESS_NOT_EXIST_ID.format("category topic"),
+        errors: errors.WHILE_UPDATE.format("category topic"),
+        message: messages.NOT_EXIST_ID.format("category topic"),
       });
     }
   } catch (error) {
     return Response.error(res, {
-      errors: errors.ERR_WHILE_UPDATE.format("category topic"),
+      errors: errors.WHILE_UPDATE.format("category topic"),
     });
   }
 }
