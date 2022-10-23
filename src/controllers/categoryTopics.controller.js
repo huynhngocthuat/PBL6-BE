@@ -14,7 +14,6 @@ class CategoryTopicsController {
   async create(req, res) {
     try {
       const categoryTopic = await this.service.create(req.body);
-
       return Response.success(
         res,
         { docs: categoryTopic },
@@ -52,7 +51,6 @@ class CategoryTopicsController {
     try {
       const id = req.params.id;
       const data = await this.service.update(id, req.body);
-
       if (data) {
         return Response.success(res, { docs: data }, httpCodes.STATUS_OK);
       }

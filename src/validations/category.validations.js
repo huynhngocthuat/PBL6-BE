@@ -39,7 +39,6 @@ export async function ValidatorNameUpdate(req, res, next) {
 
     if (data) {
       const categoryTopic = json(data);
-
       // name's category topic like old name to pass
       if (categoryTopic.name === name) {
         next();
