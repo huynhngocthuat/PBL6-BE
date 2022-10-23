@@ -23,7 +23,7 @@ class CategoryTopicsController {
     } catch (error) {
       return Response.error(
         res,
-        errors.ERR_WHILE_CREATE.format("category topic"),
+        errors.WHILE_CREATE.format("category topic"),
         400
       );
     }
@@ -42,7 +42,7 @@ class CategoryTopicsController {
     } catch (error) {
       return Response.error(
         res,
-        errors.ERR_WHILE_GET.format("category topic"),
+        errors.WHILE_GET.format("category topic"),
         400
       );
     }
@@ -59,7 +59,7 @@ class CategoryTopicsController {
     } catch (error) {
       return Response.error(
         res,
-        errors.ERR_WHILE_UPDATE.format("category topic"),
+        errors.WHILE_UPDATE.format("category topic"),
         400
       );
     }
@@ -74,7 +74,7 @@ class CategoryTopicsController {
     } catch (error) {
       return Response.error(
         res,
-        errors.ERR_WHILE_DELETE.format("category topic"),
+        errors.WHILE_DELETE.format("category topic"),
         400
       );
     }

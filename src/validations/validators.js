@@ -1,7 +1,7 @@
 import * as Schemas from "commons/schemas";
 import Response from "helpers/response";
 import { validate as uuidValidate } from "uuid";
-import { errors } from "constants";
+import { messages } from "constants";
 
 export function Validators(validator) {
   if (!Schemas.hasOwnProperty(validator))
@@ -24,13 +24,12 @@ export function Validators(validator) {
 export function ValidatorId(req, res, next) {
   const id = req.params.id;
   const isUuid = uuidValidate(id);
-
   if (isUuid) {
     next();
     return;
   }
 
   return Response.error(res, {
-    message: errors.ERR_INVALID_ID,
+    message: messages.INVALID_ID,
   });
 }

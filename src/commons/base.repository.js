@@ -10,12 +10,12 @@ export class BaseRepository {
   async create(input) {
     try {
       const data = await this.model.create(input);
-      logger.info(infors.INFO_CREATE_AT_REPO_SUCCESS.format(this.model.name));
+      logger.info(infors.CREATE_AT_REPO_SUCCESS.format(this.model.name));
 
       return data;
     } catch (error) {
       logger.error(
-        `${errors.ERR_CREATE_AT_REPO.format(this.model.name)} - ${error}`
+        `${errors.CREATE_AT_REPO.format(this.model.name)} - ${error}`
       );
       throw new Error(error);
     }
@@ -42,13 +42,13 @@ export class BaseRepository {
         }
       );
       logger.info(
-        infors.INFO_UPDATE_BY_CONDITION_AT_REPO_SUCCESS.format(this.model.name)
+        infors.UPDATE_BY_CONDITION_AT_REPO_SUCCESS.format(this.model.name)
       );
 
       return data;
     } catch (error) {
       logger.error(
-        `${errors.ERR_UPDATE_BY_CONDITION_AT_REPO.format(
+        `${errors.UPDATE_BY_CONDITION_AT_REPO.format(
           this.model.name
         )} - ${error}`
       );
@@ -63,12 +63,12 @@ export class BaseRepository {
           id: id,
         },
       });
-      logger.info(infors.INFO_DELETE_AT_REPO_SUCCESS.format(this.model.name));
+      logger.info(infors.DELETE_AT_REPO_SUCCESS.format(this.model.name));
 
       return data;
     } catch (error) {
       logger.error(
-        `${errors.ERR_DELETE_AT_REPO.format(this.model.name)} - ${error}`
+        `${errors.DELETE_AT_REPO.format(this.model.name)} - ${error}`
       );
       throw new Error(error);
     }
@@ -77,14 +77,12 @@ export class BaseRepository {
   async get(id) {
     try {
       const data = await this.model.findByPk(id);
-      logger.info(
-        infors.INFO_GET_BY_ID_AT_REPO_SUCCESS.format(this.model.name)
-      );
+      logger.info(infors.GET_BY_ID_AT_REPO_SUCCESS.format(this.model.name));
 
       return data;
     } catch (error) {
       logger.error(
-        `${errors.ERR_GET_BY_ID_AT_REPO.format(this.model.name)} - ${error}`
+        `${errors.GET_BY_ID_AT_REPO.format(this.model.name)} - ${error}`
       );
       throw new Error(error);
     }
@@ -93,13 +91,11 @@ export class BaseRepository {
   async getAll() {
     try {
       const data = await this.model.findAll();
-      logger.info(infors.INFO_GET_AT_REPO_SUCCESS.format(this.model.name));
+      logger.info(infors.GET_AT_REPO_SUCCESS.format(this.model.name));
 
       return data;
     } catch (error) {
-      logger.error(
-        `${errors.ERR_GET_AT_REPO.format(this.model.name)} - ${error}`
-      );
+      logger.error(`${errors.GET_AT_REPO.format(this.model.name)} - ${error}`);
       throw new Error(error);
     }
   }
@@ -110,13 +106,13 @@ export class BaseRepository {
         where: { ...condition },
       });
       logger.info(
-        infors.INFO_GET_ONE_BY_CONDITION_AT_REPO_SUCCESS.format(this.model.name)
+        infors.GET_ONE_BY_CONDITION_AT_REPO_SUCCESS.format(this.model.name)
       );
 
       return data;
     } catch (error) {
       logger.error(
-        `${errors.ERR_GET_ONE_BY_CONDITION_AT_REPO.format(
+        `${errors.GET_ONE_BY_CONDITION_AT_REPO.format(
           this.model.name
         )} - ${error}`
       );
@@ -130,13 +126,13 @@ export class BaseRepository {
         where: { ...condition },
       });
       logger.info(
-        infors.INFO_GET_ALL_BY_CONDITION_AT_REPO_SUCCESS.format(this.model.name)
+        infors.GET_ALL_BY_CONDITION_AT_REPO_SUCCESS.format(this.model.name)
       );
 
       return data;
     } catch (error) {
       logger.error(
-        `${errors.ERR_GET_ALL_BY_CONDITION_AT_REPO.format(
+        `${errors.GET_ALL_BY_CONDITION_AT_REPO.format(
           this.model.name
         )} - ${error}`
       );
