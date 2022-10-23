@@ -1,5 +1,5 @@
 import { Model } from "sequelize";
-import * as CONSTANTS from "constants";
+import { roles } from "constants";
 
 export const UserModel = (sequelize, DataTypes) => {
   class User extends Model {
@@ -33,6 +33,10 @@ export const UserModel = (sequelize, DataTypes) => {
       this.hasMany(models.VideoView, {
         foreignKey: "userId",
         as: "videoViews",
+      });
+      this.hasMany(models.SectionView, {
+        foreignKey: "userId",
+        as: "sectionViews",
       });
     }
   }
@@ -80,21 +84,21 @@ export const UserModel = (sequelize, DataTypes) => {
           notNull: true,
         },
       },
-      resetPasswordToke: {
-        type: DataTypes.STRING,
+      verifyCode: {
+        type: DataTypes.INTEGER,
         allowNull: true,
       },
-      resetPasswordSendAt: {
+      verifyCodeSendAt: {
         type: DataTypes.DATE,
         allowNull: true,
       },
       role: {
         type: DataTypes.ENUM(
-          CONSTANTS.USER_ROLE,
-          CONSTANTS.AUTHOR_ROLE,
-          CONSTANTS.ADMIN_ROLE
+          roles.USER_ROLE,
+          roles.AUTHOR_ROLE,
+          roles.ADMIN_ROLE
         ),
-        defaultValue: CONSTANTS.USER_ROLE,
+        defaultValue: roles.USER_ROLE,
         allowNull: false,
       },
       deletedAt: {
@@ -107,6 +111,7 @@ export const UserModel = (sequelize, DataTypes) => {
       modelName: "User",
       tableName: "Users",
       timestamps: true,
+      paranoid: true,
       deletedAt: "deletedAt",
     }
   );

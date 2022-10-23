@@ -1,27 +1,23 @@
-import { Model } from "sequelize";
+const { Model } = require("sequelize");
 
-export const OauthAccessTokenModel = (sequelize, DataTypes) => {
-  class OauthAccessToken extends Model {
+export const SectionViewModel = (sequelize, DataTypes) => {
+  class SectionView extends Model {
     static associate(models) {
+      this.belongsTo(models.Section, {
+        foreignKey: "sectionId",
+        as: "section",
+      });
       this.belongsTo(models.User, { foreignKey: "userId", as: "user" });
     }
   }
 
-  OauthAccessToken.init(
+  SectionView.init(
     {
       id: {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
         allowNull: false,
         primaryKey: true,
-      },
-      refreshToken: {
-        type: DataTypes.UUID,
-        allowNull: false,
-      },
-      revokeAt: {
-        type: DataTypes.DATE,
-        allowNull: true,
       },
       createdAt: {
         type: DataTypes.DATE,
@@ -38,14 +34,12 @@ export const OauthAccessTokenModel = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: "OauthAccessToken",
-      tableName: "OauthAccessTokens",
-      timestamps: true,
-      underscored: true,
+      modelName: "SectionView",
+      tableName: "SectionViews",
       paranoid: true,
       deletedAt: "deletedAt",
     }
   );
 
-  return OauthAccessToken;
+  return SectionView;
 };

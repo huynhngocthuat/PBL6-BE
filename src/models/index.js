@@ -13,8 +13,9 @@ import { UserModel } from "./User";
 import { UserDetailModel } from "./UserDetail";
 import { VideoModel } from "./Video";
 import { VideoCommentModel } from "./VideoComment";
-import { VideoHashtagModel } from "./VideoHashtag";
+import { CourseHashtagModel } from "./CourseHashtag";
 import { VideoViewModel } from "./VideoView";
+import { SectionViewModel } from "./SectionView";
 
 const models = [
   CategoryTopicModel,
@@ -29,11 +30,19 @@ const models = [
   UserDetailModel,
   VideoModel,
   VideoCommentModel,
-  VideoHashtagModel,
+  CourseHashtagModel,
   VideoViewModel,
+  SectionViewModel,
 ];
 
+const Op = Sequelize.Op;
+const operatorsAliases = {
+  $iLike: Op.iLike,
+  $not: Op.not,
+};
+
 const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
+  operatorsAliases: operatorsAliases,
   host: dbConfig.HOST,
   dialect: dbConfig.dialect,
 

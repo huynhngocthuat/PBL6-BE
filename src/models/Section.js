@@ -5,6 +5,10 @@ export const SectionModel = (sequelize, DataTypes) => {
     static associate(models) {
       this.hasMany(models.Video, { foreignKey: "sectionId", as: "videos" });
       this.belongsTo(models.Course, { foreignKey: "courseId", as: "course" });
+      this.hasMany(models.SectionView, {
+        foreignKey: "sectionId",
+        as: "sectionViews",
+      });
     }
   }
 
@@ -37,6 +41,8 @@ export const SectionModel = (sequelize, DataTypes) => {
       sequelize,
       modelName: "Section",
       tableName: "Sections",
+      paranoid: true,
+      deletedAt: "deletedAt",
     }
   );
 

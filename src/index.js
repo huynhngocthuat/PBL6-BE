@@ -6,8 +6,8 @@ import cors from "cors";
 import morgan from "morgan";
 import db from "models";
 import router from "routers";
+import * as utils from "utils";
 import { swagger } from "helpers/swagger";
-
 db.sequelize.sync();
 
 const app = express();

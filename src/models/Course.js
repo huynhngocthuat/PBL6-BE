@@ -13,6 +13,10 @@ export const CourseModel = (sequelize, DataTypes) => {
         foreignKey: "courseId",
         as: "subscribes",
       });
+      this.hasMany(models.CourseHashtag, {
+        foreignKey: "courseId",
+        as: "courseHashtags",
+      });
     }
   }
 
@@ -33,6 +37,18 @@ export const CourseModel = (sequelize, DataTypes) => {
         defaultValue: 0,
         allowNull: false,
       },
+      description: {
+        type: DataTypes.TEXT,
+        allowNull: true,
+      },
+      thumnailUrl: {
+        type: DataTypes.TEXT,
+        allowNull: true,
+      },
+      isActived: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+      },
       createdAt: {
         type: DataTypes.DATE,
         allowNull: true,
@@ -50,6 +66,8 @@ export const CourseModel = (sequelize, DataTypes) => {
       sequelize,
       modelName: "Course",
       tableName: "Courses",
+      paranoid: true,
+      deletedAt: "deletedAt",
     }
   );
 

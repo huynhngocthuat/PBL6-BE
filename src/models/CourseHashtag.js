@@ -1,17 +1,17 @@
 import { Model } from "sequelize";
 
-export const VideoHashtagModel = (sequelize, DataTypes) => {
-  class VideoHashtag extends Model {
+export const CourseHashtagModel = (sequelize, DataTypes) => {
+  class CourseHashtag extends Model {
     static associate(models) {
       this.belongsTo(models.Hashtag, {
         foreignKey: "hashtagId",
         as: "hashtag",
       });
-      this.belongsTo(models.Video, { foreignKey: "videoId", as: "video" });
+      this.belongsTo(models.Course, { foreignKey: "courseId", as: "course" });
     }
   }
 
-  VideoHashtag.init(
+  CourseHashtag.init(
     {
       id: {
         type: DataTypes.UUID,
@@ -34,12 +34,14 @@ export const VideoHashtagModel = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: "VideoHashtag",
-      tableName: "VideoHashtags",
+      modelName: "CourseHashtag",
+      tableName: "CourseHashtags",
       timestamps: true,
       underscored: true,
+      paranoid: true,
+      deletedAt: "deletedAt",
     }
   );
 
-  return VideoHashtag;
+  return CourseHashtag;
 };

@@ -37,7 +37,9 @@ export const EmotionReactModel = (sequelize, DataTypes) => {
     {
       sequelize,
       modelName: "EmotionReact",
-      tableName: "EmotionReacts",
+      tableName: "JEmotionReacts",
+      paranoid: true,
+      deletedAt: "deletedAt",
     }
   );
 

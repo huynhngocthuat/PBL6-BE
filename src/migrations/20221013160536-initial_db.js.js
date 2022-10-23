@@ -1,4 +1,4 @@
-import * as CONSTANTS from "constants";
+import { roles, notiTypes } from "constants";
 
 export default {
   async up(queryInterface, Sequelize) {
@@ -44,21 +44,21 @@ export default {
           notNull: true,
         },
       },
-      resetPasswordToke: {
-        type: Sequelize.STRING,
+      verifyCode: {
+        type: Sequelize.INTEGER,
         allowNull: true,
       },
-      resetPasswordSendAt: {
+      verifyCodeSendAt: {
         type: Sequelize.DATE,
         allowNull: true,
       },
       role: {
         type: Sequelize.ENUM(
-          CONSTANTS.USER_ROLE,
-          CONSTANTS.AUTHOR_ROLE,
-          CONSTANTS.ADMIN_ROLE
+          roles.USER_ROLE,
+          roles.AUTHOR_ROLE,
+          roles.ADMIN_ROLE
         ),
-        defaultValue: CONSTANTS.USER_ROLE,
+        defaultValue: roles.USER_ROLE,
         allowNull: false,
       },
       createdAt: {
@@ -161,7 +161,7 @@ export default {
       },
     });
 
-    await queryInterface.createTable("Notifications", {
+    await queryInterface.createTable("JNotifications", {
       id: {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
@@ -178,11 +178,23 @@ export default {
         allowNull: false,
       },
       type: {
-        type: Sequelize.ENUM(CONSTANTS.SYSTEM_NOTI, CONSTANTS.COMMENT_NOTI),
-        defaultValue: CONSTANTS.SYSTEM_NOTI,
+        type: Sequelize.ENUM(
+          notiTypes.PAY_FOR_COURSE,
+          notiTypes.PAY_FOR_USER,
+          notiTypes.LIKE_VIDEO,
+          notiTypes.COMMENT_VIDEO,
+          notiTypes.RATING_VIDEO,
+          notiTypes.USER_SUBSCRIBE_COURSE,
+          notiTypes.USER_REQUEST_ACTIVE,
+          notiTypes.ADMIN_ACTIVE_USER,
+          notiTypes.ADMIN_DEACTIVATE_USER,
+          notiTypes.ADMIN_ACTIVE_COURSE,
+          notiTypes.ADMIN_DEACTIVATE_COURSE
+        ),
+        defaultValue: notiTypes.SYSTEM_NOTI,
         allowNull: false,
       },
-      objectTableId: {
+      objecttableId: {
         type: Sequelize.UUID,
         allowNull: false,
       },
@@ -253,6 +265,10 @@ export default {
         defaultValue: 0,
         allowNull: false,
       },
+      thumnailUrl: {
+        type: Sequelize.TEXT,
+        allowNull: true,
+      },
       description: {
         type: Sequelize.TEXT,
         allowNull: true,
@@ -291,7 +307,7 @@ export default {
       },
     });
 
-    await queryInterface.createTable("Subscribes", {
+    await queryInterface.createTable("JSubscribes", {
       id: {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
@@ -423,7 +439,7 @@ export default {
       },
     });
 
-    await queryInterface.createTable("EmotionReacts", {
+    await queryInterface.createTable("JEmotionReacts", {
       id: {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
@@ -516,7 +532,7 @@ export default {
       },
     });
 
-    await queryInterface.createTable("VideoComments", {
+    await queryInterface.createTable("JVideoComments", {
       id: {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
@@ -582,18 +598,18 @@ export default {
       },
     });
 
-    await queryInterface.createTable("VideoHashtags", {
+    await queryInterface.createTable("CourseHashtags", {
       id: {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
         allowNull: false,
         primaryKey: true,
       },
-      videoId: {
+      courseId: {
         type: Sequelize.UUID,
         allowNull: false,
         references: {
-          model: "Videos",
+          model: "Courses",
           key: "id",
         },
       },
@@ -621,18 +637,18 @@ export default {
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("VideoHashtags");
+    await queryInterface.dropTable("CourseHashtags");
     await queryInterface.dropTable("Hashtags");
-    await queryInterface.dropTable("VideoComments");
-    await queryInterface.dropTable("EmotionReacts");
+    await queryInterface.dropTable("JVideoComments");
+    await queryInterface.dropTable("JEmotionReacts");
     await queryInterface.dropTable("VideoViews");
     await queryInterface.dropTable("Videos");
     await queryInterface.dropTable("Videos");
     await queryInterface.dropTable("Sections");
-    await queryInterface.dropTable("Subscribes");
+    await queryInterface.dropTable("JSubscribes");
     await queryInterface.dropTable("Courses");
     await queryInterface.dropTable("CategoryTopics");
-    await queryInterface.dropTable("Notifications");
+    await queryInterface.dropTable("JNotifications");
     await queryInterface.dropTable("UserDetails");
     await queryInterface.dropTable("OauthAccessTokens");
     await queryInterface.dropTable("Users");

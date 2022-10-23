@@ -32,7 +32,9 @@ export const SubscribeModel = (sequelize, DataTypes) => {
     {
       sequelize,
       modelName: "Subscribe",
-      tableName: "Subscribes",
+      tableName: "JSubscribes",
+      paranoid: true,
+      deletedAt: "deletedAt",
     }
   );
 
