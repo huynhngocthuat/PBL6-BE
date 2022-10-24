@@ -1,7 +1,7 @@
-import { CategoryTopicsService as categoryTopicService } from "services";
-import { errors, httpCodes, messages } from "constants";
-import Response from "helpers/response";
-import { json } from "utils";
+import { CategoryTopicsService as categoryTopicService } from 'services';
+import { errors, messages } from 'constants';
+import Response from 'helpers/response';
+import { json } from 'utils';
 
 export async function ValidatorName(req, res, next) {
   const { name } = req.body;
@@ -19,7 +19,7 @@ export async function ValidatorName(req, res, next) {
     // if the name categoryTopic already existed response error
     if (categoryTopic) {
       return Response.error(res, {
-        message: messages.EXISTED_NAME.format("category topic"),
+        message: messages.EXISTED_NAME.format('category topic'),
       });
     }
 
@@ -50,15 +50,14 @@ export async function ValidatorNameUpdate(req, res, next) {
           },
         };
 
-        const data = await categoryTopicService.getCategoryByCondition(
+        const category = await categoryTopicService.getCategoryByCondition(
           condition
         );
-        console.log(data);
-        // return error if the update name has existed
-        if (data) {
+
+        if (category) {
           Response.error(res, {
-            errors: errors.WHILE_UPDATE.format("category topic"),
-            message: messages.EXISTED_NAME.format("category topic"),
+            errors: errors.WHILE_UPDATE.format('category topic'),
+            message: messages.EXISTED_NAME.format('category topic'),
           });
         } else {
           next();
@@ -66,13 +65,13 @@ export async function ValidatorNameUpdate(req, res, next) {
       }
     } else {
       return Response.error(res, {
-        errors: errors.WHILE_UPDATE.format("category topic"),
-        message: messages.NOT_EXIST_ID.format("category topic"),
+        errors: errors.WHILE_UPDATE.format('category topic'),
+        message: messages.NOT_EXIST_ID.format('category topic'),
       });
     }
   } catch (error) {
     return Response.error(res, {
-      errors: errors.WHILE_UPDATE.format("category topic"),
+      errors: errors.WHILE_UPDATE.format('category topic'),
     });
   }
 }

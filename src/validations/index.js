@@ -1,10 +1,9 @@
-import { authValidation } from "./auth.validations";
-import { Validators, ValidatorId } from "./validators";
-import { ValidatorName, ValidatorNameUpdate } from "./category.validations";
+import { ValidatorBody, ValidatorParams, ValidatorId } from './validators';
+import { ValidatorName, ValidatorNameUpdate } from './category.validations';
 
 export {
-  authValidation,
-  Validators,
+  ValidatorBody,
+  ValidatorParams,
   ValidatorId,
   ValidatorName,
   ValidatorNameUpdate,

@@ -1,4 +1,4 @@
-class userSignupResponse {
+class UserSignupResponse {
   constructor({ email, role, name, isActivated, createdAt, updatedAt }) {
     this.email = email;
     this.role = role;
@@ -9,4 +9,4 @@ class userSignupResponse {
   }
 }
 
-export default userSignupResponse;
+export default UserSignupResponse;

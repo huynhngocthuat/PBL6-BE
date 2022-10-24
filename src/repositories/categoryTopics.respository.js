@@ -1,12 +1,12 @@
-import { BaseRepository } from "commons/base.repository";
-import db from "models";
-import Sequelize from "sequelize";
-const CategoryTopic = db.CategoryTopic;
+import db from 'models';
+import BaseRepository from 'commons/base.repository';
+
+const { CategoryTopic } = db;
 
 export class CategoryTopicsRepository extends BaseRepository {
-  constructor(model) {
-    super(model);
+  constructor() {
+    super(CategoryTopic);
   }
 }
 
-export default new CategoryTopicsRepository(CategoryTopic);
+export default new CategoryTopicsRepository();

@@ -73,3 +73,21 @@ db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
 export default db;
+
+/*
+CategoryTopic
+Course
+EmotionReact
+Hashtag
+Notification
+OauthAccessToken
+Section
+Subscribe
+User
+UserDetail
+Video
+VideoComment
+CourseHashtag
+VideoView
+SectionView
+*/

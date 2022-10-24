@@ -1,5 +1,5 @@
-import { AuthService } from "services";
-import Response from "helpers/response";
+import { AuthService } from 'services';
+import Response from 'helpers/response';
 
 class AuthController {
   constructor(service) {
@@ -7,11 +7,12 @@ class AuthController {
     this.login = this.login.bind(this);
     this.register = this.register.bind(this);
     this.confirmEmail = this.confirmEmail.bind(this);
+    this.refreshToken = this.refreshToken.bind(this);
   }
 
   async register(req, res) {
     try {
-      const user = await this.service.signUp(req.user);
+      const user = await this.service.signUp(req.body);
       return Response.success(res, { docs: user }, 201);
     } catch (error) {
       return Response.error(res, error);
@@ -20,8 +21,8 @@ class AuthController {
 
   async login(req, res) {
     try {
-      const data = await this.service.signIn(req.login);
-      return Response.success(res, { docs: data });
+      const docs = await this.service.signIn(req.body);
+      return Response.success(res, { docs });
     } catch (error) {
       return Response.error(res, error);
     }
@@ -30,7 +31,16 @@ class AuthController {
   async confirmEmail(req, res) {
     try {
       await this.service.confirmEmail(req.params.confirmToken);
-      return Response.success(res, { docs: "Email confirmed" });
+      return Response.success(res, { docs: 'Email confirmed' });
+    } catch (error) {
+      return Response.error(res, error);
+    }
+  }
+
+  async refreshToken(req, res) {
+    try {
+      const docs = await this.service.refreshToken(req.body.refreshToken);
+      return Response.success(res, { docs });
     } catch (error) {
       return Response.error(res, error);
     }

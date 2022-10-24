@@ -1,8 +1,8 @@
-import { CategoryTopicsRepository } from "repositories";
+import { categoryTopicsRepository } from 'repositories';
 
 class CategoryTopicsService {
-  constructor(repo) {
-    this.repo = repo;
+  constructor() {
+    this.repo = categoryTopicsRepository;
   }
 
   async create(data) {
@@ -13,12 +13,12 @@ class CategoryTopicsService {
     }
   }
 
-  async get(id = null) {
+  async find(id = null) {
     try {
       if (id) {
-        return await this.repo.get(id);
+        return await this.repo.find(id);
       }
-      return await this.repo.getAll();
+      return await this.repo.findAll();
     } catch (error) {
       throw new Error(error);
     }
@@ -40,13 +40,13 @@ class CategoryTopicsService {
     }
   }
 
-  async getCategoryByCondition(condition) {
+  async findCategoryByCondition(condition) {
     try {
-      return await this.repo.getByCondition(condition);
+      return await this.repo.findOneByCondition(condition);
     } catch (error) {
       throw new Error(error);
     }
   }
 }
 
-export default new CategoryTopicsService(CategoryTopicsRepository);
+export default new CategoryTopicsService();
