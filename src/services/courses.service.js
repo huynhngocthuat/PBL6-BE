@@ -13,7 +13,7 @@ class CoursesService {
     }
   }
 
-  async find(id = null) {
+  async find(id) {
     try {
       if (id) {
         return await this.repo.find(id);

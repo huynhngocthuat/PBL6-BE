@@ -1,4 +1,5 @@
 import { CategoryTopicsRepository } from 'repositories';
+import { getPagination } from 'helpers/pagging';
 
 class CategoryTopicsService {
   constructor(repo) {
@@ -13,10 +14,19 @@ class CategoryTopicsService {
     }
   }
 
-  async find(id = null) {
+  async find(id) {
     try {
-      if (id) {
-        return await this.repo.find(id);
+      return await this.repo.find(id);
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  async findAll(pagination = null) {
+    try {
+      if (pagination) {
+        const { offset, limit } = getPagination(pagination);
+        return await this.repo.findAll({ offset, limit });
       }
       return await this.repo.findAll();
     } catch (error) {

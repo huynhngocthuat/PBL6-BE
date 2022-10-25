@@ -1,6 +1,9 @@
+/* eslint-disable radix */
+/* eslint-disable no-else-return */
+/* eslint-disable no-lonely-if */
 import { CategoryTopicsService } from 'services';
 import Response from 'helpers/response';
-import { httpCodes, errors } from 'constants';
+import { httpCodes, errors, pages } from 'constants';
 
 class CategoryTopicsController {
   constructor(service) {
@@ -31,13 +34,29 @@ class CategoryTopicsController {
   async get(req, res) {
     try {
       const { id } = req.params;
-      const categoryTopics = await this.service.find(id);
+      const { page, limit } = req.query;
 
-      return Response.success(
-        res,
-        { docs: categoryTopics },
-        httpCodes.STATUS_OK
-      );
+      if (id) {
+        const data = await this.service.find(id);
+        return Response.success(res, { docs: data }, httpCodes.STATUS_OK);
+      } else {
+        // check on query page or limit valid
+        if (page || limit) {
+          const data = await this.service.findAll({
+            page: parseInt(page || pages.PAGE_DEFAULT) - 1,
+            limit: parseInt(limit || pages.LIMIT_DEFAULT),
+          });
+
+          return Response.success(
+            res,
+            { docs: data, pagination: data.pagination },
+            httpCodes.STATUS_OK
+          );
+        } else {
+          const data = await this.service.findAll();
+          return Response.success(res, { docs: data }, httpCodes.STATUS_OK);
+        }
+      }
     } catch (error) {
       return Response.error(
         res,
