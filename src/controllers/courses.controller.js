@@ -16,11 +16,11 @@ class CoursesController {
     console.log(req);
     try {
       const { file } = req;
-      console.log(req.body);
+
       const image = await upload(
         {
           resource_type: 'image',
-          folder: 'user/course1',
+          folder: `${req.body.userId}/${req.body.categoryTopicId}`,
         },
         file
       );
@@ -28,10 +28,10 @@ class CoursesController {
       if (image) {
         req.body.thumbnailUrl = image.secure_url;
       }
-      console.log('body', req.body);
 
-      // const data = await this.service.create(req.body);
-      return Response.success(res, { docs: image }, httpCodes.STATUS_OK);
+      const data = await this.service.create(req.body);
+
+      return Response.success(res, { docs: data }, httpCodes.STATUS_OK);
     } catch (error) {
       logger.error(`${errors.WHILE_CREATE.format('course')} - ${error}`);
       return Response.error(res, errors.WHILE_CREATE.format('course'), 400);
