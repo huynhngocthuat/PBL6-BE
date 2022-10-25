@@ -1,7 +1,9 @@
-import express from "express";
+import express from 'express';
+import { authController } from 'controllers';
+import { ValidatorBody, ValidatorParams } from 'validations';
+import AuthMiddleware from 'middlewares/auth';
+
 const router = express.Router();
-import { authController } from "controllers/";
-import { authValidation } from "validations";
 
 /**
  * @swagger
@@ -46,18 +48,24 @@ import { authValidation } from "validations";
  *          description: Some server error
  */
 
-router.post(
-  "/register",
-  authValidation.registerValidation,
-  authController.register
-);
+router.post('/register', ValidatorBody('register'), authController.register);
 
-router.get("/login", authValidation.loginValidation, authController.login);
+router.post('/login', ValidatorBody('login'), authController.login);
+
+router.post(
+  '/refresh-token',
+  ValidatorBody('refreshToken'),
+  authController.refreshToken
+);
 
 router.get(
-  "/confirm/:confirmToken",
-  authValidation.confirmEmailValidation,
+  '/confirmEmail/:confirmToken',
+  ValidatorParams('confirmToken'),
   authController.confirmEmail
 );
+
+router.get('/test', AuthMiddleware.isRequired, (req, res) => {
+  res.json({ message: req.jwt });
+});
 
 export default router;

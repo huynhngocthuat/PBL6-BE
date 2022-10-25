@@ -1,4 +1,4 @@
-export const httpCodes = {
+export default {
   STATUS_OK: 200,
   STATUS_BAD_REQUEST: 400,
   STATUS_UNAUTHORIZED: 401,

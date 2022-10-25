@@ -1,8 +1,7 @@
-import logger from "configs/winston.config";
+import logger from 'configs/winston.config';
+import { errors, infors } from 'constants';
 
-import { errors, infors } from "constants";
-
-export class BaseRepository {
+export default class BaseRepository {
   constructor(model) {
     this.model = model;
   }
@@ -22,14 +21,15 @@ export class BaseRepository {
   }
 
   async updateByPk(id, data) {
-    const itemUpdate = await this.get(id);
+    const itemUpdate = await this.find(id);
     if (!itemUpdate) {
-      throw new Error("Item update not found");
+      throw new Error('Item update not found');
     }
 
     Object.assign(itemUpdate, data);
 
-    return await itemUpdate.save();
+    const dataUpdate = await itemUpdate.save();
+    return dataUpdate;
   }
 
   async updateByCondition(condition, input) {
@@ -60,7 +60,7 @@ export class BaseRepository {
     try {
       const data = await this.model.destroy({
         where: {
-          id: id,
+          id,
         },
       });
       logger.info(infors.DELETE_AT_REPO_SUCCESS.format(this.model.name));
@@ -74,45 +74,47 @@ export class BaseRepository {
     }
   }
 
-  async get(id) {
+  async find(id) {
     try {
       const data = await this.model.findByPk(id);
-      logger.info(infors.GET_BY_ID_AT_REPO_SUCCESS.format(this.model.name));
+      logger.info(infors.FIND_BY_ID_AT_REPO_SUCCESS.format(this.model.name));
 
       return data;
     } catch (error) {
       logger.error(
-        `${errors.GET_BY_ID_AT_REPO.format(this.model.name)} - ${error}`
+        `${errors.FIND_BY_ID_AT_REPO.format(this.model.name)} - ${error}`
       );
       throw new Error(error);
     }
   }
 
-  async getAll() {
+  async findAll() {
     try {
       const data = await this.model.findAll();
-      logger.info(infors.GET_AT_REPO_SUCCESS.format(this.model.name));
+      logger.info(infors.FIND_AT_REPO_SUCCESS.format(this.model.name));
 
       return data;
     } catch (error) {
-      logger.error(`${errors.GET_AT_REPO.format(this.model.name)} - ${error}`);
+      logger.error(`${errors.FIND_AT_REPO.format(this.model.name)} - ${error}`);
       throw new Error(error);
     }
   }
 
-  async getByCondition(condition) {
+  async findOneByCondition(condition, isFindDeleted = false) {
     try {
       const data = await this.model.findOne({
         where: { ...condition },
+        paranoid: !isFindDeleted,
       });
+
       logger.info(
-        infors.GET_ONE_BY_CONDITION_AT_REPO_SUCCESS.format(this.model.name)
+        infors.FIND_ONE_BY_CONDITION_AT_REPO_SUCCESS.format(this.model.name)
       );
 
       return data;
     } catch (error) {
       logger.error(
-        `${errors.GET_ONE_BY_CONDITION_AT_REPO.format(
+        `${errors.FIND_ONE_BY_CONDITION_AT_REPO.format(
           this.model.name
         )} - ${error}`
       );
@@ -120,19 +122,23 @@ export class BaseRepository {
     }
   }
 
-  async getAllByCondition(condition) {
+  async findAllByCondition(condition, isFindDeleted) {
     try {
-      const data = await this.model.findAll({
+      const query = this.model.findAll({
         where: { ...condition },
+        paranoid: !isFindDeleted,
       });
+
+      const data = await query;
+
       logger.info(
-        infors.GET_ALL_BY_CONDITION_AT_REPO_SUCCESS.format(this.model.name)
+        infors.FIND_ALL_BY_CONDITION_AT_REPO_SUCCESS.format(this.model.name)
       );
 
       return data;
     } catch (error) {
       logger.error(
-        `${errors.GET_ALL_BY_CONDITION_AT_REPO.format(
+        `${errors.FIND_ALL_BY_CONDITION_AT_REPO.format(
           this.model.name
         )} - ${error}`
       );

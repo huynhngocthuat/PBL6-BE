@@ -1,6 +1,6 @@
-import { usersRepository } from "repositories";
-import { v4 as uuidv4 } from "uuid";
-import sendMail from "helpers/mail";
+import { usersRepository } from 'repositories';
+import { v4 as uuidv4 } from 'uuid';
+import sendMail from 'helpers/mail';
 
 class UsersService {
   constructor(repo) {
@@ -14,7 +14,7 @@ class UsersService {
       const user = await this.repo.getUserByEmail(email);
       return user;
     } catch (error) {
-      throw new Error("User not found");
+      throw new Error('User not found');
     }
   }
 
@@ -28,12 +28,12 @@ class UsersService {
       const html = `
         <h1>Confirm your email</h1>
         <p>Please click on the link below to confirm your email</p>
-        <a href="${process.env.BASE_URL}/confirm/${confirmToken}">Confirm email</a>
+        <a href="${process.env.BASE_URL}/confirmEmail/${confirmToken}">Confirm email</a>
       `;
-      sendMail(user.email, "Confirm email", html);
+      sendMail(user.email, 'Confirm email', html);
       return userWithConfirmToken;
     } catch (error) {
-      throw new Error("User not created");
+      throw new Error('User not created');
     }
   }
 
@@ -42,7 +42,7 @@ class UsersService {
       const user = await this.repo.getUserByConfirmToken(confirmToken);
 
       if (!user) {
-        throw new Error("User not found");
+        throw new Error('User not found');
       }
 
       await this.repo.updateByPk(user.id, {
@@ -51,7 +51,7 @@ class UsersService {
         confirmToken: null,
       });
     } catch (error) {
-      throw new Error("User not confirmed");
+      throw new Error('User not confirmed');
     }
   }
 }

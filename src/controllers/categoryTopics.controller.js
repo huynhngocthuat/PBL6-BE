@@ -1,6 +1,6 @@
-import { CategoryTopicsService } from "services";
-import Response from "helpers/response";
-import { httpCodes, errors } from "constants";
+import { CategoryTopicsService } from 'services';
+import Response from 'helpers/response';
+import { httpCodes, errors } from 'constants';
 
 class CategoryTopicsController {
   constructor(service) {
@@ -22,7 +22,7 @@ class CategoryTopicsController {
     } catch (error) {
       return Response.error(
         res,
-        errors.WHILE_CREATE.format("category topic"),
+        errors.WHILE_CREATE.format('category topic'),
         400
       );
     }
@@ -30,8 +30,8 @@ class CategoryTopicsController {
 
   async get(req, res) {
     try {
-      const id = req.params.id;
-      const categoryTopics = await this.service.get(id);
+      const { id } = req.params;
+      const categoryTopics = await this.service.find(id);
 
       return Response.success(
         res,
@@ -41,7 +41,7 @@ class CategoryTopicsController {
     } catch (error) {
       return Response.error(
         res,
-        errors.WHILE_GET.format("category topic"),
+        errors.WHILE_GET.format('category topic'),
         400
       );
     }
@@ -49,15 +49,20 @@ class CategoryTopicsController {
 
   async update(req, res) {
     try {
-      const id = req.params.id;
+      const { id } = req.params;
       const data = await this.service.update(id, req.body);
       if (data) {
         return Response.success(res, { docs: data }, httpCodes.STATUS_OK);
       }
+      return Response.error(
+        res,
+        errors.WHILE_UPDATE.format('category topic'),
+        400
+      );
     } catch (error) {
       return Response.error(
         res,
-        errors.WHILE_UPDATE.format("category topic"),
+        errors.WHILE_UPDATE.format('category topic'),
         400
       );
     }
@@ -65,14 +70,14 @@ class CategoryTopicsController {
 
   async delete(req, res) {
     try {
-      const id = req.params.id;
+      const { id } = req.params;
       const data = await this.service.delete(id);
 
       return Response.success(res, { docs: data }, httpCodes.STATUS_OK);
     } catch (error) {
       return Response.error(
         res,
-        errors.WHILE_DELETE.format("category topic"),
+        errors.WHILE_DELETE.format('category topic'),
         400
       );
     }

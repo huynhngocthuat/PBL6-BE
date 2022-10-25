@@ -1,32 +1,33 @@
-import express from "express";
-const router = express.Router();
-import { CategoryTopicsController } from "controllers";
+import express from 'express';
+import { CategoryTopicsController } from 'controllers';
 import {
-  Validators,
+  ValidatorBody,
   ValidatorId,
   ValidatorName,
   ValidatorNameUpdate,
-} from "validations";
+} from 'validations';
 
-router.get("/", CategoryTopicsController.get);
+const router = express.Router();
 
-router.get("/:id", ValidatorId, CategoryTopicsController.get);
+router.get('/', CategoryTopicsController.get);
+
+router.get('/:id', ValidatorId, CategoryTopicsController.get);
 
 router.post(
-  "/",
-  Validators("categoryTopic"),
+  '/',
+  ValidatorBody('categoryTopic'),
   ValidatorName,
   CategoryTopicsController.create
 );
 
 router.put(
-  "/:id",
+  '/:id',
   ValidatorId,
-  Validators("categoryTopic"),
+  ValidatorBody('categoryTopic'),
   ValidatorNameUpdate,
   CategoryTopicsController.update
 );
 
-router.delete("/:id", ValidatorId, CategoryTopicsController.delete);
+router.delete('/:id', ValidatorId, CategoryTopicsController.delete);
 
 export default router;
