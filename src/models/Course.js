@@ -1,21 +1,22 @@
-import { Model } from "sequelize";
+/* eslint-disable import/prefer-default-export */
+import { Model } from 'sequelize';
 
 export const CourseModel = (sequelize, DataTypes) => {
   class Course extends Model {
     static associate(models) {
       this.belongsTo(models.CategoryTopic, {
-        foreignKey: "categoryTopicId",
-        as: "categoryTopic",
+        foreignKey: 'categoryTopicId',
+        as: 'categoryTopic',
       });
-      this.belongsTo(models.User, { foreignKey: "userId", as: "user" });
-      this.hasMany(models.Section, { foreignKey: "courseId", as: "sections" });
+      this.belongsTo(models.User, { foreignKey: 'userId', as: 'user' });
+      this.hasMany(models.Section, { foreignKey: 'courseId', as: 'sections' });
       this.hasMany(models.Subscribe, {
-        foreignKey: "courseId",
-        as: "subscribes",
+        foreignKey: 'courseId',
+        as: 'subscribes',
       });
       this.hasMany(models.CourseHashtag, {
-        foreignKey: "courseId",
-        as: "courseHashtags",
+        foreignKey: 'courseId',
+        as: 'courseHashtags',
       });
     }
   }
@@ -33,7 +34,7 @@ export const CourseModel = (sequelize, DataTypes) => {
         allowNull: false,
       },
       price: {
-        type: DataTypes.DECIMAL(11, 10),
+        type: DataTypes.DECIMAL(12, 2),
         defaultValue: 0,
         allowNull: false,
       },
@@ -41,12 +42,13 @@ export const CourseModel = (sequelize, DataTypes) => {
         type: DataTypes.TEXT,
         allowNull: true,
       },
-      thumnailUrl: {
+      thumbnailUrl: {
         type: DataTypes.TEXT,
         allowNull: true,
       },
       isActived: {
         type: DataTypes.BOOLEAN,
+        defaultValue: true,
         allowNull: false,
       },
       createdAt: {
@@ -64,10 +66,10 @@ export const CourseModel = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: "Course",
-      tableName: "Courses",
+      modelName: 'Course',
+      tableName: 'Courses',
       paranoid: true,
-      deletedAt: "deletedAt",
+      deletedAt: 'deletedAt',
     }
   );
 

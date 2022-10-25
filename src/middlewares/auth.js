@@ -1,10 +1,12 @@
-import Response from "../helpers/response";
-import jwt from "../helpers/jwt";
-import { errors } from "../constants";
+/* eslint-disable no-console */
+/* eslint-disable consistent-return */
+import Response from '../helpers/response';
+import jwt from '../helpers/jwt';
+import { errors } from '../constants';
 
 export default class AuthMiddleware {
   static isRequired(req, res, next) {
-    const tokenBearer = req.header("Authorization");
+    const tokenBearer = req.header('Authorization');
 
     if (!tokenBearer) {
       return Response.error(res, {
@@ -12,7 +14,7 @@ export default class AuthMiddleware {
       });
     }
 
-    const token = tokenBearer.replace("Bearer ", "");
+    const token = tokenBearer.replace('Bearer ', '');
 
     try {
       const decoded = jwt.verify(token);

@@ -1,42 +1,43 @@
-import { Model } from "sequelize";
-import { roles } from "constants";
+/* eslint-disable import/prefer-default-export */
+import { Model } from 'sequelize';
+import { roles } from 'constants';
 
 export const UserModel = (sequelize, DataTypes) => {
   class User extends Model {
     static associate(models) {
-      this.hasOne(models.UserDetail, { foreignKey: "userId", as: "user" });
+      this.hasOne(models.UserDetail, { foreignKey: 'userId', as: 'user' });
       this.hasMany(models.OauthAccessToken, {
-        foreignKey: "userId",
-        as: "oauthAccessTokens",
+        foreignKey: 'userId',
+        as: 'oauthAccessTokens',
       });
       this.hasMany(models.Notification, {
-        foreignKey: "userId",
-        as: "notifications",
+        foreignKey: 'userId',
+        as: 'notifications',
       });
       this.hasMany(models.Course, {
-        foreignKey: "userId",
-        as: "courses",
+        foreignKey: 'userId',
+        as: 'courses',
       });
       this.hasMany(models.Subscribe, {
-        foreignKey: "userId",
-        as: "subscribes",
+        foreignKey: 'userId',
+        as: 'subscribes',
       });
-      this.hasMany(models.Video, { foreignKey: "userId", as: "videos" });
+      this.hasMany(models.Video, { foreignKey: 'userId', as: 'videos' });
       this.hasMany(models.EmotionReact, {
-        foreignKey: "userId",
-        as: "emotionReacts",
+        foreignKey: 'userId',
+        as: 'emotionReacts',
       });
       this.hasMany(models.VideoComment, {
-        foreignKey: "userId",
-        as: "videoComments",
+        foreignKey: 'userId',
+        as: 'videoComments',
       });
       this.hasMany(models.VideoView, {
-        foreignKey: "userId",
-        as: "videoViews",
+        foreignKey: 'userId',
+        as: 'videoViews',
       });
       this.hasMany(models.SectionView, {
-        foreignKey: "userId",
-        as: "sectionViews",
+        foreignKey: 'userId',
+        as: 'sectionViews',
       });
     }
   }
@@ -108,11 +109,11 @@ export const UserModel = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: "User",
-      tableName: "Users",
+      modelName: 'User',
+      tableName: 'Users',
       timestamps: true,
       paranoid: true,
-      deletedAt: "deletedAt",
+      deletedAt: 'deletedAt',
     }
   );
 

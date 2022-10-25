@@ -1,9 +1,6 @@
+/* eslint-disable import/no-named-as-default */
 import usersRepository from './users.repository';
-import oAuthAccessTokenRepository from './oAuthAccessToken.repository';
-import categoryTopicsRepository from './categoryTopics.respository';
+import CategoryTopicsRepository from './categoryTopics.respository';
+import CoursesRepository from './courses.repository';
 
-export {
-  usersRepository,
-  categoryTopicsRepository,
-  oAuthAccessTokenRepository,
-};
+export { usersRepository, CategoryTopicsRepository, CoursesRepository };

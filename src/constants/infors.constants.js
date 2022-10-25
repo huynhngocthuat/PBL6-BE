@@ -7,6 +7,7 @@ export default {
   FIND_ALL_BY_CONDITION_AT_REPO_SUCCESS:
     'Find all model by condition {0} successfully',
   UPDATE_BY_CONDITION_AT_REPO_SUCCESS:
-    'Update model {0} by condition successfully',
-  DELETE_AT_REPO_SUCCESS: 'Delete model {0} successfully',
+    "update model {0} by condition successfully",
+  DELETE_AT_REPO_SUCCESS: "delete model {0} successfully",
+  UPLOAD_FILE_TO_CLOUD_SUCCESS: "upload file to cloudinary successfully",
 };

@@ -1,8 +1,8 @@
-import { categoryTopicsRepository } from 'repositories';
+import { CategoryTopicsRepository } from 'repositories';
 
 class CategoryTopicsService {
-  constructor() {
-    this.repo = categoryTopicsRepository;
+  constructor(repo) {
+    this.repo = repo;
   }
 
   async create(data) {
@@ -49,4 +49,4 @@ class CategoryTopicsService {
   }
 }
 
-export default new CategoryTopicsService();
+export default new CategoryTopicsService(CategoryTopicsRepository);

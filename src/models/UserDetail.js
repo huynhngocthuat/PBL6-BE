@@ -1,9 +1,10 @@
-import { Model } from "sequelize";
+/* eslint-disable import/prefer-default-export */
+import { Model } from 'sequelize';
 
 export const UserDetailModel = (sequelize, DataTypes) => {
   class UserDetail extends Model {
     static associate(models) {
-      this.belongsTo(models.User, { foreignKey: "userId", as: "user" });
+      this.belongsTo(models.User, { foreignKey: 'userId', as: 'user' });
     }
   }
 
@@ -50,10 +51,10 @@ export const UserDetailModel = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: "UserDetail",
-      tableName: "UserDetails",
+      modelName: 'UserDetail',
+      tableName: 'UserDetails',
       paranoid: true,
-      deletedAt: "deletedAt",
+      deletedAt: 'deletedAt',
     }
   );
 

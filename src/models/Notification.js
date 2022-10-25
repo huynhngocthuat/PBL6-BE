@@ -1,12 +1,13 @@
-import { Model } from "sequelize";
-import { notiTypes } from "constants";
+/* eslint-disable import/prefer-default-export */
+import { Model } from 'sequelize';
+import { notiTypes } from 'constants';
 
 export const NotificationModel = (sequelize, DataTypes) => {
   class Notification extends Model {
     static associate(models) {
       this.belongsTo(models.User, {
-        foreignKey: "userId",
-        as: "user",
+        foreignKey: 'userId',
+        as: 'user',
       });
     }
   }
@@ -68,10 +69,10 @@ export const NotificationModel = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: "Notification",
-      tableName: "JNotifications",
+      modelName: 'Notification',
+      tableName: 'JNotifications',
       paranoid: true,
-      deletedAt: "deletedAt",
+      deletedAt: 'deletedAt',
     }
   );
 

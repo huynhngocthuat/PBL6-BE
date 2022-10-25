@@ -1,13 +1,14 @@
-const { Model } = require("sequelize");
+/* eslint-disable import/prefer-default-export */
+const { Model } = require('sequelize');
 
 export const SectionViewModel = (sequelize, DataTypes) => {
   class SectionView extends Model {
     static associate(models) {
       this.belongsTo(models.Section, {
-        foreignKey: "sectionId",
-        as: "section",
+        foreignKey: 'sectionId',
+        as: 'section',
       });
-      this.belongsTo(models.User, { foreignKey: "userId", as: "user" });
+      this.belongsTo(models.User, { foreignKey: 'userId', as: 'user' });
     }
   }
 
@@ -34,10 +35,10 @@ export const SectionViewModel = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: "SectionView",
-      tableName: "SectionViews",
+      modelName: 'SectionView',
+      tableName: 'SectionViews',
       paranoid: true,
-      deletedAt: "deletedAt",
+      deletedAt: 'deletedAt',
     }
   );
 

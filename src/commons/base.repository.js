@@ -100,11 +100,11 @@ export default class BaseRepository {
     }
   }
 
-  async findOneByCondition(condition, isFindDeleted = false) {
+  async findOneByCondition(condition, isDeleted = false) {
     try {
       const data = await this.model.findOne({
         where: { ...condition },
-        paranoid: !isFindDeleted,
+        paranoid: !isDeleted,
       });
 
       logger.info(
@@ -122,11 +122,11 @@ export default class BaseRepository {
     }
   }
 
-  async findAllByCondition(condition, isFindDeleted) {
+  async findAllByCondition(condition, isDeleted = false) {
     try {
       const query = this.model.findAll({
         where: { ...condition },
-        paranoid: !isFindDeleted,
+        paranoid: !isDeleted,
       });
 
       const data = await query;

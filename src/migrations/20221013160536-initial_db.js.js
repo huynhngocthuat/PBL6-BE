@@ -1,8 +1,9 @@
-import { roles, notiTypes } from "constants";
+/* eslint-disable no-unused-vars */
+import { roles, notiTypes } from 'constants';
 
 export default {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("Users", {
+    await queryInterface.createTable('Users', {
       id: {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
@@ -75,7 +76,7 @@ export default {
       },
     });
 
-    await queryInterface.createTable("OauthAccessTokens", {
+    await queryInterface.createTable('OauthAccessTokens', {
       id: {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
@@ -94,8 +95,8 @@ export default {
         type: Sequelize.UUID,
         allowNull: false,
         references: {
-          model: "Users",
-          key: "id",
+          model: 'Users',
+          key: 'id',
         },
       },
       createdAt: {
@@ -112,7 +113,7 @@ export default {
       },
     });
 
-    await queryInterface.createTable("UserDetails", {
+    await queryInterface.createTable('UserDetails', {
       id: {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
@@ -143,8 +144,8 @@ export default {
         type: Sequelize.UUID,
         allowNull: false,
         references: {
-          model: "Users",
-          key: "id",
+          model: 'Users',
+          key: 'id',
         },
       },
       createdAt: {
@@ -161,7 +162,7 @@ export default {
       },
     });
 
-    await queryInterface.createTable("JNotifications", {
+    await queryInterface.createTable('JNotifications', {
       id: {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
@@ -206,8 +207,8 @@ export default {
         type: Sequelize.UUID,
         allowNull: false,
         references: {
-          model: "Users",
-          key: "id",
+          model: 'Users',
+          key: 'id',
         },
       },
       createdAt: {
@@ -224,7 +225,7 @@ export default {
       },
     });
 
-    await queryInterface.createTable("CategoryTopics", {
+    await queryInterface.createTable('CategoryTopics', {
       id: {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
@@ -249,7 +250,7 @@ export default {
       },
     });
 
-    await queryInterface.createTable("Courses", {
+    await queryInterface.createTable('Courses', {
       id: {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
@@ -261,11 +262,11 @@ export default {
         allowNull: false,
       },
       price: {
-        type: Sequelize.DECIMAL(11, 10),
+        type: Sequelize.DECIMAL(12, 2),
         defaultValue: 0,
         allowNull: false,
       },
-      thumnailUrl: {
+      thumbnailUrl: {
         type: Sequelize.TEXT,
         allowNull: true,
       },
@@ -275,22 +276,23 @@ export default {
       },
       isActived: {
         type: Sequelize.BOOLEAN,
+        defaultValue: true,
         allowNull: false,
       },
       userId: {
         type: Sequelize.UUID,
         allowNull: false,
         references: {
-          model: "Users",
-          key: "id",
+          model: 'Users',
+          key: 'id',
         },
       },
       categoryTopicId: {
         type: Sequelize.UUID,
         allowNull: false,
         references: {
-          model: "CategoryTopics",
-          key: "id",
+          model: 'CategoryTopics',
+          key: 'id',
         },
       },
       createdAt: {
@@ -307,7 +309,7 @@ export default {
       },
     });
 
-    await queryInterface.createTable("JSubscribes", {
+    await queryInterface.createTable('JSubscribes', {
       id: {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
@@ -318,16 +320,16 @@ export default {
         type: Sequelize.UUID,
         allowNull: false,
         references: {
-          model: "Users",
-          key: "id",
+          model: 'Users',
+          key: 'id',
         },
       },
       courseId: {
         type: Sequelize.UUID,
         allowNull: false,
         references: {
-          model: "Courses",
-          key: "id",
+          model: 'Courses',
+          key: 'id',
         },
       },
       createdAt: {
@@ -344,7 +346,7 @@ export default {
       },
     });
 
-    await queryInterface.createTable("Sections", {
+    await queryInterface.createTable('Sections', {
       id: {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
@@ -359,8 +361,8 @@ export default {
         type: Sequelize.UUID,
         allowNull: false,
         references: {
-          model: "Courses",
-          key: "id",
+          model: 'Courses',
+          key: 'id',
         },
       },
       createdAt: {
@@ -377,7 +379,7 @@ export default {
       },
     });
 
-    await queryInterface.createTable("Videos", {
+    await queryInterface.createTable('Videos', {
       id: {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
@@ -413,16 +415,16 @@ export default {
         type: Sequelize.UUID,
         allowNull: false,
         references: {
-          model: "Sections",
-          key: "id",
+          model: 'Sections',
+          key: 'id',
         },
       },
       userId: {
         type: Sequelize.UUID,
         allowNull: false,
         references: {
-          model: "Users",
-          key: "id",
+          model: 'Users',
+          key: 'id',
         },
       },
       createdAt: {
@@ -439,7 +441,7 @@ export default {
       },
     });
 
-    await queryInterface.createTable("JEmotionReacts", {
+    await queryInterface.createTable('JEmotionReacts', {
       id: {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
@@ -455,16 +457,16 @@ export default {
         type: Sequelize.UUID,
         allowNull: false,
         references: {
-          model: "Users",
-          key: "id",
+          model: 'Users',
+          key: 'id',
         },
       },
       videoId: {
         type: Sequelize.UUID,
         allowNull: false,
         references: {
-          model: "Videos",
-          key: "id",
+          model: 'Videos',
+          key: 'id',
         },
       },
       createdAt: {
@@ -481,7 +483,7 @@ export default {
       },
     });
 
-    await queryInterface.createTable("VideoViews", {
+    await queryInterface.createTable('VideoViews', {
       id: {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
@@ -506,16 +508,16 @@ export default {
         type: Sequelize.UUID,
         allowNull: false,
         references: {
-          model: "Users",
-          key: "id",
+          model: 'Users',
+          key: 'id',
         },
       },
       videoId: {
         type: Sequelize.UUID,
         allowNull: false,
         references: {
-          model: "Videos",
-          key: "id",
+          model: 'Videos',
+          key: 'id',
         },
       },
       createdAt: {
@@ -532,7 +534,7 @@ export default {
       },
     });
 
-    await queryInterface.createTable("JVideoComments", {
+    await queryInterface.createTable('JVideoComments', {
       id: {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
@@ -547,16 +549,16 @@ export default {
         type: Sequelize.UUID,
         allowNull: false,
         references: {
-          model: "Users",
-          key: "id",
+          model: 'Users',
+          key: 'id',
         },
       },
       videoId: {
         type: Sequelize.UUID,
         allowNull: false,
         references: {
-          model: "Videos",
-          key: "id",
+          model: 'Videos',
+          key: 'id',
         },
       },
       createdAt: {
@@ -573,7 +575,7 @@ export default {
       },
     });
 
-    await queryInterface.createTable("Hashtags", {
+    await queryInterface.createTable('Hashtags', {
       id: {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
@@ -598,7 +600,7 @@ export default {
       },
     });
 
-    await queryInterface.createTable("CourseHashtags", {
+    await queryInterface.createTable('CourseHashtags', {
       id: {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
@@ -609,16 +611,16 @@ export default {
         type: Sequelize.UUID,
         allowNull: false,
         references: {
-          model: "Courses",
-          key: "id",
+          model: 'Courses',
+          key: 'id',
         },
       },
       hashtagId: {
         type: Sequelize.UUID,
         allowNull: false,
         references: {
-          model: "Hashtags",
-          key: "id",
+          model: 'Hashtags',
+          key: 'id',
         },
       },
       createdAt: {
@@ -637,20 +639,20 @@ export default {
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("CourseHashtags");
-    await queryInterface.dropTable("Hashtags");
-    await queryInterface.dropTable("JVideoComments");
-    await queryInterface.dropTable("JEmotionReacts");
-    await queryInterface.dropTable("VideoViews");
-    await queryInterface.dropTable("Videos");
-    await queryInterface.dropTable("Videos");
-    await queryInterface.dropTable("Sections");
-    await queryInterface.dropTable("JSubscribes");
-    await queryInterface.dropTable("Courses");
-    await queryInterface.dropTable("CategoryTopics");
-    await queryInterface.dropTable("JNotifications");
-    await queryInterface.dropTable("UserDetails");
-    await queryInterface.dropTable("OauthAccessTokens");
-    await queryInterface.dropTable("Users");
+    await queryInterface.dropTable('CourseHashtags');
+    await queryInterface.dropTable('Hashtags');
+    await queryInterface.dropTable('JVideoComments');
+    await queryInterface.dropTable('JEmotionReacts');
+    await queryInterface.dropTable('VideoViews');
+    await queryInterface.dropTable('Videos');
+    await queryInterface.dropTable('Videos');
+    await queryInterface.dropTable('Sections');
+    await queryInterface.dropTable('JSubscribes');
+    await queryInterface.dropTable('Courses');
+    await queryInterface.dropTable('CategoryTopics');
+    await queryInterface.dropTable('JNotifications');
+    await queryInterface.dropTable('UserDetails');
+    await queryInterface.dropTable('OauthAccessTokens');
+    await queryInterface.dropTable('Users');
   },
 };

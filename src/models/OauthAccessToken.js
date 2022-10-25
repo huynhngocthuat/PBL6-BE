@@ -1,9 +1,10 @@
-import { Model } from "sequelize";
+/* eslint-disable import/prefer-default-export */
+import { Model } from 'sequelize';
 
 export const OauthAccessTokenModel = (sequelize, DataTypes) => {
   class OauthAccessToken extends Model {
     static associate(models) {
-      this.belongsTo(models.User, { foreignKey: "userId", as: "user" });
+      this.belongsTo(models.User, { foreignKey: 'userId', as: 'user' });
     }
   }
 
@@ -38,11 +39,11 @@ export const OauthAccessTokenModel = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: "OauthAccessToken",
-      tableName: "OauthAccessTokens",
+      modelName: 'OauthAccessToken',
+      tableName: 'OauthAccessTokens',
       timestamps: true,
       paranoid: true,
-      deletedAt: "revokeAt",
+      deletedAt: 'revokeAt',
     }
   );
 
