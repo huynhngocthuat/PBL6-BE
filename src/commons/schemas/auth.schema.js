@@ -2,7 +2,7 @@ import Joi from 'joi';
 import { emailExists, emailNotExists } from './email.schema';
 
 export const register = Joi.object({
-  name: Joi.string().min(6).required(),
+  name: Joi.string().required(),
   password: Joi.string().min(6).required(),
 }).concat(emailNotExists);
 
