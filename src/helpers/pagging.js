@@ -1,12 +1,16 @@
+/* eslint-disable radix */
+/* eslint-disable no-nested-ternary */
 /* eslint-disable camelcase */
 /* eslint-disable import/prefer-default-export */
 import { pages } from 'constants';
 
-export function getPagingData(total, page, limit) {
-  const current_page = page > 0 ? page : 0;
+export function getPagingData(total, currentPage, limit) {
   const total_pages = Math.ceil(total / limit);
+  const current_page =
+    currentPage > total_pages ? null : currentPage > 0 ? currentPage : 0;
   const prev_page = current_page - 1 <= 0 ? null : current_page - 1;
-  const next_page = current_page * limit >= total ? null : current_page + 1;
+  const next_page =
+    current_page * limit >= total ? null : parseInt(current_page) + 1;
 
   const pagination = {
     total_pages,
@@ -23,7 +27,7 @@ export function getPagination(pagination) {
   let { page, limit } = pagination;
 
   limit = limit < 0 ? pages.LIMIT_DEFAULT : limit;
-  page = page < 0 ? 0 : page;
+  page = page - 1 < 0 ? 0 : page - 1;
 
   const offset = page * limit;
 

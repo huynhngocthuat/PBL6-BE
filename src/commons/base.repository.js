@@ -103,7 +103,7 @@ export default class BaseRepository {
         const total = await this.model.count();
         const pagingData = getPagingData(
           total,
-          Math.ceil(offset / limit) + 1,
+          Math.ceil(offset / limit) + 1, // cal current_page
           limit
         );
 

@@ -1,9 +1,11 @@
 /* eslint-disable no-console */
 /* eslint-disable class-methods-use-this */
+/* eslint-disable radix */
+/* eslint-disable no-else-return */
+/* eslint-disable no-lonely-if */
 import { CoursesService } from 'services';
 import Response from 'helpers/response';
-import { httpCodes, errors } from 'constants';
-import { upload } from 'helpers/upload';
+import { httpCodes, errors, pages } from 'constants';
 import logger from 'configs/winston.config';
 
 class CoursesController {
@@ -17,20 +19,6 @@ class CoursesController {
 
   async create(req, res) {
     try {
-      const { file } = req;
-
-      const image = await upload(
-        {
-          resource_type: 'image',
-          folder: `${req.body.userId}/${req.body.categoryTopicId}`,
-        },
-        file
-      );
-
-      if (image) {
-        req.body.thumbnailUrl = image.secure_url;
-      }
-
       const data = await this.service.create(req.body);
 
       return Response.success(res, { docs: data }, httpCodes.STATUS_OK);
@@ -43,9 +31,29 @@ class CoursesController {
   async get(req, res) {
     try {
       const { id } = req.params;
-      const data = await this.service.find(id);
+      const { page, limit } = req.query;
 
-      return Response.success(res, { docs: data }, httpCodes.STATUS_OK);
+      if (id) {
+        const data = await this.service.find(id);
+        return Response.success(res, { docs: data }, httpCodes.STATUS_OK);
+      } else {
+        // check on query page or limit valid
+        if (page || limit) {
+          const data = await this.service.findAll({
+            page: parseInt(page || pages.PAGE_DEFAULT),
+            limit: parseInt(limit || pages.LIMIT_DEFAULT),
+          });
+
+          return Response.success(
+            res,
+            { docs: data, pagination: data.pagination },
+            httpCodes.STATUS_OK
+          );
+        } else {
+          const data = await this.service.findAll();
+          return Response.success(res, { docs: data }, httpCodes.STATUS_OK);
+        }
+      }
     } catch (error) {
       return Response.error(res, errors.WHILE_GET.format('course'), 400);
     }
@@ -54,20 +62,6 @@ class CoursesController {
   async update(req, res) {
     try {
       const { id } = req.params;
-      const { file } = req;
-
-      const image = await upload(
-        {
-          resource_type: 'image',
-          folder: `${req.body.userId}/${req.body.categoryTopicId}`,
-        },
-        file
-      );
-
-      if (image) {
-        req.body.thumbnailUrl = image.secure_url;
-      }
-
       const data = await this.service.update(id, req.body);
 
       if (data) {

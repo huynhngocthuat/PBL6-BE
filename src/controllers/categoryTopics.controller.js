@@ -43,7 +43,7 @@ class CategoryTopicsController {
         // check on query page or limit valid
         if (page || limit) {
           const data = await this.service.findAll({
-            page: parseInt(page || pages.PAGE_DEFAULT) - 1,
+            page: parseInt(page || pages.PAGE_DEFAULT),
             limit: parseInt(limit || pages.LIMIT_DEFAULT),
           });
 
