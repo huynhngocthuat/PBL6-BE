@@ -66,6 +66,8 @@ router.get(
   authController.confirmEmail
 );
 
+router.get('/me', AuthMiddleware.isRequired, authController.getMe);
+
 router.get('/test', AuthMiddleware.isRequired, (req, res) => {
   res.json({ message: req.jwt });
 });

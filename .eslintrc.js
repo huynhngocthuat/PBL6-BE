@@ -22,5 +22,6 @@ module.exports = {
     'import/default': 2,
     'import/export': 2,
     'no-extend-native': 'off',
+    'no-useless-constructor': 'off',
   },
 };

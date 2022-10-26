@@ -2,21 +2,28 @@ import { usersRepository } from 'repositories';
 import { v4 as uuidv4 } from 'uuid';
 import sendMail from 'helpers/mail';
 import { json } from 'utils';
+import { errors } from 'constants';
 
 class UsersService {
   constructor(repo) {
     this.repo = repo;
-    this.getUserByEmail = this.getUserByEmail.bind(this);
-    this.create = this.create.bind(this);
+  }
+
+  async getUserById(id) {
+    try {
+      const user = await this.repo.find(id);
+      return json(user);
+    } catch (error) {
+      throw new Error(errors.USER_NOT_FOUND);
+    }
   }
 
   async getUserByEmail(email) {
     try {
       const user = await this.repo.getUserByEmail(email);
-      const userJson = json(user);
-      return userJson;
+      return json(user);
     } catch (error) {
-      throw new Error('User not found');
+      throw new Error(errors.USER_NOT_FOUND);
     }
   }
 
@@ -33,9 +40,10 @@ class UsersService {
         <a href="${process.env.BASE_URL}/confirmEmail/${confirmToken}">Confirm email</a>
       `;
       sendMail(user.email, 'Confirm email', html);
-      return userWithConfirmToken;
+
+      return json(userWithConfirmToken);
     } catch (error) {
-      throw new Error('User not created');
+      throw new Error(errors.USER_NOT_CREATED);
     }
   }
 
@@ -43,19 +51,15 @@ class UsersService {
     try {
       const user = await this.repo.getUserByConfirmToken(confirmToken);
 
-      if (!user) {
-        throw new Error('User not found');
-      }
-
       const userUpdate = await this.repo.updateByPk(user.id, {
         isActivated: true,
         confirmedAt: new Date(),
         confirmToken: null,
       });
 
-      return userUpdate;
+      return json(userUpdate);
     } catch (error) {
-      throw new Error('User not confirmed');
+      throw new Error(errors.USER_NOT_CONFIRMED);
     }
   }
 }
