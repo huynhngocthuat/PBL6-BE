@@ -34,6 +34,10 @@ class AuthService {
   async signIn({ email, password }) {
     const user = await this.usersService.getUserByEmail(email);
 
+    if (user.isActivated === false) {
+      throw new Error(errors.USER_NOT_CONFIRMED);
+    }
+
     const isMatch = await bcrypt.compare(password, user.password);
 
     if (!isMatch) {
