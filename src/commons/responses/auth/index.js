@@ -1,4 +1,4 @@
-import UserSignupResponse from './userSignUp.response';
-import LoginResponse from './login.response';
+import SignUpResponse from './signUp.response';
+import SignInResponse from './signIn.response';
 
-export { UserSignupResponse, LoginResponse };
+export { SignUpResponse, SignInResponse };

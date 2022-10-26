@@ -1,6 +1,7 @@
 import { usersRepository } from 'repositories';
 import { v4 as uuidv4 } from 'uuid';
 import sendMail from 'helpers/mail';
+import { json } from 'utils';
 
 class UsersService {
   constructor(repo) {
@@ -12,7 +13,8 @@ class UsersService {
   async getUserByEmail(email) {
     try {
       const user = await this.repo.getUserByEmail(email);
-      return user;
+      const userJson = json(user);
+      return userJson;
     } catch (error) {
       throw new Error('User not found');
     }
@@ -45,11 +47,13 @@ class UsersService {
         throw new Error('User not found');
       }
 
-      await this.repo.updateByPk(user.id, {
+      const userUpdate = await this.repo.updateByPk(user.id, {
         isActivated: true,
         confirmedAt: new Date(),
         confirmToken: null,
       });
+
+      return userUpdate;
     } catch (error) {
       throw new Error('User not confirmed');
     }
