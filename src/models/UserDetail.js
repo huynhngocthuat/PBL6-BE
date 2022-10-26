@@ -16,10 +16,6 @@ export const UserDetailModel = (sequelize, DataTypes) => {
         allowNull: false,
         primaryKey: true,
       },
-      name: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
       address: {
         type: DataTypes.STRING,
         allowNull: true,
@@ -30,6 +26,10 @@ export const UserDetailModel = (sequelize, DataTypes) => {
       },
       dateOfBirth: {
         type: DataTypes.DATEONLY,
+        allowNull: true,
+      },
+      avatarUrl: {
+        type: DataTypes.STRING,
         allowNull: true,
       },
       identityImageUrl: {

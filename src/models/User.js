@@ -60,7 +60,7 @@ export const UserModel = (sequelize, DataTypes) => {
           notNull: true,
         },
       },
-      name: {
+      fullname: {
         type: DataTypes.STRING,
         allowNull: false,
       },

@@ -20,7 +20,7 @@ export default {
           notNull: true,
         },
       },
-      name: {
+      fullname: {
         type: Sequelize.STRING,
         allowNull: false,
       },
@@ -120,10 +120,6 @@ export default {
         allowNull: false,
         primaryKey: true,
       },
-      name: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
       address: {
         type: Sequelize.STRING,
         allowNull: true,
@@ -134,6 +130,10 @@ export default {
       },
       dateOfBirth: {
         type: Sequelize.DATEONLY,
+        allowNull: true,
+      },
+      avatarUrl: {
+        type: Sequelize.STRING,
         allowNull: true,
       },
       identityImageUrl: {
