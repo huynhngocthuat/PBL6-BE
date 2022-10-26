@@ -1,6 +1,3 @@
-/* eslint-disable radix */
-/* eslint-disable no-else-return */
-/* eslint-disable no-lonely-if */
 import { CategoryTopicsService } from 'services';
 import Response from 'helpers/response';
 import { httpCodes, errors, pages } from 'constants';
@@ -39,11 +36,15 @@ class CategoryTopicsController {
       if (id) {
         const data = await this.service.find(id);
         return Response.success(res, { docs: data }, httpCodes.STATUS_OK);
+        // eslint-disable-next-line no-else-return
       } else {
         // check on query page or limit valid
+        // eslint-disable-next-line no-lonely-if
         if (page || limit) {
           const data = await this.service.findAll({
+            // eslint-disable-next-line radix
             page: parseInt(page || pages.PAGE_DEFAULT),
+            // eslint-disable-next-line radix
             limit: parseInt(limit || pages.LIMIT_DEFAULT),
           });
 
@@ -52,6 +53,7 @@ class CategoryTopicsController {
             { docs: data, pagination: data.pagination },
             httpCodes.STATUS_OK
           );
+          // eslint-disable-next-line no-else-return
         } else {
           const data = await this.service.findAll();
           return Response.success(res, { docs: data }, httpCodes.STATUS_OK);
