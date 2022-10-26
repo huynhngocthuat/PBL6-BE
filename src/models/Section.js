@@ -1,13 +1,14 @@
-const { Model } = require("sequelize");
+/* eslint-disable import/prefer-default-export */
+const { Model } = require('sequelize');
 
 export const SectionModel = (sequelize, DataTypes) => {
   class Section extends Model {
     static associate(models) {
-      this.hasMany(models.Video, { foreignKey: "sectionId", as: "videos" });
-      this.belongsTo(models.Course, { foreignKey: "courseId", as: "course" });
+      this.hasMany(models.Video, { foreignKey: 'sectionId', as: 'videos' });
+      this.belongsTo(models.Course, { foreignKey: 'courseId', as: 'course' });
       this.hasMany(models.SectionView, {
-        foreignKey: "sectionId",
-        as: "sectionViews",
+        foreignKey: 'sectionId',
+        as: 'sectionViews',
       });
     }
   }
@@ -39,10 +40,10 @@ export const SectionModel = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: "Section",
-      tableName: "Sections",
+      modelName: 'Section',
+      tableName: 'Sections',
       paranoid: true,
-      deletedAt: "deletedAt",
+      deletedAt: 'deletedAt',
     }
   );
 

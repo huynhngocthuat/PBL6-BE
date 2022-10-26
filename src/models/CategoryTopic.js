@@ -1,11 +1,12 @@
-import { Model } from "sequelize";
+/* eslint-disable import/prefer-default-export */
+import { Model } from 'sequelize';
 
 export const CategoryTopicModel = (sequelize, DataTypes) => {
   class CategoryTopic extends Model {
     static associate(models) {
       this.hasMany(models.Course, {
-        foreignKey: "categoryTopicId",
-        as: "courses",
+        foreignKey: 'categoryTopicId',
+        as: 'courses',
       });
     }
   }
@@ -37,10 +38,10 @@ export const CategoryTopicModel = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: "CategoryTopic",
-      tableName: "CategoryTopics",
+      modelName: 'CategoryTopic',
+      tableName: 'CategoryTopics',
       paranoid: true,
-      deletedAt: "deletedAt",
+      deletedAt: 'deletedAt',
     }
   );
 

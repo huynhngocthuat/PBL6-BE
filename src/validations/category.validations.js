@@ -12,7 +12,7 @@ export async function ValidatorName(req, res, next) {
   };
 
   try {
-    const categoryTopic = await categoryTopicService.getCategoryByCondition(
+    const categoryTopic = await categoryTopicService.findCategoryByCondition(
       condition
     );
 
@@ -35,10 +35,11 @@ export async function ValidatorNameUpdate(req, res, next) {
 
   try {
     // get category topic
-    const data = await categoryTopicService.get(id);
+    const data = await categoryTopicService.find(id);
 
     if (data) {
       const categoryTopic = json(data);
+
       // name's category topic like old name to pass
       if (categoryTopic.name === name) {
         next();
@@ -50,7 +51,7 @@ export async function ValidatorNameUpdate(req, res, next) {
           },
         };
 
-        const category = await categoryTopicService.getCategoryByCondition(
+        const category = await categoryTopicService.findCategoryByCondition(
           condition
         );
 

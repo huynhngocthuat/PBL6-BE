@@ -1,10 +1,11 @@
-import { Model } from "sequelize";
+/* eslint-disable import/prefer-default-export */
+import { Model } from 'sequelize';
 
 export const EmotionReactModel = (sequelize, DataTypes) => {
   class EmotionReact extends Model {
     static associate(models) {
-      this.belongsTo(models.User, { foreignKey: "userId", as: "user" });
-      this.belongsTo(models.Video, { foreignKey: "videoId", as: "video" });
+      this.belongsTo(models.User, { foreignKey: 'userId', as: 'user' });
+      this.belongsTo(models.Video, { foreignKey: 'videoId', as: 'video' });
     }
   }
 
@@ -36,10 +37,10 @@ export const EmotionReactModel = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: "EmotionReact",
-      tableName: "JEmotionReacts",
+      modelName: 'EmotionReact',
+      tableName: 'JEmotionReacts',
       paranoid: true,
-      deletedAt: "deletedAt",
+      deletedAt: 'deletedAt',
     }
   );
 

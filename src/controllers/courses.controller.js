@@ -1,8 +1,14 @@
-import { CategoryTopicsService } from 'services';
+/* eslint-disable no-console */
+/* eslint-disable class-methods-use-this */
+/* eslint-disable radix */
+/* eslint-disable no-else-return */
+/* eslint-disable no-lonely-if */
+import { CoursesService } from 'services';
 import Response from 'helpers/response';
 import { httpCodes, errors, pages } from 'constants';
+import logger from 'configs/winston.config';
 
-class CategoryTopicsController {
+class CoursesController {
   constructor(service) {
     this.service = service;
     this.create = this.create.bind(this);
@@ -13,18 +19,12 @@ class CategoryTopicsController {
 
   async create(req, res) {
     try {
-      const categoryTopic = await this.service.create(req.body);
-      return Response.success(
-        res,
-        { docs: categoryTopic },
-        httpCodes.STATUS_OK
-      );
+      const data = await this.service.create(req.body);
+
+      return Response.success(res, { docs: data }, httpCodes.STATUS_OK);
     } catch (error) {
-      return Response.error(
-        res,
-        errors.WHILE_CREATE.format('category topic'),
-        400
-      );
+      logger.error(`${errors.WHILE_CREATE.format('course')} - ${error}`);
+      return Response.error(res, errors.WHILE_CREATE.format('course'), 400);
     }
   }
 
@@ -36,15 +36,11 @@ class CategoryTopicsController {
       if (id) {
         const data = await this.service.find(id);
         return Response.success(res, { docs: data }, httpCodes.STATUS_OK);
-        // eslint-disable-next-line no-else-return
       } else {
         // check on query page or limit valid
-        // eslint-disable-next-line no-lonely-if
         if (page || limit) {
           const data = await this.service.findAll({
-            // eslint-disable-next-line radix
             page: parseInt(page || pages.PAGE_DEFAULT),
-            // eslint-disable-next-line radix
             limit: parseInt(limit || pages.LIMIT_DEFAULT),
           });
 
@@ -53,18 +49,13 @@ class CategoryTopicsController {
             { docs: data, pagination: data.pagination },
             httpCodes.STATUS_OK
           );
-          // eslint-disable-next-line no-else-return
         } else {
           const data = await this.service.findAll();
           return Response.success(res, { docs: data }, httpCodes.STATUS_OK);
         }
       }
     } catch (error) {
-      return Response.error(
-        res,
-        errors.WHILE_GET.format('category topic'),
-        400
-      );
+      return Response.error(res, errors.WHILE_GET.format('course'), 400);
     }
   }
 
@@ -72,20 +63,13 @@ class CategoryTopicsController {
     try {
       const { id } = req.params;
       const data = await this.service.update(id, req.body);
+
       if (data) {
         return Response.success(res, { docs: data }, httpCodes.STATUS_OK);
       }
-      return Response.error(
-        res,
-        errors.WHILE_UPDATE.format('category topic'),
-        400
-      );
+      return Response.error(res, errors.WHILE_UPDATE.format('course'), 400);
     } catch (error) {
-      return Response.error(
-        res,
-        errors.WHILE_UPDATE.format('category topic'),
-        400
-      );
+      return Response.error(res, errors.WHILE_UPDATE.format('course'), 400);
     }
   }
 
@@ -96,13 +80,9 @@ class CategoryTopicsController {
 
       return Response.success(res, { docs: data }, httpCodes.STATUS_OK);
     } catch (error) {
-      return Response.error(
-        res,
-        errors.WHILE_DELETE.format('category topic'),
-        400
-      );
+      return Response.error(res, errors.WHILE_DELETE.format('course'), 400);
     }
   }
 }
 
-export default new CategoryTopicsController(CategoryTopicsService);
+export default new CoursesController(CoursesService);

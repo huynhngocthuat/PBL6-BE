@@ -1,10 +1,11 @@
-import { Model } from "sequelize";
+/* eslint-disable import/prefer-default-export */
+import { Model } from 'sequelize';
 
 export const VideoCommentModel = (sequelize, DataTypes) => {
   class VideoComment extends Model {
     static associate(models) {
-      this.belongsTo(models.User, { foreignKey: "userId", as: "user" });
-      this.belongsTo(models.Video, { foreignKey: "videoId", as: "video" });
+      this.belongsTo(models.User, { foreignKey: 'userId', as: 'user' });
+      this.belongsTo(models.Video, { foreignKey: 'videoId', as: 'video' });
     }
   }
 
@@ -35,10 +36,10 @@ export const VideoCommentModel = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: "VideoComment",
-      tableName: "JVideoComments",
+      modelName: 'VideoComment',
+      tableName: 'JVideoComments',
       paranoid: true,
-      deletedAt: "deletedAt",
+      deletedAt: 'deletedAt',
     }
   );
 

@@ -1,8 +1,8 @@
-"use strict";
-
+/* eslint-disable no-unused-vars */
+/* eslint-disable strict */
 export default {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("SectionViews", {
+    await queryInterface.createTable('SectionViews', {
       id: {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
@@ -13,16 +13,16 @@ export default {
         type: Sequelize.UUID,
         allowNull: false,
         references: {
-          model: "Sections",
-          key: "id",
+          model: 'Sections',
+          key: 'id',
         },
       },
       userId: {
         type: Sequelize.UUID,
         allowNull: false,
         references: {
-          model: "Users",
-          key: "id",
+          model: 'Users',
+          key: 'id',
         },
       },
       createdAt: {
@@ -41,6 +41,6 @@ export default {
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("SectionViews");
+    await queryInterface.dropTable('SectionViews');
   },
 };

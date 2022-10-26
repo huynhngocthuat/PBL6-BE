@@ -1,5 +1,6 @@
 import logger from 'configs/winston.config';
 import { errors, infors } from 'constants';
+import { getPagingData } from 'helpers/pagging';
 
 export default class BaseRepository {
   constructor(model) {
@@ -88,11 +89,30 @@ export default class BaseRepository {
     }
   }
 
-  async findAll() {
+  async findAll(pagination = null) {
     try {
-      const data = await this.model.findAll();
-      logger.info(infors.FIND_AT_REPO_SUCCESS.format(this.model.name));
+      let data;
+      if (pagination) {
+        const { offset, limit } = pagination;
 
+        data = await this.model.findAll({
+          offset,
+          limit,
+        });
+
+        const total = await this.model.count();
+        const pagingData = getPagingData(
+          total,
+          Math.ceil(offset / limit) + 1, // cal current_page
+          limit
+        );
+
+        data.pagination = pagingData;
+      } else {
+        data = await this.model.findAll();
+      }
+
+      logger.info(infors.FIND_AT_REPO_SUCCESS.format(this.model.name));
       return data;
     } catch (error) {
       logger.error(`${errors.FIND_AT_REPO.format(this.model.name)} - ${error}`);
@@ -100,11 +120,11 @@ export default class BaseRepository {
     }
   }
 
-  async findOneByCondition(condition, isFindDeleted = false) {
+  async findOneByCondition(condition, isDeleted = false) {
     try {
       const data = await this.model.findOne({
         where: { ...condition },
-        paranoid: !isFindDeleted,
+        paranoid: !isDeleted,
       });
 
       logger.info(
@@ -122,14 +142,37 @@ export default class BaseRepository {
     }
   }
 
-  async findAllByCondition(condition, isFindDeleted) {
+  async findAllByCondition(condition, isDeleted = false, pagination = null) {
     try {
-      const query = this.model.findAll({
-        where: { ...condition },
-        paranoid: !isFindDeleted,
-      });
+      let data;
+      if (pagination) {
+        const { offset, limit } = pagination;
 
-      const data = await query;
+        data = await this.model.findAll({
+          where: { ...condition },
+          paranoid: !isDeleted,
+          offset,
+          limit,
+        });
+
+        const total = await this.model.count({
+          where: { ...condition },
+          paranoid: !isDeleted,
+        });
+
+        const pagingData = getPagingData(
+          total,
+          Math.ceil(offset / limit) + 1,
+          limit
+        );
+
+        data.pagination = pagingData;
+      } else {
+        data = await this.model.findAll({
+          where: { ...condition },
+          paranoid: !isDeleted,
+        });
+      }
 
       logger.info(
         infors.FIND_ALL_BY_CONDITION_AT_REPO_SUCCESS.format(this.model.name)

@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+/* eslint-disable consistent-return */
 import Response from '../helpers/response';
 import jwt from '../helpers/jwt';
 import { errors } from '../constants';

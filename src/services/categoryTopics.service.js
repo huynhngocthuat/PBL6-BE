@@ -1,43 +1,10 @@
-import { categoryTopicsRepository } from 'repositories';
+import { CategoryTopicsRepository } from 'repositories';
+import BaseService from './base.service';
 
-class CategoryTopicsService {
-  constructor() {
-    this.repo = categoryTopicsRepository;
-  }
-
-  async create(data) {
-    try {
-      return await this.repo.create(data);
-    } catch (error) {
-      throw new Error(error);
-    }
-  }
-
-  async find(id = null) {
-    try {
-      if (id) {
-        return await this.repo.find(id);
-      }
-      return await this.repo.findAll();
-    } catch (error) {
-      throw new Error(error);
-    }
-  }
-
-  async update(id, data) {
-    try {
-      return await this.repo.updateByPk(id, data);
-    } catch (error) {
-      throw new Error(error);
-    }
-  }
-
-  async delete(id) {
-    try {
-      return await this.repo.delete(id);
-    } catch (error) {
-      throw new Error(error);
-    }
+class CategoryTopicsService extends BaseService {
+  // eslint-disable-next-line no-useless-constructor
+  constructor(repo) {
+    super(repo);
   }
 
   async findCategoryByCondition(condition) {
@@ -49,4 +16,4 @@ class CategoryTopicsService {
   }
 }
 
-export default new CategoryTopicsService();
+export default new CategoryTopicsService(CategoryTopicsRepository);

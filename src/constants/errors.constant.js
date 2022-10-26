@@ -19,6 +19,8 @@ export default {
   TOKEN_INVALID: 'Token invalid',
   EMAIL_EXISTS: 'Email {0} has already existed',
   NOT_EXISTED_EMAIL: 'Email {0} not existed',
+  NOT_EXIST: "{0} invalid. It's not exist",
+  DATA_INVALID: '{0} invalid',
 
   // OAuthAccessTokenService
   DELETE_OAUTH_ACCESS_TOKEN: 'Delete oAuthAccessToken failed',

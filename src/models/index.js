@@ -1,21 +1,23 @@
-import dbConfig from "configs/db.config";
-import Sequelize from "sequelize";
+/* eslint-disable object-shorthand */
+/* eslint-disable prefer-destructuring */
+import dbConfig from 'configs/db.config';
+import Sequelize from 'sequelize';
 
-import { CategoryTopicModel } from "./CategoryTopic";
-import { CourseModel } from "./Course";
-import { EmotionReactModel } from "./EmotionReact";
-import { HashtagModel } from "./Hashtag";
-import { NotificationModel } from "./Notification";
-import { OauthAccessTokenModel } from "./OauthAccessToken";
-import { SectionModel } from "./Section";
-import { SubscribeModel } from "./Subscribe";
-import { UserModel } from "./User";
-import { UserDetailModel } from "./UserDetail";
-import { VideoModel } from "./Video";
-import { VideoCommentModel } from "./VideoComment";
-import { CourseHashtagModel } from "./CourseHashtag";
-import { VideoViewModel } from "./VideoView";
-import { SectionViewModel } from "./SectionView";
+import { CategoryTopicModel } from './CategoryTopic';
+import { CourseModel } from './Course';
+import { EmotionReactModel } from './EmotionReact';
+import { HashtagModel } from './Hashtag';
+import { NotificationModel } from './Notification';
+import { OauthAccessTokenModel } from './OauthAccessToken';
+import { SectionModel } from './Section';
+import { SubscribeModel } from './Subscribe';
+import { UserModel } from './User';
+import { UserDetailModel } from './UserDetail';
+import { VideoModel } from './Video';
+import { VideoCommentModel } from './VideoComment';
+import { CourseHashtagModel } from './CourseHashtag';
+import { VideoViewModel } from './VideoView';
+import { SectionViewModel } from './SectionView';
 
 const models = [
   CategoryTopicModel,
