@@ -14,11 +14,6 @@ export default {
         type: Sequelize.STRING,
         allowNull: false,
         unique: true,
-        validate: {
-          isEmail: true,
-          notEmpty: true,
-          notNull: true,
-        },
       },
       fullname: {
         type: Sequelize.STRING,

@@ -54,11 +54,6 @@ export const UserModel = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         unique: true,
-        validate: {
-          isEmail: true,
-          notEmpty: true,
-          notNull: true,
-        },
       },
       fullname: {
         type: DataTypes.STRING,
