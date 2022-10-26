@@ -136,6 +136,10 @@ export default {
         type: Sequelize.DATEONLY,
         allowNull: true,
       },
+      avatarUrl: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
       identityImageUrl: {
         type: Sequelize.STRING,
         allowNull: true,

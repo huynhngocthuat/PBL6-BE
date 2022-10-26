@@ -2,5 +2,11 @@
 import usersRepository from './users.repository';
 import CategoryTopicsRepository from './categoryTopics.respository';
 import CoursesRepository from './courses.repository';
+import oAuthAccessTokenRepository from './oAuthAccessToken.repository';
 
-export { usersRepository, CategoryTopicsRepository, CoursesRepository };
+export {
+  usersRepository,
+  CategoryTopicsRepository,
+  CoursesRepository,
+  oAuthAccessTokenRepository,
+};
