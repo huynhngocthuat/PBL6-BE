@@ -1,4 +1,8 @@
-import { SignUpResponse, SignInResponse } from 'commons/responses/auth';
+import {
+  SignUpResponse,
+  SignInResponse,
+  GetMeResponse,
+} from 'commons/responses/auth';
 
 import jwt from 'helpers/jwt';
 import bcrypt from 'bcryptjs';
@@ -11,11 +15,6 @@ class AuthService {
   constructor() {
     this.usersService = UsersService;
     this.oAuthService = oAuthAccessTokenService;
-    this.signUp = this.signUp.bind(this);
-    this.signIn = this.signIn.bind(this);
-    this.logout = this.logout.bind(this);
-    this.confirmEmail = this.confirmEmail.bind(this);
-    this.refreshToken = this.refreshToken.bind(this);
   }
 
   async signUp(data) {
@@ -61,57 +60,86 @@ class AuthService {
   }
 
   async logout(idOAuth) {
-    await this.oAuthService.deleteOauthAccessToken(idOAuth);
-    return infors.LOGOUT_SUCCESS;
+    try {
+      await this.oAuthService.deleteOauthAccessToken(idOAuth);
+      return infors.LOGOUT_SUCCESS;
+    } catch (error) {
+      throw new Error(errors.LOGOUT_FAILED);
+    }
   }
 
   async confirmEmail(confirmToken) {
-    const user = await this.usersService.confirmEmail(confirmToken);
+    try {
+      const user = await this.usersService.confirmEmail(confirmToken);
 
-    const oAuth = await this.oAuthService.createOauthAccessToken({
-      userId: user.id,
-      refreshToken: uuid(),
-    });
+      const oAuth = await this.oAuthService.createOauthAccessToken({
+        userId: user.id,
+        refreshToken: uuid(),
+      });
 
-    const token = jwt.sign({
-      idOAuth: oAuth.id,
-    });
+      const token = jwt.sign({
+        idOAuth: oAuth.id,
+      });
 
-    const refreshToken = jwt.refreshSign({
-      refreshToken: oAuth.refreshToken,
-    });
+      const refreshToken = jwt.refreshSign({
+        refreshToken: oAuth.refreshToken,
+      });
 
-    return new SignInResponse({
-      token,
-      refreshToken,
-    });
+      return new SignInResponse({
+        token,
+        refreshToken,
+      });
+    } catch (error) {
+      throw new Error(errors.CONFIRM_EMAIL_FAILED);
+    }
   }
 
   async refreshToken(jwtRefreshToken) {
-    const decoded = jwt.refreshVerify(jwtRefreshToken);
+    try {
+      const decoded = jwt.refreshVerify(jwtRefreshToken);
 
-    if (!decoded) {
-      throw new Error(errors.TOKEN_INVALID);
+      if (!decoded) {
+        throw new Error(errors.TOKEN_INVALID);
+      }
+
+      const { refreshToken } = decoded;
+
+      const oAuth = await this.oAuthService.getOauthAccessTokenByRefreshToken(
+        refreshToken
+      );
+
+      if (!oAuth) {
+        throw new Error(errors.OAUTH_ACCESS_TOKEN_NOT_FOUND);
+      }
+
+      const token = jwt.sign({
+        idOAuth: oAuth.id,
+      });
+
+      return new SignInResponse({
+        token,
+        refreshToken: jwtRefreshToken,
+      });
+    } catch (error) {
+      throw new Error(errors.REFRESH_TOKEN_FAILED);
     }
+  }
 
-    const { refreshToken } = decoded;
+  async getMe(idOAuth) {
+    try {
+      const oAuth = await this.oAuthService.getOauthAccessTokenById(idOAuth);
 
-    const oAuth = await this.oAuthService.getOauthAccessTokenByRefreshToken(
-      refreshToken
-    );
+      if (!oAuth) {
+        throw new Error(errors.TOKEN_INVALID);
+      }
 
-    if (!oAuth) {
-      throw new Error(errors.TOKEN_INVALID);
+      const user = await this.usersService.getUserById(oAuth.userId);
+
+      // FIXME: Get user's detail
+      return new GetMeResponse(user);
+    } catch (error) {
+      throw new Error(errors.GET_ME_FAILED);
     }
-
-    const token = jwt.sign({
-      idOAuth: oAuth.id,
-    });
-
-    return new SignInResponse({
-      token,
-      refreshToken: jwtRefreshToken,
-    });
   }
 }
 

@@ -23,8 +23,18 @@ export default {
   DATA_INVALID: '{0} invalid',
 
   // OAuthAccessTokenService
+  OAUTH_ACCESS_TOKEN_NOT_FOUND: 'OAuth access token not found',
   DELETE_OAUTH_ACCESS_TOKEN: 'Delete oAuthAccessToken failed',
 
   // AuthService
   INCORRECT_PASSWORD: 'Incorrect password',
+  LOGOUT_FAILED: 'Logout failed',
+  CONFIRM_EMAIL_FAILED: 'Cannot confirm email',
+  REFRESH_TOKEN_FAILED: 'Cannot refresh token',
+  GET_ME_FAILED: 'Cannot get me',
+
+  // UsersService
+  USER_NOT_FOUND: 'User not found',
+  USER_NOT_CREATED: 'User not created',
+  USER_NOT_CONFIRMED: 'User not confirmed',
 };

@@ -1,13 +1,8 @@
 import { oAuthAccessTokenRepository } from 'repositories';
-import { errors } from 'constants';
 
 class OAuthAccessTokenService {
   constructor(repo) {
     this.repo = repo;
-    this.createOauthAccessToken = this.createOauthAccessToken.bind(this);
-    this.getOauthAccessTokenByRefreshToken =
-      this.getOauthAccessTokenByRefreshToken.bind(this);
-    this.deleteOauthAccessToken = this.deleteOauthAccessToken.bind(this);
   }
 
   async createOauthAccessToken(data) {
@@ -15,23 +10,24 @@ class OAuthAccessTokenService {
     return oAuth;
   }
 
+  async getOauthAccessTokenById(idOAuth) {
+    const oAuth = await this.repo.find(idOAuth);
+    return oAuth;
+  }
+
   async getOauthAccessTokenByRefreshToken(refreshToken) {
-    const oAuth = this.repo.findOneByCondition({ refreshToken });
+    const oAuth = await this.repo.findOneByCondition({ refreshToken });
     return oAuth;
   }
 
   async deleteOauthAccessToken(idOAuth) {
-    try {
-      const isDeleted = await this.repo.delete(idOAuth);
+    const isDeleted = await this.repo.delete(idOAuth);
 
-      if (!isDeleted) {
-        throw new Error();
-      }
-
-      return isDeleted;
-    } catch (error) {
-      throw new Error(errors.DELETE_OAUTH_ACCESS_TOKEN);
+    if (!isDeleted) {
+      throw new Error();
     }
+
+    return isDeleted;
   }
 }
 

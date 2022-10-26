@@ -8,8 +8,6 @@ const { User } = db;
 export class UsersRepository extends BaseRepository {
   constructor(model) {
     super(model);
-    this.getUserByEmail = this.getUserByEmail.bind(this);
-    this.getUserByConfirmToken = this.getUserByConfirmToken.bind(this);
   }
 
   async getUserByEmail(email) {

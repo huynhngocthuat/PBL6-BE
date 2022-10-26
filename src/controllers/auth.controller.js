@@ -9,6 +9,7 @@ class AuthController {
     this.logout = this.logout.bind(this);
     this.confirmEmail = this.confirmEmail.bind(this);
     this.refreshToken = this.refreshToken.bind(this);
+    this.getMe = this.getMe.bind(this);
   }
 
   async register(req, res) {
@@ -51,6 +52,16 @@ class AuthController {
   async refreshToken(req, res) {
     try {
       const docs = await this.service.refreshToken(req.body.refreshToken);
+      return Response.success(res, { docs });
+    } catch (error) {
+      return Response.error(res, error);
+    }
+  }
+
+  async getMe(req, res) {
+    try {
+      const { idOAuth } = req.jwt;
+      const docs = await this.service.getMe(idOAuth);
       return Response.success(res, { docs });
     } catch (error) {
       return Response.error(res, error);
