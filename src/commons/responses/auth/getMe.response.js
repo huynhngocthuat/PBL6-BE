@@ -1,7 +1,7 @@
 class GetMeResponse {
-  constructor({ email, name, role }) {
+  constructor({ email, fullName, role }) {
     this.email = email;
-    this.name = name;
+    this.fullName = fullName;
     this.role = role;
   }
 }

@@ -2,6 +2,7 @@
 import nodemailer from 'nodemailer';
 import { OAuth2Client } from 'google-auth-library';
 import dotenv from 'dotenv';
+import { errors } from 'constants';
 
 dotenv.config();
 
@@ -57,8 +58,20 @@ const sendMail = async (to, subject, htmlContent) => {
     };
     await transporter.sendMail(options);
   } catch (error) {
-    console.log('sendMail error', error);
+    throw new Error(errors.EMAIL_NOT_SENT);
   }
 };
 
+const sendEmailConfirm = async ({ email, confirmToken }) => {
+  const html = `
+    <h1>Confirm your email</h1>
+    <p>Please click on the link below to confirm your email</p>
+    <a href="${process.env.BASE_URL}/confirmEmail/${confirmToken}">Confirm email</a>
+  `;
+  const res = await sendMail(email, 'Confirm email', html);
+  return res;
+};
+
 export default sendMail;
+
+export { sendEmailConfirm };

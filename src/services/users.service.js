@@ -1,6 +1,6 @@
 import { usersRepository } from 'repositories';
 import { v4 as uuidv4 } from 'uuid';
-import sendMail from 'helpers/mail';
+import { sendEmailConfirm } from 'helpers/mail';
 import { json } from 'utils';
 import { errors } from 'constants';
 
@@ -34,12 +34,8 @@ class UsersService {
       const userWithConfirmToken = await this.repo.updateByPk(user.id, {
         confirmToken,
       });
-      const html = `
-        <h1>Confirm your email</h1>
-        <p>Please click on the link below to confirm your email</p>
-        <a href="${process.env.BASE_URL}/confirmEmail/${confirmToken}">Confirm email</a>
-      `;
-      sendMail(user.email, 'Confirm email', html);
+
+      sendEmailConfirm({ email: user.email, confirmToken });
 
       return json(userWithConfirmToken);
     } catch (error) {
@@ -59,7 +55,7 @@ class UsersService {
 
       return json(userUpdate);
     } catch (error) {
-      throw new Error(errors.USER_NOT_CONFIRMED);
+      throw new Error(errors.USER_CONFIRMED_FAILED);
     }
   }
 }

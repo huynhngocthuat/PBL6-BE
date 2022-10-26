@@ -1,11 +1,9 @@
 class SignUpResponse {
-  constructor({ email, role, name, isActivated, createdAt, updatedAt }) {
+  constructor({ email, role, fullName, isActivated }) {
     this.email = email;
     this.role = role;
-    this.name = name;
+    this.fullName = fullName;
     this.isActivated = isActivated;
-    this.createdAt = createdAt;
-    this.updatedAt = updatedAt;
   }
 }
 
