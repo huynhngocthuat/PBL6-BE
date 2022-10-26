@@ -55,7 +55,7 @@ export const UserModel = (sequelize, DataTypes) => {
         allowNull: false,
         unique: true,
       },
-      fullname: {
+      fullName: {
         type: DataTypes.STRING,
         allowNull: false,
       },

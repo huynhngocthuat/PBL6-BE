@@ -15,7 +15,7 @@ export default {
         allowNull: false,
         unique: true,
       },
-      fullname: {
+      fullName: {
         type: Sequelize.STRING,
         allowNull: false,
       },
