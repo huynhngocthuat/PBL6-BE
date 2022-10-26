@@ -1,4 +1,4 @@
-import { UserSignupResponse, LoginResponse } from 'commons/responses/auth';
+import { SignUpResponse, SignInResponse } from 'commons/responses/auth';
 
 import jwt from 'helpers/jwt';
 import bcrypt from 'bcryptjs';
@@ -29,7 +29,7 @@ class AuthService {
       password: hashedPassword,
     });
 
-    return new UserSignupResponse(user);
+    return new SignUpResponse(user);
   }
 
   async signIn({ email, password }) {
@@ -54,7 +54,7 @@ class AuthService {
       refreshToken: oAuth.refreshToken,
     });
 
-    return new LoginResponse({
+    return new SignInResponse({
       token,
       refreshToken,
     });
@@ -66,7 +66,25 @@ class AuthService {
   }
 
   async confirmEmail(confirmToken) {
-    return this.usersService.confirmEmail(confirmToken);
+    const user = await this.usersService.confirmEmail(confirmToken);
+
+    const oAuth = await this.oAuthService.createOauthAccessToken({
+      userId: user.id,
+      refreshToken: uuid(),
+    });
+
+    const token = jwt.sign({
+      idOAuth: oAuth.id,
+    });
+
+    const refreshToken = jwt.refreshSign({
+      refreshToken: oAuth.refreshToken,
+    });
+
+    return new SignInResponse({
+      token,
+      refreshToken,
+    });
   }
 
   async refreshToken(jwtRefreshToken) {
@@ -90,7 +108,7 @@ class AuthService {
       idOAuth: oAuth.id,
     });
 
-    return new LoginResponse({
+    return new SignInResponse({
       token,
       refreshToken: jwtRefreshToken,
     });

@@ -1,8 +1,8 @@
-class LoginResponse {
+class SignInResponse {
   constructor({ token, refreshToken }) {
     this.token = token;
     this.refreshToken = refreshToken;
   }
 }
 
-export default LoginResponse;
+export default SignInResponse;

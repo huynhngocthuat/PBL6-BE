@@ -41,8 +41,8 @@ class AuthController {
 
   async confirmEmail(req, res) {
     try {
-      await this.service.confirmEmail(req.params.confirmToken);
-      return Response.success(res, { docs: 'Email confirmed' });
+      const docs = await this.service.confirmEmail(req.params.confirmToken);
+      return Response.success(res, { docs });
     } catch (error) {
       return Response.error(res, error);
     }
