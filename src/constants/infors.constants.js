@@ -9,4 +9,10 @@ export default {
   UPDATE_BY_CONDITION_AT_REPO_SUCCESS:
     'Update model {0} by condition successfully',
   DELETE_AT_REPO_SUCCESS: 'Delete model {0} successfully',
+  DELETE_BY_CONDITION_AT_REPO_SUCCESS:
+    'Delete model {0} by condition successfully',
+
+  // AuthService
+  LOGIN_SUCCESS: 'Login successfully',
+  LOGOUT_SUCCESS: 'Logout successfully',
 };
