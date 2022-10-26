@@ -52,6 +52,8 @@ router.post('/register', ValidatorBody('register'), authController.register);
 
 router.post('/login', ValidatorBody('login'), authController.login);
 
+router.get('/logout', AuthMiddleware.isRequired, authController.logout);
+
 router.post(
   '/refresh-token',
   ValidatorBody('refreshToken'),

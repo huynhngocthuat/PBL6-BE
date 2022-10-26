@@ -4,8 +4,9 @@ import Response from 'helpers/response';
 class AuthController {
   constructor(service) {
     this.service = service;
-    this.login = this.login.bind(this);
     this.register = this.register.bind(this);
+    this.login = this.login.bind(this);
+    this.logout = this.logout.bind(this);
     this.confirmEmail = this.confirmEmail.bind(this);
     this.refreshToken = this.refreshToken.bind(this);
   }
@@ -22,6 +23,16 @@ class AuthController {
   async login(req, res) {
     try {
       const docs = await this.service.signIn(req.body);
+      return Response.success(res, { docs });
+    } catch (error) {
+      return Response.error(res, error);
+    }
+  }
+
+  async logout(req, res) {
+    try {
+      const { idOAuth } = req.jwt;
+      const docs = await this.service.logout(idOAuth);
       return Response.success(res, { docs });
     } catch (error) {
       return Response.error(res, error);
