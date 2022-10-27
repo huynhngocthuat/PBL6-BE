@@ -9,7 +9,7 @@
   },
   "scripts": {
     "dev": "nodemon --exec babel-node src/bin/www.js",
-    "server": "npm run build && pm2 start api.json",
+    "server": "npm run build && pm2 start server.json",
     "build": "npm run clean && npm run build:babel",
     "clean": "rm -rf dist && mkdir dist",
     "build:babel": "babel ./src --out-dir dist --copy-files",
