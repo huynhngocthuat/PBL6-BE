@@ -2,9 +2,16 @@ import { CoursesRepository } from 'repositories';
 import BaseService from './base.service';
 
 class CoursesService extends BaseService {
-  // eslint-disable-next-line no-useless-constructor
   constructor(repo) {
     super(repo);
+  }
+
+  async findCourseByCondition(condition) {
+    try {
+      return await this.repo.findOneByCondition(condition);
+    } catch (error) {
+      throw new Error(error);
+    }
   }
 }
 
