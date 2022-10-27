@@ -22,7 +22,6 @@ class UploadController {
 
       return Response.success(res, { docs: { url } }, httpCodes.STATUS_OK);
     } catch (error) {
-      console.log(error);
       return Response.error(res, error, 400);
     }
   }
