@@ -36,12 +36,8 @@ export const UserDetailModel = (sequelize, DataTypes) => {
         type: DataTypes.DATEONLY,
         allowNull: true,
       },
-      avatarUrl: {
-        type: DataTypes.STRING,
-        allowNull: true,
-      },
       identityImageUrl: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       createdAt: {

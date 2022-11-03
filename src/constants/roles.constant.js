@@ -1,5 +1,5 @@
 export default {
-  USER_ROLE: 'user',
-  AUTHOR_ROLE: 'author',
-  ADMIN_ROLE: 'admin',
+  USER_ROLE: 'USER',
+  INSTRUCTOR_ROLE: 'INSTRUCTOR',
+  ADMIN_ROLE: 'ADMIN',
 };

@@ -19,6 +19,10 @@ export default {
         type: Sequelize.STRING,
         allowNull: false,
       },
+      avatarUrl: {
+        type: Sequelize.TEXT,
+        allowNull: true,
+      },
       confirmToken: {
         type: Sequelize.STRING,
         allowNull: true,
@@ -51,7 +55,7 @@ export default {
       role: {
         type: Sequelize.ENUM(
           roles.USER_ROLE,
-          roles.AUTHOR_ROLE,
+          roles.INSTRUCTOR_ROLE,
           roles.ADMIN_ROLE
         ),
         defaultValue: roles.USER_ROLE,
@@ -135,12 +139,8 @@ export default {
         type: Sequelize.DATEONLY,
         allowNull: true,
       },
-      avatarUrl: {
-        type: Sequelize.STRING,
-        allowNull: true,
-      },
       identityImageUrl: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
         allowNull: true,
       },
       userId: {
@@ -173,7 +173,7 @@ export default {
         primaryKey: true,
       },
       content: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
         allowNull: false,
       },
       isRead: {
@@ -182,20 +182,7 @@ export default {
         allowNull: false,
       },
       type: {
-        type: Sequelize.ENUM(
-          notiTypes.PAY_FOR_COURSE,
-          notiTypes.PAY_FOR_USER,
-          notiTypes.LIKE_VIDEO,
-          notiTypes.COMMENT_VIDEO,
-          notiTypes.RATING_VIDEO,
-          notiTypes.USER_SUBSCRIBE_COURSE,
-          notiTypes.USER_REQUEST_ACTIVE,
-          notiTypes.ADMIN_ACTIVE_USER,
-          notiTypes.ADMIN_DEACTIVATE_USER,
-          notiTypes.ADMIN_ACTIVE_COURSE,
-          notiTypes.ADMIN_DEACTIVATE_COURSE
-        ),
-        defaultValue: notiTypes.SYSTEM_NOTI,
+        type: Sequelize.TEXT,
         allowNull: false,
       },
       objecttableId: {
