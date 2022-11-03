@@ -58,6 +58,22 @@ class UsersService {
       throw new Error(errors.USER_CONFIRMED_FAILED);
     }
   }
+
+  async findCourseByInstructor(userId, isDeleted = false) {
+    try {
+      const data = await this.repo.findOneByCondition(
+        { id: userId },
+        isDeleted,
+        { association: 'courses', limit: 2 }
+      );
+
+      const { courses } = json(data);
+
+      return courses;
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
 }
 
 export default new UsersService(usersRepository);
