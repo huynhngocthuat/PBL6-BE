@@ -123,6 +123,14 @@ export default {
         type: Sequelize.STRING(32),
         allowNull: true,
       },
+      occupation: {
+        type: Sequelize.STRING(32),
+        allowNull: true,
+      },
+      payment: {
+        type: Sequelize.STRING(32),
+        allowNull: true,
+      },
       dateOfBirth: {
         type: Sequelize.DATEONLY,
         allowNull: true,
