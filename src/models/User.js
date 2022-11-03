@@ -59,6 +59,10 @@ export const UserModel = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
+      avatarUrl: {
+        type: DataTypes.TEXT,
+        allowNull: true,
+      },
       confirmToken: {
         type: DataTypes.STRING,
         allowNull: true,
@@ -91,7 +95,7 @@ export const UserModel = (sequelize, DataTypes) => {
       role: {
         type: DataTypes.ENUM(
           roles.USER_ROLE,
-          roles.AUTHOR_ROLE,
+          roles.INSTRUCTOR_ROLE,
           roles.ADMIN_ROLE
         ),
         defaultValue: roles.USER_ROLE,
