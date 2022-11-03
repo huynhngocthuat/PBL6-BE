@@ -24,6 +24,14 @@ export const UserDetailModel = (sequelize, DataTypes) => {
         type: DataTypes.STRING(32),
         allowNull: true,
       },
+      occupation: {
+        type: DataTypes.STRING(32),
+        allowNull: true,
+      },
+      payment: {
+        type: DataTypes.STRING(32),
+        allowNull: true,
+      },
       dateOfBirth: {
         type: DataTypes.DATEONLY,
         allowNull: true,
