@@ -120,9 +120,10 @@ export default class BaseRepository {
     }
   }
 
-  async findOneByCondition(condition, isDeleted = false) {
+  async findOneByCondition(condition, isDeleted = false, include = null) {
     try {
       const data = await this.model.findOne({
+        include,
         where: { ...condition },
         paranoid: !isDeleted,
       });

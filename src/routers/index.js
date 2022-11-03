@@ -8,8 +8,8 @@ import upload from './upload.routes';
 
 const router = express.Router();
 
-router.use('/', users);
 router.use('/', auth);
+router.use('/users', users);
 router.use('/category-topics', categoryTopics);
 router.use('/courses', courses);
 router.use('/sections', sections);

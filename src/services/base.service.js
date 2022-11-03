@@ -33,6 +33,18 @@ export default class BaseService {
     }
   }
 
+  async findAllByCondition(condition, pagination = null) {
+    try {
+      if (pagination) {
+        const { offset, limit } = getPagination(pagination);
+        return await this.repo.findAllByCondition(condition, { offset, limit });
+      }
+      return await this.repo.findAllByCondition(condition);
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
   async update(id, data) {
     try {
       return await this.repo.updateByPk(id, data);
