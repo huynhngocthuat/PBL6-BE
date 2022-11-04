@@ -32,7 +32,7 @@ export const NotificationModel = (sequelize, DataTypes) => {
         type: DataTypes.TEXT,
         allowNull: false,
       },
-      objecttableId: {
+      objectableId: {
         type: DataTypes.UUID,
         allowNull: false,
       },
