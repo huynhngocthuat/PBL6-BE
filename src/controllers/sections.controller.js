@@ -9,6 +9,7 @@ class SectionsController {
     this.get = this.get.bind(this);
     this.update = this.update.bind(this);
     this.delete = this.delete.bind(this);
+    this.getVideos = this.getVideos.bind(this);
   }
 
   async create(req, res) {
@@ -53,6 +54,21 @@ class SectionsController {
       }
     } catch (error) {
       return Response.error(res, errors.WHILE_GET.format('section'), 400);
+    }
+  }
+
+  async getVideos(req, res) {
+    try {
+      // id of section
+      const { id } = req.params;
+      const data = await this.service.findVideosBySection(id);
+      return Response.success(res, { docs: data }, httpCodes.STATUS_OK);
+    } catch (error) {
+      return Response.error(
+        res,
+        errors.WHILE_GET.format('videos of section'),
+        400
+      );
     }
   }
 
