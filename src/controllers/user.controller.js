@@ -15,7 +15,11 @@ class UsersController {
       const data = await this.service.findCourseByInstructor(id);
       return Response.success(res, { docs: data }, httpCodes.STATUS_OK);
     } catch (error) {
-      return Response.error(res, errors.WHILE_GET.format('courses'), 400);
+      return Response.error(
+        res,
+        errors.WHILE_GET.format('courses of instructor'),
+        400
+      );
     }
   }
 }
