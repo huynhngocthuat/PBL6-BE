@@ -7,6 +7,7 @@ const router = express.Router();
 router.get('/', SectionsController.get);
 
 router.get('/:id', ValidatorId, SectionsController.get);
+router.get('/:id/videos', ValidatorId, SectionsController.getVideos);
 
 router.post('/', ValidatorBody('section'), SectionsController.create);
 
