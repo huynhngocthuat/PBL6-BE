@@ -64,7 +64,7 @@ class UsersService {
       const data = await this.repo.findOneByCondition(
         { id: userId },
         isDeleted,
-        { association: 'courses', limit: 2 }
+        { association: 'courses' }
       );
 
       const { courses } = json(data);
