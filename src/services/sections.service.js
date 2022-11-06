@@ -30,6 +30,14 @@ class SectionsService extends BaseService {
       throw new Error(error);
     }
   }
+
+  async countSectionsOfCourse(courseId) {
+    try {
+      return this.repo.countSectionsOfCourse(courseId);
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
 }
 
 export default new SectionsService(SectionsRepository);
