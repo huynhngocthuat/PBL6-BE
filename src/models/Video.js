@@ -43,7 +43,7 @@ export const VideoModel = (sequelize, DataTypes) => {
         type: DataTypes.FLOAT,
         allowNull: false,
       },
-      thumnailUrl: {
+      thumbnailUrl: {
         type: DataTypes.TEXT,
         allowNull: true,
       },
