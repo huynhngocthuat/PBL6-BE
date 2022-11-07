@@ -59,6 +59,12 @@ class UsersService {
     }
   }
 
+  /**
+   * Get list course of instructor
+   * @param {uuid} userId is id of instructor, e.g, "92599851-3c92-4d37-b194-977a6d5223fe"
+   * @param {boolean} isDeleted is optional param to get with video was deleted or not, default value: false
+   * @returns {array} list object course of instructor
+   */
   async findCourseByInstructor(userId, isDeleted = false) {
     try {
       const data = await this.repo.findOneByCondition(
