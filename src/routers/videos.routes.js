@@ -6,6 +6,7 @@ const router = express.Router();
 
 router.get('/', VideosController.get);
 router.get('/:id', ValidatorId, VideosController.get);
+router.get('/:id/user', ValidatorId, VideosController.getInstructorUploadVideo);
 
 router.post('/', ValidatorBody('video'), VideosController.create);
 

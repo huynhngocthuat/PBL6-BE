@@ -9,6 +9,7 @@ class VideosController {
     this.update = this.update.bind(this);
     this.delete = this.delete.bind(this);
     this.get = this.get.bind(this);
+    this.getInstructorUploadVideo = this.getInstructorUploadVideo.bind(this);
   }
 
   async create(req, res) {
@@ -53,6 +54,20 @@ class VideosController {
       }
     } catch (error) {
       return Response.error(res, errors.WHILE_GET.format('video'), 400);
+    }
+  }
+
+  async getInstructorUploadVideo(req, res) {
+    try {
+      const { id } = req.params;
+      const user = await this.service.getInstructorUploadVideo(id);
+      return Response.success(res, { docs: user }, httpCodes.STATUS_OK);
+    } catch (error) {
+      return Response.error(
+        res,
+        errors.WHILE_GET.format('instructor upload video'),
+        400
+      );
     }
   }
 
