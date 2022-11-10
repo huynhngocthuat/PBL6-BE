@@ -16,4 +16,8 @@ export default {
   // AuthService
   LOGIN_SUCCESS: 'Login successfully',
   LOGOUT_SUCCESS: 'Logout successfully',
+
+  // UsersService
+  USER_UPDATE_SUCCESS: 'Update user successfully',
+  UPDATE_AVATAR_SUCCESS: 'Update avatar successfully',
 };

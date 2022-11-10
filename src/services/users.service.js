@@ -2,11 +2,13 @@ import { usersRepository } from 'repositories';
 import { v4 as uuidv4 } from 'uuid';
 import { sendEmailConfirm } from 'helpers/mail';
 import { json } from 'utils';
-import { errors } from 'constants';
+import { errors, infors } from 'constants';
+import oAuthAccessTokenService from './oAuthAccessToken.service';
 
 class UsersService {
-  constructor(repo) {
+  constructor(repo, { oAuthService }) {
     this.repo = repo;
+    this.oAuthService = oAuthService;
   }
 
   async getUserById(id) {
@@ -80,6 +82,23 @@ class UsersService {
       throw new Error(error);
     }
   }
+
+  async updateAvatar(idOAuth, avatarUrl) {
+    try {
+      const oAuth = await this.oAuthService.getOauthAccessTokenById(idOAuth);
+      await this.repo.updateByPk(oAuth.userId, {
+        avatarUrl,
+      });
+
+      return {
+        message: infors.UPDATE_AVATAR_SUCCESS,
+      };
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
 }
 
-export default new UsersService(usersRepository);
+export default new UsersService(usersRepository, {
+  oAuthService: oAuthAccessTokenService,
+});
