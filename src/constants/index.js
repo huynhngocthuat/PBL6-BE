@@ -5,5 +5,6 @@ import errors from './errors.constant';
 import messages from './messagges.constant';
 import infors from './infors.constant';
 import pages from './pagging.constant';
+import time from './time.constant';
 
-export { notiTypes, httpCodes, roles, errors, messages, infors, pages };
+export { notiTypes, httpCodes, roles, errors, messages, infors, pages, time };

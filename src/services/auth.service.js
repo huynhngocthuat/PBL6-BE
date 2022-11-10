@@ -7,9 +7,29 @@ import {
 import jwt from 'helpers/jwt';
 import bcrypt from 'bcryptjs';
 import { v4 as uuid } from 'uuid';
-import { errors, infors } from 'constants';
+import { errors, infors, time } from 'constants';
+import { randomVerifiedCode } from 'utils';
+import { sendVerifyCode } from 'helpers/mail';
 import oAuthAccessTokenService from './oAuthAccessToken.service';
 import UsersService from './users.service';
+
+const saltLength = 10;
+
+const checkVerifyCode = ({ user, verifyCode }) => {
+  if (user.verifyCode !== verifyCode) {
+    throw new Error(errors.VERIFY_CODE_INCORRECT);
+  }
+
+  const now = new Date();
+  const sendAt = new Date(user.verifyCodeSendAt);
+  const diff = now.getTime() - sendAt.getTime();
+
+  if (diff > time.FIVE_MINUTES) {
+    throw new Error(errors.VERIFY_CODE_EXPIRED);
+  }
+
+  return true;
+};
 
 class AuthService {
   constructor({ UsersService, oAuthService }) {
@@ -20,7 +40,6 @@ class AuthService {
   async signUp(data) {
     const { password } = data;
 
-    const saltLength = 10;
     const hashedPassword = await bcrypt.hash(password, saltLength);
 
     const user = await this.usersService.create({
@@ -32,35 +51,39 @@ class AuthService {
   }
 
   async signIn({ email, password }) {
-    const user = await this.usersService.getUserByEmail(email);
+    try {
+      const user = await this.usersService.getUserByEmail(email);
 
-    if (user.isActivated === false) {
-      throw new Error(errors.USER_NOT_CONFIRMED);
+      if (user.isActivated === false) {
+        throw new Error(errors.USER_NOT_CONFIRMED);
+      }
+
+      const isMatch = await bcrypt.compare(password, user.password);
+
+      if (!isMatch) {
+        throw new Error(errors.PASSWORD_INCORRECT);
+      }
+
+      const oAuth = await this.oAuthService.createOauthAccessToken({
+        userId: user.id,
+        refreshToken: uuid(),
+      });
+
+      const token = jwt.sign({
+        idOAuth: oAuth.id,
+      });
+
+      const refreshToken = jwt.refreshSign({
+        refresh: oAuth.refreshToken,
+      });
+
+      return new SignInResponse({
+        token,
+        refreshToken,
+      });
+    } catch (error) {
+      throw new Error(error.message || errors.SIGN_IN_FAILED);
     }
-
-    const isMatch = await bcrypt.compare(password, user.password);
-
-    if (!isMatch) {
-      throw new Error(errors.PASSWORD_INCORRECT);
-    }
-
-    const oAuth = await this.oAuthService.createOauthAccessToken({
-      userId: user.id,
-      refreshToken: uuid(),
-    });
-
-    const token = jwt.sign({
-      idOAuth: oAuth.id,
-    });
-
-    const refreshToken = jwt.refreshSign({
-      refresh: oAuth.refreshToken,
-    });
-
-    return new SignInResponse({
-      token,
-      refreshToken,
-    });
   }
 
   async logout(idOAuth) {
@@ -94,7 +117,7 @@ class AuthService {
         refreshToken,
       });
     } catch (error) {
-      throw new Error(errors.CONFIRM_EMAIL_FAILED);
+      throw new Error(error.message || errors.CONFIRM_EMAIL_FAILED);
     }
   }
 
@@ -125,7 +148,7 @@ class AuthService {
         refreshToken: jwtRefreshToken,
       });
     } catch (error) {
-      throw new Error(errors.REFRESH_TOKEN_FAILED);
+      throw new Error(error.message || errors.REFRESH_TOKEN_FAILED);
     }
   }
 
@@ -142,7 +165,62 @@ class AuthService {
       // FIXME: Get user's detail
       return new GetMeResponse(user);
     } catch (error) {
-      throw new Error(errors.GET_ME_FAILED);
+      throw new Error(error.message || errors.GET_ME_FAILED);
+    }
+  }
+
+  async forgotPassword(email) {
+    try {
+      const user = await this.usersService.getUserByEmail(email);
+
+      const verifyCode = randomVerifiedCode();
+
+      await this.usersService.updateByPk(user.id, {
+        verifyCode,
+        verifyCodeSendAt: new Date(),
+      });
+
+      await sendVerifyCode({ email, verifyCode });
+
+      return {
+        message: infors.SEND_VERIFY_CODE_SUCCESS,
+      };
+    } catch (error) {
+      throw new Error(error.message || errors.FORGOT_PASSWORD_FAILED);
+    }
+  }
+
+  async verifyCode({ email, verifyCode }) {
+    try {
+      const user = await this.usersService.getUserByEmail(email);
+      checkVerifyCode({ user, verifyCode });
+
+      return {
+        message: infors.VERIFY_CODE_SUCCESS,
+      };
+    } catch (error) {
+      throw new Error(error.message || errors.VERIFY_CODE_FAILED);
+    }
+  }
+
+  async resetPassword({ email, password, verifyCode }) {
+    try {
+      const user = await this.usersService.getUserByEmail(email);
+      checkVerifyCode({ user, verifyCode });
+
+      const hashedPassword = await bcrypt.hash(password, saltLength);
+
+      await this.usersService.updateByPk(user.id, {
+        password: hashedPassword,
+        verifyCode: null,
+        verifyCodeSendAt: null,
+      });
+
+      return {
+        message: infors.RESET_PASSWORD_SUCCESS,
+      };
+    } catch (error) {
+      throw new Error(error.message || errors.RESET_PASSWORD_FAILED);
     }
   }
 }
