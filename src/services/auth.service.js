@@ -54,7 +54,7 @@ class AuthService {
     });
 
     const refreshToken = jwt.refreshSign({
-      refreshToken: oAuth.refreshToken,
+      refresh: oAuth.refreshToken,
     });
 
     return new SignInResponse({
@@ -106,10 +106,10 @@ class AuthService {
         throw new Error(errors.TOKEN_INVALID);
       }
 
-      const { refreshToken } = decoded;
+      const { refresh } = decoded;
 
       const oAuth = await this.oAuthService.getOauthAccessTokenByRefreshToken(
-        refreshToken
+        refresh
       );
 
       if (!oAuth) {
