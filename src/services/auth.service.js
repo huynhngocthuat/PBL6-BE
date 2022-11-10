@@ -12,9 +12,9 @@ import oAuthAccessTokenService from './oAuthAccessToken.service';
 import UsersService from './users.service';
 
 class AuthService {
-  constructor() {
+  constructor({ UsersService, oAuthService }) {
     this.usersService = UsersService;
-    this.oAuthService = oAuthAccessTokenService;
+    this.oAuthService = oAuthService;
   }
 
   async signUp(data) {
@@ -147,4 +147,7 @@ class AuthService {
   }
 }
 
-export default new AuthService();
+export default new AuthService({
+  UsersService,
+  oAuthService: oAuthAccessTokenService,
+});

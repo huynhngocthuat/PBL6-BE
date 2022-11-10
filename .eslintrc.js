@@ -23,5 +23,6 @@ module.exports = {
     'import/export': 2,
     'no-extend-native': 'off',
     'no-useless-constructor': 'off',
+    'no-shadow': 'off',
   },
 };
