@@ -4,6 +4,7 @@ import CategoryTopicsService from './categoryTopics.service';
 import CoursesService from './courses.service';
 import SectionsService from './sections.service';
 import VideosService from './videos.service';
+import HashtagsService from './hashtag.service';
 
 export {
   UsersService,
@@ -12,4 +13,5 @@ export {
   CoursesService,
   SectionsService,
   VideosService,
+  HashtagsService,
 };
