@@ -33,6 +33,14 @@ export default class BaseService {
     }
   }
 
+  async findOneByCondition(condition) {
+    try {
+      return await this.repo.findOneByCondition(condition);
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
   async findAllByCondition(condition, pagination = null) {
     try {
       if (pagination) {

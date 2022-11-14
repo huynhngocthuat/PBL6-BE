@@ -5,6 +5,7 @@ import { course } from './course.schema';
 import { section, sectionUpdate } from './section.schema';
 import { video } from './video.schema';
 import { avatar, updateUserInfo } from './user.schema';
+import { hashtag } from './hashtag.chema';
 
 export {
   categoryTopic,
@@ -15,6 +16,7 @@ export {
   email,
   emailExists,
   video,
+  hashtag,
   // auth
   register,
   login,
