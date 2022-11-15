@@ -10,6 +10,9 @@ class AuthController {
     this.confirmEmail = this.confirmEmail.bind(this);
     this.refreshToken = this.refreshToken.bind(this);
     this.getMe = this.getMe.bind(this);
+    this.forgotPassword = this.forgotPassword.bind(this);
+    this.verifyCode = this.verifyCode.bind(this);
+    this.resetPassword = this.resetPassword.bind(this);
   }
 
   async register(req, res) {
@@ -62,6 +65,40 @@ class AuthController {
     try {
       const { idOAuth } = req.jwt;
       const docs = await this.service.getMe(idOAuth);
+      return Response.success(res, { docs });
+    } catch (error) {
+      return Response.error(res, error);
+    }
+  }
+
+  async forgotPassword(req, res) {
+    try {
+      const { email } = req.body;
+      const docs = await this.service.forgotPassword(email);
+      return Response.success(res, { docs });
+    } catch (error) {
+      return Response.error(res, error);
+    }
+  }
+
+  async verifyCode(req, res) {
+    try {
+      const { email, verifyCode } = req.body;
+      const docs = await this.service.verifyCode({ email, verifyCode });
+      return Response.success(res, { docs });
+    } catch (error) {
+      return Response.error(res, error);
+    }
+  }
+
+  async resetPassword(req, res) {
+    try {
+      const { email, verifyCode, password } = req.body;
+      const docs = await this.service.resetPassword({
+        email,
+        verifyCode,
+        password,
+      });
       return Response.success(res, { docs });
     } catch (error) {
       return Response.error(res, error);

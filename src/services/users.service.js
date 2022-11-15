@@ -97,6 +97,15 @@ class UsersService {
       throw new Error(error);
     }
   }
+
+  async updateByPk(id, data) {
+    try {
+      const user = await this.repo.updateByPk(id, data);
+      return json(user);
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
 }
 
 export default new UsersService(usersRepository, {

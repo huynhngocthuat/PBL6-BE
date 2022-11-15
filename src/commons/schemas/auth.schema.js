@@ -17,3 +17,14 @@ export const confirmToken = Joi.object({
 export const refreshToken = Joi.object({
   refreshToken: Joi.string().required(),
 });
+
+export const verifyCode = Joi.object({
+  verifyCode: Joi.number().required(),
+  email: Joi.string().email().required(),
+});
+
+export const resetPassword = Joi.object({
+  verifyCode: Joi.number().required(),
+  email: Joi.string().email().required(),
+  password: Joi.string().min(6).required(),
+});
