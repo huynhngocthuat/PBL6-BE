@@ -6,6 +6,7 @@ import oAuthAccessTokenRepository from './oAuthAccessToken.repository';
 import SectionsRepository from './sections.repository';
 import VideosRepository from './videos.repository';
 import HashtagsRepository from './hashtag.repository';
+import CourseHashtagsRepository from './courseHashtags.repository';
 
 export {
   usersRepository,
@@ -15,4 +16,5 @@ export {
   SectionsRepository,
   VideosRepository,
   HashtagsRepository,
+  CourseHashtagsRepository,
 };

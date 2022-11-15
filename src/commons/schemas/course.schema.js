@@ -10,6 +10,7 @@ export const course = Joi.object({
   thumbnailUrl: Joi.string().trim().uri(),
   description: Joi.string().trim().min(1),
   userId: Joi.string().trim().uuid().required(),
+  hashtags: Joi.array().items(Joi.string()),
 }).concat(categoryTopicIdExist);
 
 export const courseIdExist = Joi.object({

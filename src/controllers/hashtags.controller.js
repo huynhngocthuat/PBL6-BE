@@ -13,7 +13,6 @@ class HashtagsController {
 
   async create(req, res) {
     try {
-      console.log('hello');
       const data = await this.service.create(req.body);
       return Response.success(res, { docs: data }, httpCodes.STATUS_OK);
     } catch (error) {

@@ -20,4 +20,9 @@ export default {
   // UsersService
   USER_UPDATE_SUCCESS: 'Update user successfully',
   UPDATE_AVATAR_SUCCESS: 'Update avatar successfully',
+
+  // Courses
+  START_TRANSACTION_CREATE_COURSE: 'Start transaction create course',
+  COMMIT_TRANSACTION_CREATE_COURSE: 'Transaction create course is commit',
+  ROLLBACK_TRANSACTION_CREATE_COURSE: 'Transaction create course is rollback',
 };

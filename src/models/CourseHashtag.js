@@ -38,7 +38,6 @@ export const CourseHashtagModel = (sequelize, DataTypes) => {
       modelName: 'CourseHashtag',
       tableName: 'CourseHashtags',
       timestamps: true,
-      underscored: true,
       paranoid: true,
       deletedAt: 'deletedAt',
     }
