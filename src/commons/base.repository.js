@@ -7,9 +7,9 @@ export default class BaseRepository {
     this.model = model;
   }
 
-  async create(input) {
+  async create(input, transaction = null) {
     try {
-      const data = await this.model.create(input);
+      const data = await this.model.create(input, transaction);
       logger.info(infors.CREATE_AT_REPO_SUCCESS.format(this.model.name));
 
       return data;

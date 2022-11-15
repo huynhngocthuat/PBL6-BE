@@ -5,9 +5,9 @@ export default class BaseService {
     this.repo = repo;
   }
 
-  async create(data) {
+  async create(data, transaction = null) {
     try {
-      return await this.repo.create(data);
+      return await this.repo.create(data, transaction);
     } catch (error) {
       throw new Error(error);
     }

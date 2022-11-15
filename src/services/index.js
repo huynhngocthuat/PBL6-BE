@@ -5,6 +5,7 @@ import CoursesService from './courses.service';
 import SectionsService from './sections.service';
 import VideosService from './videos.service';
 import HashtagsService from './hashtag.service';
+import CourseHashtagsService from './courseHashtags.service';
 
 export {
   UsersService,
@@ -14,4 +15,5 @@ export {
   SectionsService,
   VideosService,
   HashtagsService,
+  CourseHashtagsService,
 };

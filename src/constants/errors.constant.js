@@ -42,4 +42,7 @@ export default {
 
   // Helpers Mail
   EMAIL_NOT_SENT: 'Email not sent',
+
+  // Course
+  ERR_WHILE_CREATE_COURSE_AT_SER: 'Cannot create course at service',
 };
