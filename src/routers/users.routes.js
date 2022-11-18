@@ -14,4 +14,19 @@ router.put(
   UserController.uploadAvatar
 );
 
+router.put(
+  '/update-profile',
+  ValidatorBody('updateProfile'),
+  AuthMiddleware.isRequired,
+  AuthMiddleware.isUser,
+  UserController.updateProfile
+);
+
+router.get(
+  '/details',
+  AuthMiddleware.isRequired,
+  AuthMiddleware.isUser,
+  UserController.getUserDetails
+);
+
 export default router;

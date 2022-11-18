@@ -3,12 +3,15 @@ import { v4 as uuidv4 } from 'uuid';
 import { sendEmailConfirm } from 'helpers/mail';
 import { json } from 'utils';
 import { errors, infors } from 'constants';
+import { UserDetailsResponse } from 'commons/responses/auth';
 import oAuthAccessTokenService from './oAuthAccessToken.service';
+import UserDetailsService from './userDetails.service';
 
 class UsersService {
-  constructor(repo, { oAuthService }) {
+  constructor(repo, { oAuthService, UserDetailsService }) {
     this.repo = repo;
     this.oAuthService = oAuthService;
+    this.UserDetailsService = UserDetailsService;
   }
 
   async getUserById(id) {
@@ -29,9 +32,28 @@ class UsersService {
     }
   }
 
+  async getUserDetailsByUserId(userId, user = {}) {
+    try {
+      const userDetails = await this.UserDetailsService.getUserDetailsByUserId(
+        userId
+      );
+
+      const dob = new Date(userDetails.dateOfBirth);
+      const data = { ...json(userDetails), ...user, dateOfBirth: dob };
+
+      return new UserDetailsResponse(data);
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
   async create(data) {
     try {
       const user = await this.repo.create(data);
+      await this.UserDetailsService.create({
+        userId: user.id,
+      });
+
       const confirmToken = uuidv4();
       const userWithConfirmToken = await this.repo.updateByPk(user.id, {
         confirmToken,
@@ -106,8 +128,34 @@ class UsersService {
       throw new Error(error);
     }
   }
+
+  async updateProfile(userId, profile) {
+    const { fullName, ...details } = profile;
+
+    if (fullName) {
+      this.updateByPk(userId, { fullName });
+    }
+
+    try {
+      await this.UserDetailsService.updateByCondition(
+        {
+          userId,
+        },
+        {
+          ...details,
+        }
+      );
+
+      return {
+        message: infors.UPDATE_PROFILE_SUCCESS,
+      };
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
 }
 
 export default new UsersService(usersRepository, {
   oAuthService: oAuthAccessTokenService,
+  UserDetailsService,
 });

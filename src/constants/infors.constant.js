@@ -23,6 +23,7 @@ export default {
   // UsersService
   USER_UPDATE_SUCCESS: 'Update user successfully',
   UPDATE_AVATAR_SUCCESS: 'Update avatar successfully',
+  UPDATE_PROFILE_SUCCESS: 'Update profile successfully',
 
   // Courses
   START_TRANSACTION_CREATE_COURSE: 'Start transaction create course',
