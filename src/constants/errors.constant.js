@@ -39,6 +39,9 @@ export default {
   VERIFY_CODE_EXPIRED: 'Verify code expired',
   VERIFY_CODE_FAILED: 'Cannot verify code',
   RESET_PASSWORD_FAILED: 'Reset password failed',
+  CHANGE_PASSWORD_FAILED: 'Change password failed',
+  PASSWORD_INCORRECT: 'Password incorrect',
+  GET_USER_BY_ID_OAUTH_FAILED: 'Get user by id oAuth failed',
 
   // UsersService
   USER_NOT_FOUND: 'User not found',

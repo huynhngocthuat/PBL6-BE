@@ -13,6 +13,7 @@ class AuthController {
     this.forgotPassword = this.forgotPassword.bind(this);
     this.verifyCode = this.verifyCode.bind(this);
     this.resetPassword = this.resetPassword.bind(this);
+    this.changePassword = this.changePassword.bind(this);
   }
 
   async register(req, res) {
@@ -98,6 +99,21 @@ class AuthController {
         email,
         verifyCode,
         password,
+      });
+      return Response.success(res, { docs });
+    } catch (error) {
+      return Response.error(res, error);
+    }
+  }
+
+  async changePassword(req, res) {
+    try {
+      const { idOAuth } = req.jwt;
+      const { oldPassword, newPassword } = req.body;
+      const docs = await this.service.changePassword({
+        idOAuth,
+        oldPassword,
+        newPassword,
       });
       return Response.success(res, { docs });
     } catch (error) {
