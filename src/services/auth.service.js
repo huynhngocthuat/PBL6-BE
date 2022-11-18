@@ -162,7 +162,6 @@ class AuthService {
 
       const user = await this.usersService.getUserById(oAuth.userId);
 
-      // FIXME: Get user's detail
       return new GetMeResponse(user);
     } catch (error) {
       throw new Error(error.message || errors.GET_ME_FAILED);
@@ -193,6 +192,11 @@ class AuthService {
   async verifyCode({ email, verifyCode }) {
     try {
       const user = await this.usersService.getUserByEmail(email);
+
+      if (!user) {
+        throw new Error(errors.USER_NOT_FOUND);
+      }
+
       checkVerifyCode({ user, verifyCode });
 
       return {
@@ -206,6 +210,11 @@ class AuthService {
   async resetPassword({ email, password, verifyCode }) {
     try {
       const user = await this.usersService.getUserByEmail(email);
+
+      if (!user) {
+        throw new Error(errors.USER_NOT_FOUND);
+      }
+
       checkVerifyCode({ user, verifyCode });
 
       const hashedPassword = await bcrypt.hash(password, saltLength);

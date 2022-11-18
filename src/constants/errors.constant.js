@@ -28,7 +28,7 @@ export default {
 
   // AuthService
   INCORRECT_PASSWORD: 'Incorrect password',
-  SIGN_IN_FAILED: 'Cannot login with this email and password',
+  SIGN_IN_FAILED: 'Your email or password is incorrect',
   LOGOUT_FAILED: 'Something wrong while logout',
   CONFIRM_EMAIL_FAILED: 'Cannot confirm email',
   REFRESH_TOKEN_FAILED: 'Cannot refresh token',

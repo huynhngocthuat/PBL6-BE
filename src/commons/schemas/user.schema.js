@@ -4,10 +4,15 @@ export const avatar = Joi.object({
   avatarUrl: Joi.string().required(),
 });
 
-// TODO: EDIT SCHEMA
-export const updateUserInfo = Joi.object({
-  fullName: Joi.string().required(),
-  email: Joi.string().email().required(),
-  phone: Joi.string().required(),
-  address: Joi.string().required(),
+export const updateProfile = Joi.object({
+  fullName: Joi.string(),
+  phone: Joi.string(),
+  address: Joi.string(),
+  occupation: Joi.string(),
+  dateOfBirth: Joi.date(),
+  identityImageUrl: Joi.string(),
+});
+
+export const id = Joi.object({
+  id: Joi.string().required(),
 });

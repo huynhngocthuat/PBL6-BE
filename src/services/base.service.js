@@ -61,6 +61,14 @@ export default class BaseService {
     }
   }
 
+  async updateByCondition(condition, data) {
+    try {
+      return await this.repo.updateByCondition(condition, data);
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
   async delete(id) {
     try {
       return await this.repo.delete(id);

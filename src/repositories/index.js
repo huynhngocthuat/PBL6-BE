@@ -7,6 +7,7 @@ import SectionsRepository from './sections.repository';
 import VideosRepository from './videos.repository';
 import HashtagsRepository from './hashtag.repository';
 import CourseHashtagsRepository from './courseHashtags.repository';
+import userDetailsRepository from './userDetails.repository';
 
 export {
   usersRepository,
@@ -17,4 +18,5 @@ export {
   VideosRepository,
   HashtagsRepository,
   CourseHashtagsRepository,
+  userDetailsRepository,
 };

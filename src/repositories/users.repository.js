@@ -16,7 +16,7 @@ export class UsersRepository extends BaseRepository {
         email,
       });
 
-      logger.info(infors.CREATE_AT_REPO_SUCCESS.format(this.model.name));
+      logger.info(infors.FIND_AT_REPO_SUCCESS.format(this.model.name));
 
       return data;
     } catch (error) {

@@ -6,6 +6,8 @@ import SectionsService from './sections.service';
 import VideosService from './videos.service';
 import HashtagsService from './hashtag.service';
 import CourseHashtagsService from './courseHashtags.service';
+import UserDetailsService from './userDetails.service';
+import oAuthAccessTokenService from './oAuthAccessToken.service';
 
 export {
   UsersService,
@@ -16,4 +18,6 @@ export {
   VideosService,
   HashtagsService,
   CourseHashtagsService,
+  UserDetailsService,
+  oAuthAccessTokenService,
 };

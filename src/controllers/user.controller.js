@@ -7,6 +7,8 @@ class UsersController {
     this.service = service;
     this.getCourses = this.getCourses.bind(this);
     this.uploadAvatar = this.uploadAvatar.bind(this);
+    this.updateProfile = this.updateProfile.bind(this);
+    this.getUserDetails = this.getUserDetails.bind(this);
   }
 
   async getCourses(req, res) {
@@ -32,6 +34,36 @@ class UsersController {
       return Response.success(res, { docs: data }, httpCodes.STATUS_OK);
     } catch (error) {
       return Response.error(res, errors.WHILE_UPDATE.format('avatar'), 400);
+    }
+  }
+
+  async updateProfile(req, res) {
+    try {
+      const { user } = req;
+      const profile = req.body;
+      const docs = await this.service.updateProfile(user.id, profile);
+      return Response.success(res, { docs }, httpCodes.STATUS_OK);
+    } catch (error) {
+      return Response.error(res, errors.WHILE_UPDATE.format('profile'), 400);
+    }
+  }
+
+  async getUserDetails(req, res) {
+    const { user } = req;
+
+    try {
+      const userDetails = await this.service.getUserDetailsByUserId(
+        user.id,
+        user
+      );
+
+      const docs = {
+        ...userDetails,
+      };
+
+      return Response.success(res, { docs }, httpCodes.STATUS_OK);
+    } catch (error) {
+      return Response.error(res, errors.WHILE_GET.format('user details'), 400);
     }
   }
 }
