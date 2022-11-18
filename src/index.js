@@ -16,7 +16,7 @@ dotenv.config();
 db.sequelize.sync();
 
 const app = express();
-app.use(cors());
+// app.use(cors());
 
 app.use(morgan('dev'));
 
