@@ -19,6 +19,7 @@ export default {
   SEND_VERIFY_CODE_SUCCESS: 'Send verify code successfully',
   VERIFY_CODE_SUCCESS: 'Verify code successfully',
   RESET_PASSWORD_SUCCESS: 'Reset password successfully',
+  CHANGE_PASSWORD_SUCCESS: 'Change password successfully',
 
   // UsersService
   USER_UPDATE_SUCCESS: 'Update user successfully',

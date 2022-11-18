@@ -29,6 +29,26 @@ class OAuthAccessTokenService {
 
     return isDeleted;
   }
+
+  async deleteOauthAccessTokenByRefreshToken(refreshToken) {
+    const isDeleted = await this.repo.deleteByCondition({ refreshToken });
+
+    if (!isDeleted) {
+      throw new Error();
+    }
+
+    return isDeleted;
+  }
+
+  async deleteOauthAccessTokenByUserId(userId) {
+    const isDeleted = await this.repo.deleteByCondition({ userId });
+
+    if (!isDeleted) {
+      throw new Error();
+    }
+
+    return isDeleted;
+  }
 }
 
 export default new OAuthAccessTokenService(oAuthAccessTokenRepository);

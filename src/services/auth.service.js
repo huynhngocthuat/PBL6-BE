@@ -154,13 +154,7 @@ class AuthService {
 
   async getMe(idOAuth) {
     try {
-      const oAuth = await this.oAuthService.getOauthAccessTokenById(idOAuth);
-
-      if (!oAuth) {
-        throw new Error(errors.TOKEN_INVALID);
-      }
-
-      const user = await this.usersService.getUserById(oAuth.userId);
+      const user = await this.getUserByIdOauth(idOAuth);
 
       return new GetMeResponse(user);
     } catch (error) {
@@ -225,12 +219,60 @@ class AuthService {
         verifyCodeSendAt: null,
       });
 
+      await this.logoutByUserId(user.id);
+
       return {
         message: infors.RESET_PASSWORD_SUCCESS,
       };
     } catch (error) {
       throw new Error(error.message || errors.RESET_PASSWORD_FAILED);
     }
+  }
+
+  async changePassword({ idOAuth, oldPassword, newPassword }) {
+    try {
+      const user = await this.getUserByIdOauth(idOAuth);
+
+      const isMatch = await bcrypt.compare(oldPassword, user.password);
+
+      if (!isMatch) {
+        throw new Error(errors.PASSWORD_INCORRECT);
+      }
+
+      const hashedPassword = await bcrypt.hash(newPassword, saltLength);
+
+      await this.usersService.updateByPk(user.id, {
+        password: hashedPassword,
+      });
+
+      await this.logoutByUserId(user.id);
+
+      return {
+        message: infors.CHANGE_PASSWORD_SUCCESS,
+      };
+    } catch (error) {
+      throw new Error(error.message || errors.CHANGE_PASSWORD_FAILED);
+    }
+  }
+
+  async getUserByIdOauth(idOAuth) {
+    try {
+      const oAuth = await this.oAuthService.getOauthAccessTokenById(idOAuth);
+
+      if (!oAuth) {
+        throw new Error(errors.TOKEN_INVALID);
+      }
+
+      const user = await this.usersService.getUserById(oAuth.userId);
+
+      return user;
+    } catch (error) {
+      throw new Error(error.message || errors.GET_USER_BY_ID_OAUTH_FAILED);
+    }
+  }
+
+  logoutByUserId(userId) {
+    return this.oAuthService.deleteOauthAccessTokenByUserId(userId);
   }
 }
 

@@ -86,4 +86,11 @@ router.post(
   authController.resetPassword
 );
 
+router.post(
+  '/change-password',
+  ValidatorBody('changePassword'),
+  AuthMiddleware.isRequired,
+  authController.changePassword
+);
+
 export default router;

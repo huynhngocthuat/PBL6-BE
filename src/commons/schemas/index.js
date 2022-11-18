@@ -7,12 +7,13 @@ import {
   refreshToken,
   verifyCode,
   resetPassword,
+  changePassword,
 } from './auth.schema';
 import { course } from './course.schema';
 import { section, sectionUpdate } from './section.schema';
 import { video } from './video.schema';
 import { avatar, updateProfile, id } from './user.schema';
-import { hashtag } from './hashtag.chema';
+import { hashtag } from './hashtag.schema';
 
 export {
   categoryTopic,
@@ -32,6 +33,7 @@ export {
   categoryTopicIdExist,
   verifyCode,
   resetPassword,
+  changePassword,
   // end auth
 
   // user

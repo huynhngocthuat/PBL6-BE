@@ -75,6 +75,27 @@ export default class BaseRepository {
     }
   }
 
+  async deleteByCondition(condition) {
+    try {
+      const data = await this.model.destroy({
+        where: {
+          ...condition,
+        },
+      });
+      logger.info(
+        infors.DELETE_BY_CONDITION_AT_REPO_SUCCESS.format(this.model.name)
+      );
+      return data;
+    } catch (error) {
+      logger.error(
+        `${errors.DELETE_BY_CONDITION_AT_REPO.format(
+          this.model.name
+        )} - ${error}`
+      );
+      throw new Error(error);
+    }
+  }
+
   async find(id) {
     try {
       const data = await this.model.findByPk(id);
