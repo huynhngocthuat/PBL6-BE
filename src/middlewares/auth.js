@@ -45,7 +45,7 @@ export default class AuthMiddleware {
         throw new Error();
       }
 
-      req.user = await UsersService.getUserById(oAuth.userId);
+      req.user = await UsersService.getUser(oAuth.userId);
       return next();
     } catch (error) {
       return Response.error(res, error);

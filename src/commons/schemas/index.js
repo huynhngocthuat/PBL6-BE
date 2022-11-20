@@ -12,11 +12,16 @@ import {
 import { course } from './course.schema';
 import { section, sectionUpdate } from './section.schema';
 import { video } from './video.schema';
-import { avatar, updateProfile, id } from './user.schema';
+import { avatar, updateProfile } from './user.schema';
 import { hashtag } from './hashtag.schema';
+import { id } from './common.schema';
 
 export {
+  // common
+  id,
+  // end common
   categoryTopic,
+  categoryTopicIdExist,
   course,
   section,
   sectionUpdate,
@@ -30,15 +35,12 @@ export {
   login,
   confirmToken,
   refreshToken,
-  categoryTopicIdExist,
   verifyCode,
   resetPassword,
   changePassword,
   // end auth
-
   // user
   avatar,
   updateProfile,
-  id,
   // end user
 };
