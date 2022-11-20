@@ -9,6 +9,7 @@ class UsersController {
     this.uploadAvatar = this.uploadAvatar.bind(this);
     this.updateProfile = this.updateProfile.bind(this);
     this.getUserDetails = this.getUserDetails.bind(this);
+    this.getUserById = this.getUserById.bind(this);
   }
 
   async getCourses(req, res) {
@@ -33,7 +34,8 @@ class UsersController {
       const data = await this.service.updateAvatar(idOAuth, avatarUrl);
       return Response.success(res, { docs: data }, httpCodes.STATUS_OK);
     } catch (error) {
-      return Response.error(res, errors.WHILE_UPDATE.format('avatar'), 400);
+      const message = error || errors.WHILE_UPDATE.format('avatar');
+      return Response.error(res, message, 400);
     }
   }
 
@@ -44,26 +46,31 @@ class UsersController {
       const docs = await this.service.updateProfile(user.id, profile);
       return Response.success(res, { docs }, httpCodes.STATUS_OK);
     } catch (error) {
-      return Response.error(res, errors.WHILE_UPDATE.format('profile'), 400);
+      const message = error || errors.WHILE_UPDATE.format('profile');
+      return Response.error(res, message, 400);
     }
   }
 
   async getUserDetails(req, res) {
     const { user } = req;
-
     try {
-      const userDetails = await this.service.getUserDetailsByUserId(
-        user.id,
-        user
-      );
-
-      const docs = {
-        ...userDetails,
-      };
+      const docs = await this.service.getUserDetailsByUserId(user.id, user);
 
       return Response.success(res, { docs }, httpCodes.STATUS_OK);
     } catch (error) {
-      return Response.error(res, errors.WHILE_GET.format('user details'), 400);
+      const message = error || errors.WHILE_GET.format('user detail');
+      return Response.error(res, message, 400);
+    }
+  }
+
+  async getUserById(req, res) {
+    const { id } = req.params;
+    try {
+      const docs = await this.service.getUserById(id);
+      return Response.success(res, { docs }, httpCodes.STATUS_OK);
+    } catch (error) {
+      const message = error || errors.WHILE_GET.format('user by id');
+      return Response.error(res, message, 400);
     }
   }
 }

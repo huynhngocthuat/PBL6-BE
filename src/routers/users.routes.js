@@ -1,6 +1,6 @@
 import express from 'express';
 import { UserController } from 'controllers';
-import { ValidatorBody } from 'validations';
+import { ValidatorBody, ValidatorParams } from 'validations';
 import AuthMiddleware from 'middlewares/auth';
 
 const router = express.Router();
@@ -27,6 +27,13 @@ router.get(
   AuthMiddleware.isRequired,
   AuthMiddleware.isUser,
   UserController.getUserDetails
+);
+
+router.get(
+  '/:id',
+  ValidatorParams('id'),
+  AuthMiddleware.isRequired,
+  UserController.getUserById
 );
 
 export default router;

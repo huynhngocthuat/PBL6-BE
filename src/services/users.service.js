@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { sendEmailConfirm } from 'helpers/mail';
 import { json } from 'utils';
 import { errors, infors } from 'constants';
-import { UserDetailsResponse } from 'commons/responses/auth';
+import { UserDetailsResponse, GetMeResponse } from 'commons/responses/auth';
 import oAuthAccessTokenService from './oAuthAccessToken.service';
 import UserDetailsService from './userDetails.service';
 
@@ -14,7 +14,7 @@ class UsersService {
     this.UserDetailsService = UserDetailsService;
   }
 
-  async getUserById(id) {
+  async getUser(id) {
     try {
       const user = await this.repo.find(id);
       return json(user);
@@ -44,6 +44,16 @@ class UsersService {
       return new UserDetailsResponse(data);
     } catch (error) {
       throw new Error(error);
+    }
+  }
+
+  async getUserById(id) {
+    // get user by id (res same as getMe)
+    try {
+      const user = await this.repo.find(id);
+      return new GetMeResponse(user);
+    } catch (error) {
+      throw new Error(errors.USER_NOT_FOUND);
     }
   }
 

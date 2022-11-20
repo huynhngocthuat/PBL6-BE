@@ -12,7 +12,3 @@ export const updateProfile = Joi.object({
   dateOfBirth: Joi.date(),
   identityImageUrl: Joi.string(),
 });
-
-export const id = Joi.object({
-  id: Joi.string().required(),
-});

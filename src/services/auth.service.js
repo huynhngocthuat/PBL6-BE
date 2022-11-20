@@ -263,7 +263,7 @@ class AuthService {
         throw new Error(errors.TOKEN_INVALID);
       }
 
-      const user = await this.usersService.getUserById(oAuth.userId);
+      const user = await this.usersService.getUser(oAuth.userId);
 
       return user;
     } catch (error) {
