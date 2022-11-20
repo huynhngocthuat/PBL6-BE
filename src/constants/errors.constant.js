@@ -4,6 +4,7 @@ export default {
   WHILE_CREATE: 'Something wrong while create {0}',
   WHILE_UPDATE: 'Something wrong while update {0}',
   WHILE_DELETE: 'Something wrong while delete {0}',
+  WHILE_SEARCH: 'Something wrong while delete {0}',
   CREATE_AT_REPO: 'Create wrong of model {0} at repository',
   FIND_BY_ID_AT_REPO: 'Find by id wrong of model {0} at repository',
   FIND_AT_REPO: 'Find wrong of model {0} at repository',
@@ -21,6 +22,8 @@ export default {
   NOT_EXISTED_EMAIL: 'Email {0} not existed',
   NOT_EXIST: "{0} invalid. It's not exist",
   DATA_INVALID: '{0} invalid',
+  REQUEST_AT_CONTROLLER:
+    'Request from client at controller {0} with body {1}, params {2}, query {3}',
 
   // OAuthAccessTokenService
   OAUTH_ACCESS_TOKEN_NOT_FOUND: 'OAuth access token not found',
@@ -53,4 +56,7 @@ export default {
 
   // Course
   ERR_WHILE_CREATE_COURSE_AT_SER: 'Cannot create course at service',
+  ERR_WHITE_SEARCH_COURSE_AT_SER: 'Cannot search course at service',
+  ERR_WHITE_SEARCH_COURSE_AT_REPO: 'Cannot search course at repo',
+  ERR_WHITE_COUNT_COURSE_AT_REPO: 'Cannot count course at repo',
 };

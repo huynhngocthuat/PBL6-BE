@@ -117,6 +117,7 @@ export default class BaseRepository {
         const { offset, limit } = pagination;
 
         data = await this.model.findAll({
+          logging: console.log,
           offset,
           limit,
         });
