@@ -89,7 +89,9 @@ class AuthService {
   async logout(idOAuth) {
     try {
       await this.oAuthService.deleteOauthAccessToken(idOAuth);
-      return infors.LOGOUT_SUCCESS;
+      return {
+        message: infors.LOGOUT_SUCCESS,
+      };
     } catch (error) {
       throw new Error(errors.LOGOUT_FAILED);
     }

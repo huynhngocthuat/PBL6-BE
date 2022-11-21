@@ -5,7 +5,6 @@ import cors from 'cors';
 import morgan from 'morgan';
 import db from 'models';
 import router from 'routers';
-// FIXME
 // eslint-disable-next-line no-unused-vars
 import stringFormat from 'utils/string-format';
 import { swagger } from 'helpers/swagger';
@@ -18,6 +17,13 @@ db.sequelize.sync();
 const app = express();
 
 app.use(morgan('dev'));
+app.use(
+  cors({
+    origin: '*',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+  })
+);
 
 app.use(bodyParser.json());
 app.use(
@@ -25,7 +31,6 @@ app.use(
     extended: true,
   })
 );
-// app.use(uploadd.array());
 
 app.use('/api-docs', swagger());
 app.use('/api/v1', router);
