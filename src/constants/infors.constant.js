@@ -12,8 +12,10 @@ export default {
   UPLOAD_FILE_TO_CLOUD_SUCCESS: 'upload file to cloudinary successfully',
   DELETE_BY_CONDITION_AT_REPO_SUCCESS:
     'Delete model {0} by condition successfully',
+  REQUEST_AT_CONTROLLER:
+    'Request from client at controller {0} with body {1}, params {2}, query {3}',
 
-  // AuthService
+  // -- AuthService --
   LOGIN_SUCCESS: 'Login successfully',
   LOGOUT_SUCCESS: 'Logout successfully',
   SEND_VERIFY_CODE_SUCCESS: 'Send verify code successfully',
@@ -21,12 +23,12 @@ export default {
   RESET_PASSWORD_SUCCESS: 'Reset password successfully',
   CHANGE_PASSWORD_SUCCESS: 'Change password successfully',
 
-  // UsersService
+  // -- UsersService --
   USER_UPDATE_SUCCESS: 'Update user successfully',
   UPDATE_AVATAR_SUCCESS: 'Update avatar successfully',
   UPDATE_PROFILE_SUCCESS: 'Update profile successfully',
 
-  // Courses
+  // -- Courses --
   START_TRANSACTION_CREATE_COURSE: 'Start transaction create course',
   COMMIT_TRANSACTION_CREATE_COURSE: 'Transaction create course is commit',
   ROLLBACK_TRANSACTION_CREATE_COURSE: 'Transaction create course is rollback',

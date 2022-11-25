@@ -118,6 +118,46 @@ class CoursesService extends BaseService {
       throw new Error(error);
     }
   }
+
+  async searchCourses(keyword, pagination) {
+    try {
+      const data = {};
+      let condition = {
+        name: `%${keyword}%`,
+        description: `%${keyword}%`,
+        categoryName: `%${keyword}%`,
+        hashtagName: `%${keyword}%`,
+      };
+
+      if (pagination) {
+        const { offset, limit } = getPagination(pagination);
+        condition = { ...condition, limit, offset };
+        const courses = await this.repo.searchCourses(condition);
+
+        data.courses = courses;
+
+        const total = await this.repo.countResultFromSearchCourses(condition);
+        const pagingData = getPagingData(
+          total,
+          Math.ceil(offset / limit) + 1, // cal current_page
+          limit
+        );
+
+        data.pagination = pagingData;
+      } else {
+        condition = { ...condition, limit: null, offset: null };
+        const courses = await this.repo.searchCourses(condition);
+
+        data.courses = courses;
+      }
+
+      return data;
+    } catch (error) {
+      logger.error(`${errors.ERR_WHITE_SEARCH_COURSE_AT_SER} - ${error}`);
+
+      throw new Error(error);
+    }
+  }
 }
 
 export default new CoursesService(

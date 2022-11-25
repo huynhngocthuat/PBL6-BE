@@ -4,6 +4,7 @@ import { ValidatorBody, ValidatorId } from 'validations';
 
 const router = express.Router();
 
+router.get('/search', CoursesController.search);
 router.get('/', CoursesController.get);
 
 router.get('/:id', ValidatorId, CoursesController.get);

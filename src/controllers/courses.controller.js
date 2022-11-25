@@ -5,7 +5,7 @@
 /* eslint-disable no-lonely-if */
 import { CoursesService } from 'services';
 import Response from 'helpers/response';
-import { httpCodes, errors, pages } from 'constants';
+import { httpCodes, errors, pages, infors } from 'constants';
 import logger from 'configs/winston.config';
 
 class CoursesController {
@@ -16,6 +16,7 @@ class CoursesController {
     this.delete = this.delete.bind(this);
     this.get = this.get.bind(this);
     this.getSections = this.getSections.bind(this);
+    this.search = this.search.bind(this);
   }
 
   async create(req, res) {
@@ -112,6 +113,48 @@ class CoursesController {
       return Response.success(res, { docs: data }, httpCodes.STATUS_OK);
     } catch (error) {
       return Response.error(res, errors.WHILE_DELETE.format('course'), 400);
+    }
+  }
+
+  // eslint-disable-next-line consistent-return
+  async search(req, res) {
+    try {
+      const { page, limit } = req.query;
+      let { key } = req.query;
+
+      key = key || '';
+
+      let courses;
+
+      if (page || limit) {
+        courses = await this.service.searchCourses(key, {
+          page: parseInt(page || pages.PAGE_DEFAULT),
+          limit: parseInt(limit || pages.LIMIT_DEFAULT),
+        });
+      } else {
+        courses = await this.service.searchCourses(key, null, null);
+      }
+
+      logger.info(
+        `${infors.REQUEST_AT_CONTROLLER.format(
+          'search courses',
+          JSON.stringify(req.body),
+          JSON.stringify(req.query),
+          JSON.stringify(req.params)
+        )}`
+      );
+      return Response.success(res, { docs: courses }, httpCodes.STATUS_OK);
+    } catch (error) {
+      logger.error(
+        `${errors.REQUEST_AT_CONTROLLER.format(
+          'search courses',
+          JSON.stringify(req.body),
+          JSON.stringify(req.query),
+          JSON.stringify(req.params)
+        )} - ${error}`
+      );
+
+      return Response.error(res, errors.WHILE_SEARCH.format('course'), 400);
     }
   }
 }
