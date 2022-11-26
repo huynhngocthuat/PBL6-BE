@@ -46,6 +46,7 @@ export default {
   CHANGE_PASSWORD_FAILED: 'Change password failed',
   PASSWORD_INCORRECT: 'Password incorrect',
   GET_USER_BY_ID_OAUTH_FAILED: 'Get user by id oAuth failed',
+  USER_NOT_AUTHORIZED: 'User not authorized',
 
   // UsersService
   USER_NOT_FOUND: 'User not found',

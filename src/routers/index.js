@@ -8,6 +8,9 @@ import upload from './upload.routes';
 import video from './videos.routes';
 import hashtags from './hashtags.routes';
 
+// admin
+import adminAuth from './admin/auth.routes';
+
 const router = express.Router();
 
 router.use('/', auth);
@@ -18,5 +21,6 @@ router.use('/sections', sections);
 router.use('/upload', upload);
 router.use('/videos', video);
 router.use('/hashtags', hashtags);
+router.use('/admin', adminAuth);
 
 export default router;

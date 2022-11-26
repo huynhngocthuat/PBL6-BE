@@ -7,7 +7,7 @@ import {
 import jwt from 'helpers/jwt';
 import bcrypt from 'bcryptjs';
 import { v4 as uuid } from 'uuid';
-import { errors, infors, time } from 'constants';
+import { errors, infors, time, roles } from 'constants';
 import { randomVerifiedCode } from 'utils';
 import { sendVerifyCode } from 'helpers/mail';
 import oAuthAccessTokenService from './oAuthAccessToken.service';
@@ -50,12 +50,16 @@ class AuthService {
     return new SignUpResponse(user);
   }
 
-  async signIn({ email, password }) {
+  async signIn({ email, password }, isAdmin = false) {
     try {
       const user = await this.usersService.getUserByEmail(email);
 
       if (user.isActivated === false) {
         throw new Error(errors.USER_NOT_CONFIRMED);
+      }
+
+      if (isAdmin && user.role !== roles.ADMIN_ROLE) {
+        throw new Error(errors.USER_NOT_AUTHORIZED);
       }
 
       const isMatch = await bcrypt.compare(password, user.password);

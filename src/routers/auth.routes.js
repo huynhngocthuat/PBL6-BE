@@ -74,68 +74,54 @@ const router = express.Router();
 router.post('/register', ValidatorBody('register'), authController.register);
 
 /**
- * {
-    "status": "success",
-    "data": {
-        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZE9BdXRoIjoiNDY0Y2NlODktYTIxMS00OTc1LTg5NGEtMWYwNzYxYjdkMjlhIiwiaWF0IjoxNjY4OTY4ODM5LCJleHAiOjE2Njg5NzI0Mzl9.wFzypDi1z4fcP4Ix6synSF7lIKtC88UkS5U4MOiQl5E",
-        "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyZWZyZXNoIjoiM2Q1NDNhOTEtODQ0Mi00YmIwLTg4MWQtMDMzZDI4MzYwMWNjIiwiaWF0IjoxNjY4OTY4ODM5LCJleHAiOjE2Njk1NzM2Mzl9.l3phtc5cplzGFEDd0-wNTzhQ30O4A-cD16l-zW9I_OM",
-        "expiresIn": "3600000",
-        "type": "Bearer"
-    }
-}
- */
-
-/**
  * @swagger
  * /login:
- *   post:
- *     summary: Login user
- *     tags: [Auth]
- *     parameters:
- *      - in: body
- *        schema:
- *          type: object
- *          required:
- *            - email
- *            - password
- *          properties:
- *            email:
- *              type: string
- *              example: "pbl6dut@gmail.com"
- *              description: The email of the user.
- *            password:
- *              type: string
- *              example: "PBL6@dut@123"
- *              description: The password of the user.
- *     responses:
- *      200:
- *          description: The user was successfully created
+ *    post:
+ *      summary: Login
+ *      tags: [Auth]
+ *      parameters:
+ *        - in: body
  *          schema:
- *          type: object
- *          properties:
- *           status:
- *            type: string
- *            example: "success"
- *          data:
  *            type: object
+ *            required:
+ *              - email
+ *              - password
  *            properties:
- *              token:
+ *              email:
  *                type: string
- *                example: "eyJhbGciOiJ..."
- *                description: The token of the user.
- *              refreshToken:
+ *                example: "pbl6dut.tttln@gmail.com"
+ *                description: The email of the user.
+ *              password:
  *                type: string
- *                example: "eyJhbGciOiJ..."
- *                description: The refresh token of the user.
- *              expiresIn:
- *                type: string
- *                example: "3600000"
- *             type:
- *                type: string
- *                example: "Bearer"
- *                description: The type of the token.
- *      400:
- *          description: Email or password is incorrect
+ *                example: "PBL6@dut@123"
+ *                description: The password of the user.
+ *      responses:
+ *        200:
+ *          description: Login successfully
+ *          schema:
+ *           type: object
+ *           properties:
+ *             status:
+ *               type: string
+ *               example: "success"
+ *             data:
+ *               type: object
+ *               properties:
+ *                token:
+ *                  type: string
+ *                  description: The token of the user.
+ *                refreshToken:
+ *                  type: string
+ *                  description: The refresh token of the user.
+ *                expiresIn:
+ *                  type: string
+ *                  example: "3600000"
+ *                  description: The time of the token expires.
+ *                type:
+ *                  type: string
+ *                  example: "Bearer"
+ *        400:
+ *          description: Register failed
  */
 
 router.post('/login', ValidatorBody('login'), authController.login);

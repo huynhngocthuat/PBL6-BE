@@ -14,6 +14,8 @@ class AuthController {
     this.verifyCode = this.verifyCode.bind(this);
     this.resetPassword = this.resetPassword.bind(this);
     this.changePassword = this.changePassword.bind(this);
+
+    this.adminLogin = this.adminLogin.bind(this);
   }
 
   async register(req, res) {
@@ -115,6 +117,16 @@ class AuthController {
         oldPassword,
         newPassword,
       });
+      return Response.success(res, { docs });
+    } catch (error) {
+      return Response.error(res, error);
+    }
+  }
+
+  async adminLogin(req, res) {
+    try {
+      const isAdmin = true;
+      const docs = await this.service.signIn(req.body, isAdmin);
       return Response.success(res, { docs });
     } catch (error) {
       return Response.error(res, error);
