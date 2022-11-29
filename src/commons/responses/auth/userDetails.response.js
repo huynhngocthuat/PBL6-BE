@@ -3,6 +3,7 @@ class UserDetailsResponse {
     email,
     role,
     fullName,
+    address,
     isActivated,
     occupation,
     phone,
@@ -16,6 +17,7 @@ class UserDetailsResponse {
     this.email = email;
     this.role = role;
     this.fullName = fullName;
+    this.address = address;
     this.isActivated = isActivated;
     this.occupation = occupation;
     this.phone = phone;
