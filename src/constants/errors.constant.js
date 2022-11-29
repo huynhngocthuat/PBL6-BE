@@ -46,6 +46,7 @@ export default {
   CHANGE_PASSWORD_FAILED: 'Change password failed',
   PASSWORD_INCORRECT: 'Password incorrect',
   GET_USER_BY_ID_OAUTH_FAILED: 'Get user by id oAuth failed',
+  TOKEN_REJECT: 'Token is rejected',
   USER_NOT_AUTHORIZED: 'User not authorized',
 
   // UsersService
@@ -55,6 +56,9 @@ export default {
 
   // Helpers Mail
   EMAIL_NOT_SENT: 'Email not sent',
+
+  // Redis
+  REDIS_CONNECTED_ERROR: 'Failed connected to redis',
 
   // Course
   ERR_WHILE_CREATE_COURSE_AT_SER: 'Cannot create course at service',

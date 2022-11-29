@@ -1,7 +1,6 @@
 import dotenv from 'dotenv';
 
 import express from 'express';
-import cors from 'cors';
 import morgan from 'morgan';
 import db from 'models';
 import router from 'routers';
