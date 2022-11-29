@@ -15,6 +15,9 @@ export default {
   REQUEST_AT_CONTROLLER:
     'Request from client at controller {0} with body {1}, params {2}, query {3}',
 
+  // Redis
+  REDIS_CONNECTED_SUCCESS: 'Successfully connected to redis',
+
   // -- AuthService --
   LOGIN_SUCCESS: 'Login successfully',
   LOGOUT_SUCCESS: 'Logout successfully',

@@ -164,6 +164,7 @@ class AuthService {
 
       return new GetMeResponse(user);
     } catch (error) {
+      console.log('service', error);
       throw new Error(error.message || errors.GET_ME_FAILED);
     }
   }

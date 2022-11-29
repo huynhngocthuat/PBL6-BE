@@ -1,10 +1,11 @@
 import { UsersService, oAuthAccessTokenService } from 'services';
+import redisClient from 'configs/redis.config';
 import Response from '../helpers/response';
 import jwt from '../helpers/jwt';
-import { errors, roles } from '../constants';
+import { errors, roles, httpCodes } from '../constants';
 
 export default class AuthMiddleware {
-  static isRequired(req, res, next) {
+  static async isRequired(req, res, next) {
     const tokenBearer = req.header('Authorization');
 
     if (!tokenBearer) {
@@ -21,15 +22,29 @@ export default class AuthMiddleware {
       });
     }
 
+    // token in black list
+    const inBlackList = await redisClient.get(`revoke_${token}`);
+    if (inBlackList) {
+      return Response.error(
+        res,
+        {
+          message: errors.TOKEN_REJECT,
+        },
+        httpCodes.STATUS_UNAUTHORIZED
+      );
+    }
+
     const decoded = jwt.verify(token);
 
     if (!decoded) {
       return Response.error(res, {
-        message: errors.TOKEN_INVALID,
+        message: errors.TOKE,
       });
     }
 
     req.jwt = decoded;
+    req.token = token;
+
     return next();
   }
 
