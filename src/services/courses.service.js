@@ -119,24 +119,28 @@ class CoursesService extends BaseService {
     }
   }
 
-  async searchCourses(keyword, pagination) {
+  async searchCourses(condition, pagination) {
     try {
       const data = {};
-      let condition = {
-        name: `%${keyword}%`,
-        description: `%${keyword}%`,
-        categoryName: `%${keyword}%`,
-        hashtagName: `%${keyword}%`,
+      const tagFilter = {
+        key: `%${condition.key}%`,
+        category: condition.category,
+        hashtag: condition.hashtag,
+        gteq: condition.gteq,
+        lteq: condition.lteq,
       };
 
       if (pagination) {
         const { offset, limit } = getPagination(pagination);
-        condition = { ...condition, limit, offset };
-        const courses = await this.repo.searchCourses(condition);
+        const courses = await this.repo.searchCourses({
+          ...tagFilter,
+          limit,
+          offset,
+        });
 
         data.courses = courses;
 
-        const total = await this.repo.countResultFromSearchCourses(condition);
+        const total = await this.repo.countResultFromSearchCourses(tagFilter);
         const pagingData = getPagingData(
           total,
           Math.ceil(offset / limit) + 1, // cal current_page
@@ -145,8 +149,11 @@ class CoursesService extends BaseService {
 
         data.pagination = pagingData;
       } else {
-        condition = { ...condition, limit: null, offset: null };
-        const courses = await this.repo.searchCourses(condition);
+        const courses = await this.repo.searchCourses({
+          ...tagFilter,
+          limit: null,
+          offset: null,
+        });
 
         data.courses = courses;
       }

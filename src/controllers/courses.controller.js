@@ -120,19 +120,25 @@ class CoursesController {
   async search(req, res) {
     try {
       const { page, limit } = req.query;
-      let { key } = req.query;
 
-      key = key || '';
+      const condition = {
+        key: req.query.key || '',
+        category: req.query.category ?? [],
+        hashtag: req.query.tag ?? [],
+        gteq: req.query.gteq ?? Number.MAX_SAFE_INTEGER,
+        lteq: req.query.lteq ?? 0,
+      };
 
+      console.log(condition);
       let courses;
 
       if (page || limit) {
-        courses = await this.service.searchCourses(key, {
+        courses = await this.service.searchCourses(condition, {
           page: parseInt(page || pages.PAGE_DEFAULT),
           limit: parseInt(limit || pages.LIMIT_DEFAULT),
         });
       } else {
-        courses = await this.service.searchCourses(key, null, null);
+        courses = await this.service.searchCourses(condition, null);
       }
 
       logger.info(
