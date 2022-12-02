@@ -11,6 +11,8 @@ class UsersController {
     this.getUserDetails = this.getUserDetails.bind(this);
     this.getUserById = this.getUserById.bind(this);
     this.updateViewOfUserForVideo = this.updateViewOfUserForVideo.bind(this);
+    this.getUserRoleIsUserOrInstructor =
+      this.getUserRoleIsUserOrInstructor.bind(this);
   }
 
   async getCourses(req, res) {
@@ -75,20 +77,33 @@ class UsersController {
     }
   }
 
-  // eslint-disable-next-line consistent-return, class-methods-use-this
   async updateViewOfUserForVideo(req, res) {
     try {
       const data = await this.service.updateViewOfUserForVideo(req.body);
 
       return Response.success(
         res,
-        { docs: data.res },
+        { docs: data.videoViewSaved },
         data.type === 'create' ? httpCodes.STATUS_CREATED : httpCodes.STATUS_OK
       );
     } catch (error) {
       return Response.error(
         res,
         errors.WHILE_UPDATE_VIEW,
+        httpCodes.STATUS_BAD_REQUEST
+      );
+    }
+  }
+
+  async getUserRoleIsUserOrInstructor(req, res) {
+    try {
+      const users = await this.service.getUsers(req.body);
+
+      return Response.success(res, { docs: users }, httpCodes.STATUS_OK);
+    } catch (error) {
+      return Response.error(
+        res,
+        errors.WHILE_GET.format('get users'),
         httpCodes.STATUS_BAD_REQUEST
       );
     }
