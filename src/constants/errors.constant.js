@@ -4,7 +4,7 @@ export default {
   WHILE_CREATE: 'Something wrong while create {0}',
   WHILE_UPDATE: 'Something wrong while update {0}',
   WHILE_DELETE: 'Something wrong while delete {0}',
-  WHILE_SEARCH: 'Something wrong while delete {0}',
+  WHILE_SEARCH: 'Something wrong while search {0}',
   WHILE_UPDATE_VIEW: 'Something wrong while update view of video',
   CREATE_AT_REPO: 'Create wrong of model {0} at repository',
   FIND_BY_ID_AT_REPO: 'Find by id wrong of model {0} at repository',

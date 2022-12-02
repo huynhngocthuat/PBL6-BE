@@ -16,19 +16,19 @@ class VideoViewsService extends BaseService {
       const dataJson = json(data);
 
       if (data) {
-        const videoViewUpdate = {
+        const res = await this.repo.updateByPk(dataJson.id, {
           countView: dataJson.countView + 1,
           ...videoView,
-        };
+        });
+        const videoViewSaved = json(res);
 
-        const res = await this.repo.updateByPk(dataJson.id, videoViewUpdate);
-
-        return { res, type: 'update' };
+        return { videoViewSaved, type: 'update' };
         // eslint-disable-next-line no-else-return
       } else {
         const res = await this.repo.create({ ...videoView, countView: 1 });
+        const videoViewSaved = json(res);
 
-        return { res, type: 'create' };
+        return { videoViewSaved, type: 'create' };
       }
     } catch (error) {
       logger.error(`${errors.ERR_WHILE_UPDATE_VIEW_AT_SERVICE} - ${error}`);

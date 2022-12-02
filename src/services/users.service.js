@@ -2,7 +2,7 @@ import { usersRepository } from 'repositories';
 import { v4 as uuidv4 } from 'uuid';
 import { sendEmailConfirm } from 'helpers/mail';
 import { json } from 'utils';
-import { errors, infors } from 'constants';
+import { errors, infors, roles } from 'constants';
 import { UserDetailsResponse, GetMeResponse } from 'commons/responses/auth';
 import oAuthAccessTokenService from './oAuthAccessToken.service';
 import UserDetailsService from './userDetails.service';
@@ -14,6 +14,26 @@ class UsersService {
     this.oAuthService = oAuthService;
     this.UserDetailsService = UserDetailsService;
     this.videoViewsService = videoViewsService;
+  }
+
+  /**
+   * Get list user have role user or instructor of system
+   * @returns {array} list object user of system
+   */
+  async getUsers() {
+    const condition = {
+      role: {
+        $or: [roles.INSTRUCTOR_ROLE, roles.USER_ROLE],
+      },
+    };
+
+    try {
+      const users = await this.repo.findAllByCondition(condition);
+
+      return json(users);
+    } catch (error) {
+      throw new Error(errors.USER_NOT_FOUND);
+    }
   }
 
   async getUser(id) {
@@ -98,7 +118,7 @@ class UsersService {
   /**
    * Get list course of instructor
    * @param {uuid} userId is id of instructor, e.g, "92599851-3c92-4d37-b194-977a6d5223fe"
-   * @param {boolean} isDeleted is optional param to get with video was deleted or not, default value: false
+   * @param {bool} isDeleted is optional param to get with video was deleted or not, default value: false
    * @returns {array} list object course of instructor
    */
   async findCourseByInstructor(userId, isDeleted = false) {
