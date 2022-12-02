@@ -195,6 +195,19 @@ class UsersService {
       throw new Error(error);
     }
   }
+
+  async getVideoViewOfUser(videoId, userId) {
+    try {
+      const videoView = await this.videoViewsService.getVideoView(
+        videoId,
+        userId
+      );
+
+      return videoView;
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
 }
 
 export default new UsersService(usersRepository, {

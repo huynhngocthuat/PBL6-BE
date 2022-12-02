@@ -35,6 +35,16 @@ class VideoViewsService extends BaseService {
       throw new Error(error);
     }
   }
+
+  async getVideoView(videoId, userId) {
+    try {
+      const data = await this.repo.findOneByCondition({ videoId, userId });
+
+      return json(data);
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
 }
 
 export default new VideoViewsService(videoViewsRepository);
