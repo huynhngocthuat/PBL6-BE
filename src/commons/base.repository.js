@@ -148,6 +148,7 @@ export default class BaseRepository {
         include,
         where: { ...condition },
         paranoid: !isDeleted,
+        logging: console.log,
       });
 
       logger.info(

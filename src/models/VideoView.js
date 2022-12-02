@@ -49,7 +49,6 @@ export const VideoViewModel = (sequelize, DataTypes) => {
       modelName: 'VideoView',
       tableName: 'VideoViews',
       timestamps: true,
-      underscored: true,
       paranoid: true,
       deletedAt: 'deletedAt',
     }

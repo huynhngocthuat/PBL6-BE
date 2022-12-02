@@ -10,6 +10,7 @@ class UsersController {
     this.updateProfile = this.updateProfile.bind(this);
     this.getUserDetails = this.getUserDetails.bind(this);
     this.getUserById = this.getUserById.bind(this);
+    this.updateViewOfUserForVideo = this.updateViewOfUserForVideo.bind(this);
   }
 
   async getCourses(req, res) {
@@ -71,6 +72,25 @@ class UsersController {
     } catch (error) {
       const message = error || errors.WHILE_GET.format('user by id');
       return Response.error(res, message, 400);
+    }
+  }
+
+  // eslint-disable-next-line consistent-return, class-methods-use-this
+  async updateViewOfUserForVideo(req, res) {
+    try {
+      const data = await this.service.updateViewOfUserForVideo(req.body);
+
+      return Response.success(
+        res,
+        { docs: data.res },
+        data.type === 'create' ? httpCodes.STATUS_CREATED : httpCodes.STATUS_OK
+      );
+    } catch (error) {
+      return Response.error(
+        res,
+        errors.WHILE_UPDATE_VIEW,
+        httpCodes.STATUS_BAD_REQUEST
+      );
     }
   }
 }

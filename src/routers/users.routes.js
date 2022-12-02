@@ -31,4 +31,10 @@ router.get(
 
 router.get('/:id', ValidatorParams('id'), UserController.getUserById);
 
+router.put(
+  '/update-view',
+  ValidatorBody('videoView'),
+  UserController.updateViewOfUserForVideo
+);
+
 export default router;
