@@ -29,11 +29,6 @@ router.get(
   UserController.getUserDetails
 );
 
-router.get(
-  '/:id',
-  ValidatorParams('id'),
-  AuthMiddleware.isRequired,
-  UserController.getUserById
-);
+router.get('/:id', ValidatorParams('id'), UserController.getUserById);
 
 export default router;
