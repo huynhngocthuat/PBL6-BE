@@ -102,6 +102,15 @@ export class CoursesRepository extends BaseRepository {
       throw new Error(error);
     }
   }
+
+  // eslint-disable-next-line no-empty-function, class-methods-use-this
+  // async getUserAttendanceCourseYear(id, year) {
+  //   try {
+  //     let query = ;
+  //   } catch (error) {
+  //     throw new Error(error);
+  //   }
+  // }
 }
 
 export default new CoursesRepository(Course);

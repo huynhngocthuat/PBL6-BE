@@ -13,6 +13,7 @@ class UsersController {
     this.updateViewOfUserForVideo = this.updateViewOfUserForVideo.bind(this);
     this.getUserRoleIsUserOrInstructor =
       this.getUserRoleIsUserOrInstructor.bind(this);
+    this.getVideoViewOfUser = this.getVideoViewOfUser.bind(this);
   }
 
   async getCourses(req, res) {
@@ -104,6 +105,24 @@ class UsersController {
       return Response.error(
         res,
         errors.WHILE_GET.format('get users'),
+        httpCodes.STATUS_BAD_REQUEST
+      );
+    }
+  }
+
+  async getVideoViewOfUser(req, res) {
+    try {
+      const { id } = req.params;
+      // eslint-disable-next-line camelcase
+      const { video_id } = req.query;
+
+      const data = await this.service.getVideoViewOfUser(video_id, id);
+
+      return Response.success(res, { docs: { data } }, httpCodes.STATUS_OK);
+    } catch (error) {
+      return Response.error(
+        res,
+        errors.WHILE_GET.format('video view'),
         httpCodes.STATUS_BAD_REQUEST
       );
     }

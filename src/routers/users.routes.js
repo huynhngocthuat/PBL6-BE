@@ -29,6 +29,8 @@ router.get(
   UserController.getUserDetails
 );
 
+router.get('/:id/videoviews', UserController.getVideoViewOfUser);
+
 router.get('/:id', ValidatorParams('id'), UserController.getUserById);
 
 router.put(
