@@ -6,12 +6,14 @@ import { errors, infors } from 'constants';
 import { UserDetailsResponse, GetMeResponse } from 'commons/responses/auth';
 import oAuthAccessTokenService from './oAuthAccessToken.service';
 import UserDetailsService from './userDetails.service';
+import videoViewsService from './videoViews.service';
 
 class UsersService {
-  constructor(repo, { oAuthService, UserDetailsService }) {
+  constructor(repo, { oAuthService, UserDetailsService, videoViewsService }) {
     this.repo = repo;
     this.oAuthService = oAuthService;
     this.UserDetailsService = UserDetailsService;
+    this.videoViewsService = videoViewsService;
   }
 
   async getUser(id) {
@@ -163,9 +165,20 @@ class UsersService {
       throw new Error(error);
     }
   }
+
+  async updateViewOfUserForVideo(videoView) {
+    try {
+      const data = await this.videoViewsService.updateViewOfVideo(videoView);
+
+      return data;
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
 }
 
 export default new UsersService(usersRepository, {
   oAuthService: oAuthAccessTokenService,
   UserDetailsService,
+  videoViewsService,
 });
