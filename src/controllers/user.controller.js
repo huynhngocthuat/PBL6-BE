@@ -112,11 +112,9 @@ class UsersController {
 
   async getVideoViewOfUser(req, res) {
     try {
-      const { id } = req.params;
-      // eslint-disable-next-line camelcase
-      const { video_id } = req.query;
+      const { id, idVideo } = req.params;
 
-      const data = await this.service.getVideoViewOfUser(video_id, id);
+      const data = await this.service.getVideoViewOfUser(idVideo, id);
 
       return Response.success(res, { docs: { data } }, httpCodes.STATUS_OK);
     } catch (error) {

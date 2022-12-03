@@ -3,6 +3,7 @@ import SignInResponse from './signIn.response';
 import GetMeResponse from './getMe.response';
 import InstructorResponse from './instructor.response';
 import UserDetailsResponse from './userDetails.response';
+import AttendanceOfCourse from './attendaceOfCourse.response';
 
 export {
   SignUpResponse,
@@ -10,4 +11,5 @@ export {
   GetMeResponse,
   InstructorResponse,
   UserDetailsResponse,
+  AttendanceOfCourse,
 };
