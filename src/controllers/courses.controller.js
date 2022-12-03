@@ -17,6 +17,8 @@ class CoursesController {
     this.get = this.get.bind(this);
     this.getSections = this.getSections.bind(this);
     this.search = this.search.bind(this);
+    this.analysisCourseOfInstructor =
+      this.analysisCourseOfInstructor.bind(this);
   }
 
   async create(req, res) {
@@ -161,6 +163,25 @@ class CoursesController {
       );
 
       return Response.error(res, errors.WHILE_SEARCH.format('course'), 400);
+    }
+  }
+
+  async analysisCourseOfInstructor(req, res) {
+    try {
+      const { year } = req.query;
+      const { id } = req.params;
+
+      console.log(id, year);
+      const data = await this.service.getUserAttendanceCourseYear(id, year);
+
+      return Response.success(res, { docs: data }, httpCodes.STATUS_OK);
+    } catch (error) {
+      console.log(error);
+      return Response.error(
+        res,
+        errors.WHILE_GET.format('analysis course'),
+        400
+      );
     }
   }
 }

@@ -2,6 +2,7 @@ import { CoursesRepository } from 'repositories';
 import { json } from 'utils';
 import { getPagination, getPagingData } from 'helpers/pagging';
 import { errors, infors } from 'constants';
+import { AttendanceOfCourse } from 'commons/responses/auth';
 import db from 'models';
 import logger from 'configs/winston.config';
 import BaseService from './base.service';
@@ -162,6 +163,21 @@ class CoursesService extends BaseService {
     } catch (error) {
       logger.error(`${errors.ERR_WHITE_SEARCH_COURSE_AT_SER} - ${error}`);
 
+      throw new Error(error);
+    }
+  }
+
+  async getUserAttendanceCourseYear(id, year) {
+    try {
+      let data = await this.repo.getUserAttendanceCourseYear(id, year);
+
+      data = data.map((item) => ({
+        ...item,
+        attendance: +item.attendance,
+      }));
+
+      return new AttendanceOfCourse({ year, data });
+    } catch (error) {
       throw new Error(error);
     }
   }
