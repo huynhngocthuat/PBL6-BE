@@ -7,6 +7,7 @@ import sections from './section.routes';
 import upload from './upload.routes';
 import video from './videos.routes';
 import hashtags from './hashtags.routes';
+import videoComments from './videoComments.routes';
 
 // admin
 import adminAuth from './admin/auth.routes';
@@ -21,6 +22,7 @@ router.use('/sections', sections);
 router.use('/upload', upload);
 router.use('/videos', video);
 router.use('/hashtags', hashtags);
+router.use('/video-comments', videoComments);
 router.use('/admin', adminAuth);
 
 export default router;

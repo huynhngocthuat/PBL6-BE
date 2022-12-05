@@ -6,6 +6,7 @@ import UploadController from './upload.controller';
 import UserController from './user.controller';
 import VideosController from './videos.controller';
 import HashtagsController from './hashtags.controller';
+import VideoCommentsController from './videoComments.controller';
 
 export {
   authController,
@@ -16,4 +17,5 @@ export {
   UserController,
   VideosController,
   HashtagsController,
+  VideoCommentsController,
 };

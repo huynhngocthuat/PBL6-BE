@@ -15,6 +15,7 @@ import { video } from './video.schema';
 import { avatar, updateProfile } from './user.schema';
 import { hashtag } from './hashtag.schema';
 import { id } from './common.schema';
+import { videoComment } from './videoComment.schema';
 
 export {
   // common
@@ -30,6 +31,7 @@ export {
   emailExists,
   video,
   hashtag,
+  videoComment,
   // auth
   register,
   login,
