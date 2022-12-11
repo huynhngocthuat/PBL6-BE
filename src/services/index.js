@@ -9,6 +9,7 @@ import CourseHashtagsService from './courseHashtags.service';
 import UserDetailsService from './userDetails.service';
 import oAuthAccessTokenService from './oAuthAccessToken.service';
 import videoViewsService from './videoViews.service';
+import userStatussService from './userStatuss.service';
 
 export {
   UsersService,
@@ -22,4 +23,5 @@ export {
   UserDetailsService,
   oAuthAccessTokenService,
   videoViewsService,
+  userStatussService,
 };

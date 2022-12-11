@@ -9,6 +9,7 @@ import HashtagsRepository from './hashtag.repository';
 import CourseHashtagsRepository from './courseHashtags.repository';
 import userDetailsRepository from './userDetails.repository';
 import videoViewsRepository from './videoViews.repository';
+import userStatussRepository from './userStatuss.repository';
 
 export {
   usersRepository,
@@ -21,4 +22,5 @@ export {
   CourseHashtagsRepository,
   userDetailsRepository,
   videoViewsRepository,
+  userStatussRepository,
 };

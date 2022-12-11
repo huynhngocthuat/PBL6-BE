@@ -14,6 +14,7 @@ class UsersController {
     this.getUserRoleIsUserOrInstructor =
       this.getUserRoleIsUserOrInstructor.bind(this);
     this.getVideoViewOfUser = this.getVideoViewOfUser.bind(this);
+    this.getRequestsOfUser = this.getRequestsOfUser.bind(this);
   }
 
   async getCourses(req, res) {
@@ -121,6 +122,20 @@ class UsersController {
       return Response.error(
         res,
         errors.WHILE_GET.format('video view'),
+        httpCodes.STATUS_BAD_REQUEST
+      );
+    }
+  }
+
+  async getRequestsOfUser(req, res) {
+    try {
+      const users = await this.service.getRequestOfUser();
+
+      return Response.success(res, { docs: users }, httpCodes.STATUS_OK);
+    } catch (error) {
+      return Response.error(
+        res,
+        errors.WHILE_GET.format('get user requests'),
         httpCodes.STATUS_BAD_REQUEST
       );
     }

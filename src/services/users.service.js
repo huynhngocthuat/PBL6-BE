@@ -7,13 +7,18 @@ import { UserDetailsResponse, GetMeResponse } from 'commons/responses/auth';
 import oAuthAccessTokenService from './oAuthAccessToken.service';
 import UserDetailsService from './userDetails.service';
 import videoViewsService from './videoViews.service';
+import userStatussService from './userStatuss.service';
 
 class UsersService {
-  constructor(repo, { oAuthService, UserDetailsService, videoViewsService }) {
+  constructor(
+    repo,
+    { oAuthService, UserDetailsService, videoViewsService, userStatussService }
+  ) {
     this.repo = repo;
     this.oAuthService = oAuthService;
     this.UserDetailsService = UserDetailsService;
     this.videoViewsService = videoViewsService;
+    this.userStatussService = userStatussService;
   }
 
   /**
@@ -221,10 +226,19 @@ class UsersService {
       throw new Error(error);
     }
   }
+
+  async getRequestOfUser() {
+    try {
+      return await this.userStatussService.getAll();
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
 }
 
 export default new UsersService(usersRepository, {
   oAuthService: oAuthAccessTokenService,
   UserDetailsService,
   videoViewsService,
+  userStatussService,
 });
