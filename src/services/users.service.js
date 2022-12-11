@@ -208,6 +208,19 @@ class UsersService {
       throw new Error(error);
     }
   }
+
+  /**
+   * Get usee with condition
+   * @param {object} condition is condition to find user, e.g, {id: userId,}
+   * @returns {object} data about model category is returned from repository
+   */
+  async findUserByCondition(condition) {
+    try {
+      return await this.repo.findOneByCondition(condition);
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
 }
 
 export default new UsersService(usersRepository, {

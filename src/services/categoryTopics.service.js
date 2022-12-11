@@ -7,7 +7,7 @@ class CategoryTopicsService extends BaseService {
   }
 
   /**
-   * Get list category with condition
+   * Get category with condition
    * @param {object} condition is condition to find category, e.g, {id: categoryId,}
    * @returns {object} data about model category is returned from repository
    */
