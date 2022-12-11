@@ -190,6 +190,7 @@ export default class BaseRepository {
           limit
         );
 
+        console.log('paging data', pagingData);
         data.pagination = pagingData;
       } else {
         data = await this.model.findAll({

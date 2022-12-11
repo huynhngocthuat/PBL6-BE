@@ -3,18 +3,24 @@ import { v4 as uuidv4 } from 'uuid';
 import { sendEmailConfirm } from 'helpers/mail';
 import { json } from 'utils';
 import { errors, infors, roles } from 'constants';
-import { UserDetailsResponse, GetMeResponse } from 'commons/responses/auth';
+import {
+  UserDetailsResponse,
+  GetMeResponse,
+  UserResponse,
+} from 'commons/responses/auth';
+import { getPagination } from 'helpers/pagging';
 import oAuthAccessTokenService from './oAuthAccessToken.service';
 import UserDetailsService from './userDetails.service';
 import videoViewsService from './videoViews.service';
 import userStatussService from './userStatuss.service';
+import BaseService from './base.service';
 
-class UsersService {
+class UsersService extends BaseService {
   constructor(
     repo,
     { oAuthService, UserDetailsService, videoViewsService, userStatussService }
   ) {
-    this.repo = repo;
+    super(repo);
     this.oAuthService = oAuthService;
     this.UserDetailsService = UserDetailsService;
     this.videoViewsService = videoViewsService;
@@ -25,7 +31,8 @@ class UsersService {
    * Get list user have role user or instructor of system
    * @returns {array} list object user of system
    */
-  async getUsers() {
+  // eslint-disable-next-line consistent-return
+  async getUsers(pagination = null) {
     const condition = {
       role: {
         $or: [roles.INSTRUCTOR_ROLE, roles.USER_ROLE],
@@ -33,9 +40,23 @@ class UsersService {
     };
 
     try {
-      const users = await this.repo.findAllByCondition(condition);
+      const data = {};
+      if (pagination) {
+        const { offset, limit } = getPagination(pagination);
+        const users = await this.repo.findAllByCondition(condition, false, {
+          offset,
+          limit,
+        });
 
-      return json(users);
+        data.pagination = users.pagination;
+        data.users = Array.from(json(users) || [], (x) => new UserResponse(x));
+
+        return data;
+      }
+      const users = await this.repo.findAllByCondition(condition);
+      data.users = Array.from(json(users) || [], (x) => new UserResponse(x));
+
+      return users;
     } catch (error) {
       throw new Error(errors.USER_NOT_FOUND);
     }
