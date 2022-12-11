@@ -118,7 +118,7 @@ class UsersController {
         // eslint-disable-next-line no-else-return
       } else {
         const data = await this.service.getUsers();
-        return Response.success(res, { docs: data }, httpCodes.STATUS_OK);
+        return Response.success(res, { docs: data.users }, httpCodes.STATUS_OK);
       }
     } catch (error) {
       return Response.error(
@@ -147,9 +147,30 @@ class UsersController {
 
   async getRequestsOfUser(req, res) {
     try {
-      const users = await this.service.getRequestOfUser();
+      const { page, limit } = req.query;
 
-      return Response.success(res, { docs: users }, httpCodes.STATUS_OK);
+      if (page || limit) {
+        const data = await this.service.getRequestsOfUser({
+          // eslint-disable-next-line radix
+          page: parseInt(page || pages.PAGE_DEFAULT),
+          // eslint-disable-next-line radix
+          limit: parseInt(limit || pages.LIMIT_DEFAULT),
+        });
+
+        return Response.success(
+          res,
+          { docs: data.userRequests, pagination: data.pagination },
+          httpCodes.STATUS_OK
+        );
+        // eslint-disable-next-line no-else-return
+      } else {
+        const data = await this.service.getRequestsOfUser();
+        return Response.success(
+          res,
+          { docs: data.userRequests },
+          httpCodes.STATUS_OK
+        );
+      }
     } catch (error) {
       return Response.error(
         res,

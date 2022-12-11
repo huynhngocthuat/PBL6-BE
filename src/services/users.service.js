@@ -56,7 +56,7 @@ class UsersService extends BaseService {
       const users = await this.repo.findAllByCondition(condition);
       data.users = Array.from(json(users) || [], (x) => new UserResponse(x));
 
-      return users;
+      return data;
     } catch (error) {
       throw new Error(errors.USER_NOT_FOUND);
     }
@@ -248,9 +248,9 @@ class UsersService extends BaseService {
     }
   }
 
-  async getRequestOfUser() {
+  async getRequestsOfUser(pagination = null) {
     try {
-      return await this.userStatussService.getAll();
+      return await this.userStatussService.getAll(pagination);
     } catch (error) {
       throw new Error(error);
     }
