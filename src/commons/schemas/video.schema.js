@@ -1,4 +1,6 @@
 import Joi from 'joi';
+import { VideosService } from 'services';
+import { errors } from 'constants';
 import { sectionIdExist } from './section.schema';
 
 // eslint-disable-next-line import/prefer-default-export
@@ -11,3 +13,26 @@ export const video = Joi.object({
   isLock: Joi.bool(),
   userId: Joi.string().trim().uuid().required(),
 }).concat(sectionIdExist);
+
+export const videoIdExist = Joi.object({
+  videoId: Joi.string()
+    .trim()
+    .uuid()
+    .required()
+    .external(async (userId) => {
+      try {
+        const data = await VideosService.findOneByCondition({
+          id: userId,
+        });
+        if (!data) {
+          throw new Error(errors.NOT_EXIST.format('video'));
+        }
+      } catch (error) {
+        if (String(error) === `Error: ${errors.NOT_EXIST.format('video')}`) {
+          throw new Error(error);
+        } else {
+          throw new Error(errors.DATA_INVALID.format('video'));
+        }
+      }
+    }),
+});

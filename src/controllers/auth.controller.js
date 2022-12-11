@@ -73,12 +73,10 @@ class AuthController {
   async getMe(req, res) {
     try {
       const { idOAuth } = req.jwt;
-      console.log('ịok');
       const docs = await this.service.getMe(idOAuth);
-      console.log(docs);
+
       return Response.success(res, { docs });
     } catch (error) {
-      console.log(error);
       return Response.error(res, error);
     }
   }

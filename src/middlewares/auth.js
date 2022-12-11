@@ -67,7 +67,7 @@ export default class AuthMiddleware {
     }
   }
 
-  static isRole(role) {
+  static isRole(...roles) {
     return async (req, res, next) => {
       try {
         const { idOAuth } = req.jwt;
@@ -79,7 +79,7 @@ export default class AuthMiddleware {
         }
         const user = await UsersService.getUser(oAuth.userId);
 
-        if (user.role !== role) {
+        if (!roles.find((role) => user.role === role)) {
           throw new Error(errors.USER_NOT_AUTHORIZED);
         }
 
