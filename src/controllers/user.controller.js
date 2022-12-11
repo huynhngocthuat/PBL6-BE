@@ -1,6 +1,7 @@
 import { UsersService } from 'services';
 import Response from 'helpers/response';
 import { httpCodes, errors } from 'constants';
+import { pages } from 'constants';
 
 class UsersController {
   constructor(service) {
@@ -14,6 +15,7 @@ class UsersController {
     this.getUserRoleIsUserOrInstructor =
       this.getUserRoleIsUserOrInstructor.bind(this);
     this.getVideoViewOfUser = this.getVideoViewOfUser.bind(this);
+    this.getRequestsOfUser = this.getRequestsOfUser.bind(this);
   }
 
   async getCourses(req, res) {
@@ -98,9 +100,26 @@ class UsersController {
 
   async getUserRoleIsUserOrInstructor(req, res) {
     try {
-      const users = await this.service.getUsers(req.body);
+      const { page, limit } = req.query;
 
-      return Response.success(res, { docs: users }, httpCodes.STATUS_OK);
+      if (page || limit) {
+        const data = await this.service.getUsers({
+          // eslint-disable-next-line radix
+          page: parseInt(page || pages.PAGE_DEFAULT),
+          // eslint-disable-next-line radix
+          limit: parseInt(limit || pages.LIMIT_DEFAULT),
+        });
+
+        return Response.success(
+          res,
+          { docs: data.users, pagination: data.pagination },
+          httpCodes.STATUS_OK
+        );
+        // eslint-disable-next-line no-else-return
+      } else {
+        const data = await this.service.getUsers();
+        return Response.success(res, { docs: data.users }, httpCodes.STATUS_OK);
+      }
     } catch (error) {
       return Response.error(
         res,
@@ -121,6 +140,41 @@ class UsersController {
       return Response.error(
         res,
         errors.WHILE_GET.format('video view'),
+        httpCodes.STATUS_BAD_REQUEST
+      );
+    }
+  }
+
+  async getRequestsOfUser(req, res) {
+    try {
+      const { page, limit } = req.query;
+
+      if (page || limit) {
+        const data = await this.service.getRequestsOfUser({
+          // eslint-disable-next-line radix
+          page: parseInt(page || pages.PAGE_DEFAULT),
+          // eslint-disable-next-line radix
+          limit: parseInt(limit || pages.LIMIT_DEFAULT),
+        });
+
+        return Response.success(
+          res,
+          { docs: data.userRequests, pagination: data.pagination },
+          httpCodes.STATUS_OK
+        );
+        // eslint-disable-next-line no-else-return
+      } else {
+        const data = await this.service.getRequestsOfUser();
+        return Response.success(
+          res,
+          { docs: data.userRequests },
+          httpCodes.STATUS_OK
+        );
+      }
+    } catch (error) {
+      return Response.error(
+        res,
+        errors.WHILE_GET.format('get user requests'),
         httpCodes.STATUS_BAD_REQUEST
       );
     }
