@@ -11,6 +11,7 @@ class VideoCommentsController {
 
   async create(req, res) {
     try {
+      console.log(req.body);
       const videoComment = await this.service.create(req.body);
       return Response.success(
         res,
