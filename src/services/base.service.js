@@ -41,13 +41,16 @@ export default class BaseService {
     }
   }
 
-  async findAllByCondition(condition, pagination = null) {
+  async findAllByCondition(condition, isDeleted = false, pagination = null) {
     try {
       if (pagination) {
         const { offset, limit } = getPagination(pagination);
-        return await this.repo.findAllByCondition(condition, { offset, limit });
+        return await this.repo.findAllByCondition(condition, isDeleted, {
+          offset,
+          limit,
+        });
       }
-      return await this.repo.findAllByCondition(condition);
+      return await this.repo.findAllByCondition(condition, isDeleted);
     } catch (error) {
       throw new Error(error);
     }

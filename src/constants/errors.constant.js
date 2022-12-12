@@ -4,7 +4,8 @@ export default {
   WHILE_CREATE: 'Something wrong while create {0}',
   WHILE_UPDATE: 'Something wrong while update {0}',
   WHILE_DELETE: 'Something wrong while delete {0}',
-  WHILE_SEARCH: 'Something wrong while delete {0}',
+  WHILE_SEARCH: 'Something wrong while search {0}',
+  WHILE_UPDATE_VIEW: 'Something wrong while update view of video',
   CREATE_AT_REPO: 'Create wrong of model {0} at repository',
   FIND_BY_ID_AT_REPO: 'Find by id wrong of model {0} at repository',
   FIND_AT_REPO: 'Find wrong of model {0} at repository',
@@ -65,4 +66,6 @@ export default {
   ERR_WHITE_SEARCH_COURSE_AT_SER: 'Cannot search course at service',
   ERR_WHITE_SEARCH_COURSE_AT_REPO: 'Cannot search course at repo',
   ERR_WHITE_COUNT_COURSE_AT_REPO: 'Cannot count course at repo',
+
+  ERR_WHILE_UPDATE_VIEW_AT_SERVICE: 'Cannot update view of video at service',
 };

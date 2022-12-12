@@ -1,6 +1,7 @@
 import { UsersService } from 'services';
 import Response from 'helpers/response';
 import { httpCodes, errors } from 'constants';
+import { pages } from 'constants';
 
 class UsersController {
   constructor(service) {
@@ -10,6 +11,11 @@ class UsersController {
     this.updateProfile = this.updateProfile.bind(this);
     this.getUserDetails = this.getUserDetails.bind(this);
     this.getUserById = this.getUserById.bind(this);
+    this.updateViewOfUserForVideo = this.updateViewOfUserForVideo.bind(this);
+    this.getUserRoleIsUserOrInstructor =
+      this.getUserRoleIsUserOrInstructor.bind(this);
+    this.getVideoViewOfUser = this.getVideoViewOfUser.bind(this);
+    this.getRequestsOfUser = this.getRequestsOfUser.bind(this);
   }
 
   async getCourses(req, res) {
@@ -71,6 +77,106 @@ class UsersController {
     } catch (error) {
       const message = error || errors.WHILE_GET.format('user by id');
       return Response.error(res, message, 400);
+    }
+  }
+
+  async updateViewOfUserForVideo(req, res) {
+    try {
+      const data = await this.service.updateViewOfUserForVideo(req.body);
+
+      return Response.success(
+        res,
+        { docs: data.videoViewSaved },
+        data.type === 'create' ? httpCodes.STATUS_CREATED : httpCodes.STATUS_OK
+      );
+    } catch (error) {
+      return Response.error(
+        res,
+        errors.WHILE_UPDATE_VIEW,
+        httpCodes.STATUS_BAD_REQUEST
+      );
+    }
+  }
+
+  async getUserRoleIsUserOrInstructor(req, res) {
+    try {
+      const { page, limit } = req.query;
+
+      if (page || limit) {
+        const data = await this.service.getUsers({
+          // eslint-disable-next-line radix
+          page: parseInt(page || pages.PAGE_DEFAULT),
+          // eslint-disable-next-line radix
+          limit: parseInt(limit || pages.LIMIT_DEFAULT),
+        });
+
+        return Response.success(
+          res,
+          { docs: data.users, pagination: data.pagination },
+          httpCodes.STATUS_OK
+        );
+        // eslint-disable-next-line no-else-return
+      } else {
+        const data = await this.service.getUsers();
+        return Response.success(res, { docs: data.users }, httpCodes.STATUS_OK);
+      }
+    } catch (error) {
+      return Response.error(
+        res,
+        errors.WHILE_GET.format('get users'),
+        httpCodes.STATUS_BAD_REQUEST
+      );
+    }
+  }
+
+  async getVideoViewOfUser(req, res) {
+    try {
+      const { id, idVideo } = req.params;
+
+      const data = await this.service.getVideoViewOfUser(idVideo, id);
+
+      return Response.success(res, { docs: { data } }, httpCodes.STATUS_OK);
+    } catch (error) {
+      return Response.error(
+        res,
+        errors.WHILE_GET.format('video view'),
+        httpCodes.STATUS_BAD_REQUEST
+      );
+    }
+  }
+
+  async getRequestsOfUser(req, res) {
+    try {
+      const { page, limit } = req.query;
+
+      if (page || limit) {
+        const data = await this.service.getRequestsOfUser({
+          // eslint-disable-next-line radix
+          page: parseInt(page || pages.PAGE_DEFAULT),
+          // eslint-disable-next-line radix
+          limit: parseInt(limit || pages.LIMIT_DEFAULT),
+        });
+
+        return Response.success(
+          res,
+          { docs: data.userRequests, pagination: data.pagination },
+          httpCodes.STATUS_OK
+        );
+        // eslint-disable-next-line no-else-return
+      } else {
+        const data = await this.service.getRequestsOfUser();
+        return Response.success(
+          res,
+          { docs: data.userRequests },
+          httpCodes.STATUS_OK
+        );
+      }
+    } catch (error) {
+      return Response.error(
+        res,
+        errors.WHILE_GET.format('get user requests'),
+        httpCodes.STATUS_BAD_REQUEST
+      );
     }
   }
 }

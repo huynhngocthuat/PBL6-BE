@@ -2,16 +2,64 @@ import { usersRepository } from 'repositories';
 import { v4 as uuidv4 } from 'uuid';
 import { sendEmailConfirm } from 'helpers/mail';
 import { json } from 'utils';
-import { errors, infors } from 'constants';
-import { UserDetailsResponse, GetMeResponse } from 'commons/responses/auth';
+import { errors, infors, roles } from 'constants';
+import {
+  UserDetailsResponse,
+  GetMeResponse,
+  UserResponse,
+} from 'commons/responses/auth';
+import { getPagination } from 'helpers/pagging';
 import oAuthAccessTokenService from './oAuthAccessToken.service';
 import UserDetailsService from './userDetails.service';
+import videoViewsService from './videoViews.service';
+import userStatussService from './userStatuss.service';
+import BaseService from './base.service';
 
-class UsersService {
-  constructor(repo, { oAuthService, UserDetailsService }) {
-    this.repo = repo;
+class UsersService extends BaseService {
+  constructor(
+    repo,
+    { oAuthService, UserDetailsService, videoViewsService, userStatussService }
+  ) {
+    super(repo);
     this.oAuthService = oAuthService;
     this.UserDetailsService = UserDetailsService;
+    this.videoViewsService = videoViewsService;
+    this.userStatussService = userStatussService;
+  }
+
+  /**
+   * Get list user have role user or instructor of system
+   * @returns {array} list object user of system
+   */
+  // eslint-disable-next-line consistent-return
+  async getUsers(pagination = null) {
+    const condition = {
+      role: {
+        $or: [roles.INSTRUCTOR_ROLE, roles.USER_ROLE],
+      },
+    };
+
+    try {
+      const data = {};
+      if (pagination) {
+        const { offset, limit } = getPagination(pagination);
+        const users = await this.repo.findAllByCondition(condition, false, {
+          offset,
+          limit,
+        });
+
+        data.pagination = users.pagination;
+        data.users = Array.from(json(users) || [], (x) => new UserResponse(x));
+
+        return data;
+      }
+      const users = await this.repo.findAllByCondition(condition);
+      data.users = Array.from(json(users) || [], (x) => new UserResponse(x));
+
+      return data;
+    } catch (error) {
+      throw new Error(errors.USER_NOT_FOUND);
+    }
   }
 
   async getUser(id) {
@@ -96,7 +144,7 @@ class UsersService {
   /**
    * Get list course of instructor
    * @param {uuid} userId is id of instructor, e.g, "92599851-3c92-4d37-b194-977a6d5223fe"
-   * @param {boolean} isDeleted is optional param to get with video was deleted or not, default value: false
+   * @param {bool} isDeleted is optional param to get with video was deleted or not, default value: false
    * @returns {array} list object course of instructor
    */
   async findCourseByInstructor(userId, isDeleted = false) {
@@ -163,9 +211,55 @@ class UsersService {
       throw new Error(error);
     }
   }
+
+  async updateViewOfUserForVideo(videoView) {
+    try {
+      const data = await this.videoViewsService.updateViewOfVideo(videoView);
+
+      return data;
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  async getVideoViewOfUser(videoId, userId) {
+    try {
+      const videoView = await this.videoViewsService.getVideoView(
+        videoId,
+        userId
+      );
+
+      return videoView;
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  /**
+   * Get usee with condition
+   * @param {object} condition is condition to find user, e.g, {id: userId,}
+   * @returns {object} data about model category is returned from repository
+   */
+  async findUserByCondition(condition) {
+    try {
+      return await this.repo.findOneByCondition(condition);
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  async getRequestsOfUser(pagination = null) {
+    try {
+      return await this.userStatussService.getAll(pagination);
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
 }
 
 export default new UsersService(usersRepository, {
   oAuthService: oAuthAccessTokenService,
   UserDetailsService,
+  videoViewsService,
+  userStatussService,
 });

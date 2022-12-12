@@ -110,13 +110,14 @@ export default class BaseRepository {
     }
   }
 
-  async findAll(pagination = null) {
+  async findAll(pagination = null, include = null) {
     try {
       let data;
       if (pagination) {
         const { offset, limit } = pagination;
 
         data = await this.model.findAll({
+          include,
           logging: console.log,
           offset,
           limit,
@@ -128,10 +129,9 @@ export default class BaseRepository {
           Math.ceil(offset / limit) + 1, // cal current_page
           limit
         );
-
         data.pagination = pagingData;
       } else {
-        data = await this.model.findAll();
+        data = await this.model.findAll({ include, logging: console.log });
       }
 
       logger.info(infors.FIND_AT_REPO_SUCCESS.format(this.model.name));
@@ -148,6 +148,7 @@ export default class BaseRepository {
         include,
         where: { ...condition },
         paranoid: !isDeleted,
+        logging: console.log,
       });
 
       logger.info(

@@ -102,6 +102,45 @@ export class CoursesRepository extends BaseRepository {
       throw new Error(error);
     }
   }
+
+  // eslint-disable-next-line class-methods-use-this
+  async getUserAttendanceCourseYear(id, year) {
+    try {
+      const query = ` SELECT 
+                        DATE_PART('month', Month_Range."month"::date) AS month, count(j.id) AS attendance
+                    FROM
+                      ( SELECT '2013-01-01' AS month
+                        UNION SELECT '2013-02-01' AS month
+                        UNION SELECT '2013-03-01' AS month
+                        UNION SELECT '2013-04-01' AS month
+                        UNION SELECT '2013-05-01' AS month
+                        UNION SELECT '2013-06-01' AS month
+                        UNION SELECT '2013-07-01' AS month
+                        UNION SELECT '2013-08-01' AS month
+                        UNION SELECT '2013-09-01' AS month
+                        UNION SELECT '2013-10-01' AS month
+                        UNION SELECT '2013-11-01' AS month
+                        UNION SELECT '2013-12-01' AS month
+                      ) AS Month_Range
+                    LEFT JOIN "JSubscribes" j ON 
+                                                DATE_PART('month', j."createdAt") = DATE_PART('month', Month_Range."month"::date) AND
+                                                j."courseId" = :id AND
+                                                DATE_PART('year', j."createdAt") = :year
+                    GROUP BY month
+                    ORDER by month`;
+
+      const data = await db.sequelize.query(query, {
+        logging: console.log,
+        replacements: { id, year },
+        type: QueryTypes.SELECT,
+      });
+
+      return data;
+    } catch (error) {
+      console.log(error);
+      throw new Error(error);
+    }
+  }
 }
 
 export default new CoursesRepository(Course);

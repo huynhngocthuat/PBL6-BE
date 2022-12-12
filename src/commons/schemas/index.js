@@ -11,11 +11,12 @@ import {
 } from './auth.schema';
 import { course } from './course.schema';
 import { section, sectionUpdate } from './section.schema';
-import { video } from './video.schema';
-import { avatar, updateProfile } from './user.schema';
+import { video, videoIdExist } from './video.schema';
+import { avatar, updateProfile, userIdExist } from './user.schema';
 import { hashtag } from './hashtag.schema';
 import { id } from './common.schema';
 import { videoComment } from './videoComment.schema';
+import { videoView } from './videoView.schema';
 
 export {
   // common
@@ -30,6 +31,8 @@ export {
   email,
   emailExists,
   video,
+  videoIdExist,
+  videoView,
   hashtag,
   videoComment,
   // auth
@@ -44,5 +47,6 @@ export {
   // user
   avatar,
   updateProfile,
+  userIdExist,
   // end user
 };
