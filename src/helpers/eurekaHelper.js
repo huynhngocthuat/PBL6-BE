@@ -1,8 +1,11 @@
 import request from 'request';
 import ip from 'ip';
 import logger from 'configs/winston.config';
+import dotenv from 'dotenv';
 
-const eurekaService = `http://localhost:8761/eureka`;
+dotenv.config();
+
+const eurekaService = process.env.EUREKA_URL;
 const registerWithEureka = (appName, port) => {
     request.post({
         headers: { 'content-type': 'application/json' },
