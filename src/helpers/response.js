@@ -21,7 +21,7 @@ export default class Response {
   static error(res, error, status = httpCodes.STATUS_BAD_REQUEST) {
     res.status(status);
     return res.json({
-      success: 'failed',
+      status: 'failure',
       error: {
         message: error.message || null,
         code: error.code || httpCodes.STATUS_BAD_REQUEST,

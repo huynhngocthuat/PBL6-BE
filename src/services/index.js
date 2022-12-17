@@ -8,8 +8,11 @@ import HashtagsService from './hashtag.service';
 import CourseHashtagsService from './courseHashtags.service';
 import UserDetailsService from './userDetails.service';
 import oAuthAccessTokenService from './oAuthAccessToken.service';
+import VideoCommentsService from './videoComments.service';
 import videoViewsService from './videoViews.service';
 import userStatussService from './userStatuss.service';
+import EmotionReactsService from './emotionReacts.service';
+import SubscribesService from './subscribes.service'
 
 export {
   UsersService,
@@ -22,6 +25,9 @@ export {
   CourseHashtagsService,
   UserDetailsService,
   oAuthAccessTokenService,
+  VideoCommentsService,
   videoViewsService,
   userStatussService,
+  EmotionReactsService,
+  SubscribesService
 };

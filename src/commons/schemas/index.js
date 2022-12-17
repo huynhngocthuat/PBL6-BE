@@ -15,6 +15,7 @@ import { video, videoIdExist } from './video.schema';
 import { avatar, updateProfile, userIdExist } from './user.schema';
 import { hashtag } from './hashtag.schema';
 import { id } from './common.schema';
+import { videoComment } from './videoComment.schema';
 import { videoView } from './videoView.schema';
 
 export {
@@ -33,6 +34,7 @@ export {
   videoIdExist,
   videoView,
   hashtag,
+  videoComment,
   // auth
   register,
   login,
