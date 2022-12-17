@@ -11,6 +11,8 @@ import userDetailsRepository from './userDetails.repository';
 import VideoCommentsRepository from './videoComments.repository';
 import videoViewsRepository from './videoViews.repository';
 import userStatussRepository from './userStatuss.repository';
+import EmotionReactsRepository from './emotionReacts.repository';
+import SubscribesRepository from './subscribes.repository';
 
 export {
   usersRepository,
@@ -25,4 +27,6 @@ export {
   VideoCommentsRepository,
   videoViewsRepository,
   userStatussRepository,
+  EmotionReactsRepository,
+  SubscribesRepository,
 };

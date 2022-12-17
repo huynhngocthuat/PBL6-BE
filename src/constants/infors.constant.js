@@ -35,4 +35,7 @@ export default {
   START_TRANSACTION_CREATE_COURSE: 'Start transaction create course',
   COMMIT_TRANSACTION_CREATE_COURSE: 'Transaction create course is commit',
   ROLLBACK_TRANSACTION_CREATE_COURSE: 'Transaction create course is rollback',
+
+  // -- RabbitMQ Transaction
+  EXCHANGE_NAME: 'synchronous/database'
 };

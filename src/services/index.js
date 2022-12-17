@@ -11,6 +11,8 @@ import oAuthAccessTokenService from './oAuthAccessToken.service';
 import VideoCommentsService from './videoComments.service';
 import videoViewsService from './videoViews.service';
 import userStatussService from './userStatuss.service';
+import EmotionReactsService from './emotionReacts.service';
+import SubscribesService from './subscribes.service'
 
 export {
   UsersService,
@@ -26,4 +28,6 @@ export {
   VideoCommentsService,
   videoViewsService,
   userStatussService,
+  EmotionReactsService,
+  SubscribesService
 };
