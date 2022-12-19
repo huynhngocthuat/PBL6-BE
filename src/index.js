@@ -26,6 +26,7 @@ app.use(
 );
 
 app.use('/api-docs', swagger());
+
 app.use('/api/v1', router);
 app.use('/api/v1/admin', routerAdmin);
 
