@@ -44,6 +44,7 @@ const operatorsAliases = {
   $iLike: Op.iLike,
   $not: Op.not,
   $or: Op.or,
+  $and: Op.and,
 };
 
 const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {

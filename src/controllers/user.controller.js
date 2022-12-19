@@ -1,7 +1,7 @@
 import { UsersService } from 'services';
 import Response from 'helpers/response';
-import { httpCodes, errors } from 'constants';
-import { pages } from 'constants';
+import { httpCodes, errors, pages } from 'constants';
+import { roles } from 'constants';
 
 class UsersController {
   constructor(service) {
@@ -16,6 +16,7 @@ class UsersController {
       this.getUserRoleIsUserOrInstructor.bind(this);
     this.getVideoViewOfUser = this.getVideoViewOfUser.bind(this);
     this.getRequestsOfUser = this.getRequestsOfUser.bind(this);
+    this.searchUser = this.searchUser.bind(this);
   }
 
   async getCourses(req, res) {
@@ -101,25 +102,36 @@ class UsersController {
   async getUserRoleIsUserOrInstructor(req, res) {
     try {
       const { page, limit } = req.query;
+      let { key, role } = req.query;
 
-      if (page || limit) {
-        const data = await this.service.getUsers({
-          // eslint-disable-next-line radix
-          page: parseInt(page || pages.PAGE_DEFAULT),
-          // eslint-disable-next-line radix
-          limit: parseInt(limit || pages.LIMIT_DEFAULT),
-        });
+      const pagination = {
+        // eslint-disable-next-line radix
+        page: parseInt(page || pages.PAGE_DEFAULT),
+        // eslint-disable-next-line radix
+        limit: parseInt(limit || pages.LIMIT_DEFAULT),
+      };
 
-        return Response.success(
-          res,
-          { docs: data.users, pagination: data.pagination },
-          httpCodes.STATUS_OK
-        );
-        // eslint-disable-next-line no-else-return
-      } else {
-        const data = await this.service.getUsers();
-        return Response.success(res, { docs: data.users }, httpCodes.STATUS_OK);
-      }
+      key = key || '';
+      role = role || '';
+      role =
+        role.toUpperCase() === roles.INSTRUCTOR_ROLE ||
+        role.toUpperCase() === roles.USER_ROLE
+          ? [role.toUpperCase()]
+          : [roles.INSTRUCTOR_ROLE, roles.USER_ROLE];
+
+      const condition = {
+        keyword: key,
+        roles: role,
+      };
+
+      const data = await this.service.getUsers(condition, pagination);
+
+      return Response.success(
+        res,
+        { docs: data.users, pagination: data.pagination },
+        httpCodes.STATUS_OK
+      );
+      // eslint-disable-next-line no-else-return
     } catch (error) {
       return Response.error(
         res,
@@ -177,6 +189,26 @@ class UsersController {
         errors.WHILE_GET.format('get user requests'),
         httpCodes.STATUS_BAD_REQUEST
       );
+    }
+  }
+
+  async searchUser(req, res) {
+    try {
+      const { key, page, limit } = req.query;
+      const data = await this.service.searchUser(key, {
+        // eslint-disable-next-line radix
+        page: parseInt(page || pages.PAGE_DEFAULT),
+        // eslint-disable-next-line radix
+        limit: parseInt(limit || pages.LIMIT_DEFAULT),
+      });
+
+      return Response.success(
+        res,
+        { docs: data, pagination: data.pagination },
+        httpCodes.STATUS_OK
+      );
+    } catch (error) {
+      return Response.error(res, errors.WHILE_SEARCH.format('user'), 400);
     }
   }
 }

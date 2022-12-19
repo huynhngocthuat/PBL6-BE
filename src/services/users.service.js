@@ -2,7 +2,7 @@ import { usersRepository } from 'repositories';
 import { v4 as uuidv4 } from 'uuid';
 import { sendEmailConfirm } from 'helpers/mail';
 import { json } from 'utils';
-import { errors, infors, roles } from 'constants';
+import { errors, infors } from 'constants';
 import {
   UserDetailsResponse,
   GetMeResponse,
@@ -32,28 +32,44 @@ class UsersService extends BaseService {
    * @returns {array} list object user of system
    */
   // eslint-disable-next-line consistent-return
-  async getUsers(pagination = null) {
-    const condition = {
-      role: {
-        $or: [roles.INSTRUCTOR_ROLE, roles.USER_ROLE],
+  async getUsers(condition, pagination = null) {
+    let roleCondition;
+
+    if (condition.roles.length === 1) {
+      roleCondition = condition.roles.toString();
+    } else {
+      roleCondition = {
+        $or: condition.roles,
+      };
+    }
+
+    const cond = {
+      role: roleCondition,
+      $and: {
+        $or: [
+          {
+            fullName: {
+              $iLike: `%${condition.keyword}%`,
+            },
+          },
+          {
+            email: {
+              $iLike: `%${condition.keyword}%`,
+            },
+          },
+        ],
       },
     };
 
     try {
       const data = {};
-      if (pagination) {
-        const { offset, limit } = getPagination(pagination);
-        const users = await this.repo.findAllByCondition(condition, false, {
-          offset,
-          limit,
-        });
+      const { offset, limit } = getPagination(pagination);
+      const users = await this.repo.findAllByCondition(cond, false, {
+        offset,
+        limit,
+      });
 
-        data.pagination = users.pagination;
-        data.users = Array.from(json(users) || [], (x) => new UserResponse(x));
-
-        return data;
-      }
-      const users = await this.repo.findAllByCondition(condition);
+      data.pagination = users.pagination;
       data.users = Array.from(json(users) || [], (x) => new UserResponse(x));
 
       return data;
