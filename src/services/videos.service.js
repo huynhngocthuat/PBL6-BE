@@ -1,11 +1,14 @@
 import { VideosRepository } from 'repositories';
 import { InstructorResponse } from 'commons/responses/auth';
 import { json } from 'utils';
+import VideoResponse from 'commons/responses/video.response';
 import BaseService from './base.service';
+import videoViewsService from './videoViews.service';
 
 class VideosService extends BaseService {
-  constructor(repo) {
+  constructor(repo, { videoViewsService }) {
     super(repo);
+    this.videoViewsService = videoViewsService;
   }
 
   /**
@@ -26,6 +29,53 @@ class VideosService extends BaseService {
       throw new Error(error);
     }
   }
+
+  async getViewOfVideo(videoId) {
+    try {
+      const data = await this.videoViewsService.getViewOfVideo(videoId);
+
+      return data;
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  async getVideoById(videoId) {
+    try {
+      const data = await this.find(videoId);
+      const video = json(data);
+      const viewVideo = await this.getViewOfVideo(videoId);
+
+      return new VideoResponse({ ...video, ...viewVideo });
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  async getListVideo(pagination) {
+    try {
+      const data = await this.findAll(pagination);
+
+      const listVideo = json(data);
+      const response = {
+        data: [],
+        pagination: data.pagination,
+      };
+
+      for (let i = 0; i < listVideo.length; i += 1) {
+        // eslint-disable-next-line no-await-in-loop
+        const viewVideo = await this.getViewOfVideo(listVideo[i].id);
+        response.data = [
+          ...response.data,
+          new VideoResponse({ ...listVideo[i], ...viewVideo }),
+        ];
+      }
+
+      return response;
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
 }
 
-export default new VideosService(VideosRepository);
+export default new VideosService(VideosRepository, { videoViewsService });

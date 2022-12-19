@@ -2,6 +2,7 @@ import { videoViewsRepository } from 'repositories';
 import { json } from 'utils';
 import logger from 'configs/winston.config';
 import { errors } from 'constants';
+import ViewVideo from 'dtos/viewVideo';
 import BaseService from './base.service';
 
 class VideoViewsService extends BaseService {
@@ -41,6 +42,25 @@ class VideoViewsService extends BaseService {
       const data = await this.repo.findOneByCondition({ videoId, userId });
 
       return json(data);
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  async getViewOfVideo(videoId) {
+    try {
+      const data = await this.repo.getViewOfVideo(videoId);
+      let viewVideo = {};
+
+      // if data is null assign 0
+      if (!data) {
+        viewVideo.total = 0;
+      } else {
+        viewVideo = json(data);
+        viewVideo.total = +viewVideo.total;
+      }
+
+      return new ViewVideo(viewVideo);
     } catch (error) {
       throw new Error(error);
     }
