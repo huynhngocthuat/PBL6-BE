@@ -27,14 +27,14 @@ class VideosController {
       const { page, limit } = req.query;
 
       if (id) {
-        const data = await this.service.find(id);
+        const data = await this.service.getVideoById(id);
         return Response.success(res, { docs: data }, httpCodes.STATUS_OK);
         // eslint-disable-next-line no-else-return
       } else {
         // check on query page or limit valid
         // eslint-disable-next-line no-lonely-if
         if (page || limit) {
-          const data = await this.service.findAll({
+          const data = await this.service.getListVideo({
             // eslint-disable-next-line radix
             page: parseInt(page || pages.PAGE_DEFAULT),
             // eslint-disable-next-line radix
@@ -43,7 +43,7 @@ class VideosController {
 
           return Response.success(
             res,
-            { docs: data, pagination: data.pagination },
+            { docs: data.data, pagination: data.pagination },
             httpCodes.STATUS_OK
           );
           // eslint-disable-next-line no-else-return

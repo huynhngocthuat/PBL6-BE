@@ -5,9 +5,7 @@ import { errors, infors } from 'constants';
 
 dotenv.config();
 
-const redisClient = redis.createClient({
-  url: process.env.REDIS_URL,
-});
+const redisClient = redis.createClient();
 
 (async () => {
   redisClient.on('error', (error) => {
