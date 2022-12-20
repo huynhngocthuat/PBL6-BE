@@ -37,9 +37,13 @@ export default class AuthMiddleware {
     const decoded = jwt.verify(token);
 
     if (!decoded) {
-      return Response.error(res, {
-        message: errors.TOKE,
-      });
+      return Response.error(
+        res,
+        {
+          message: errors.TOKEN_INVALID,
+        },
+        httpCodes.STATUS_UNAUTHORIZED
+      );
     }
 
     req.jwt = decoded;
