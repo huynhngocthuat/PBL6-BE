@@ -1,6 +1,6 @@
 import { UsersService } from 'services';
 import Response from 'helpers/response';
-import { httpCodes, errors, pages } from 'constants';
+import { httpCodes, errors, pages, roles } from 'constants';
 
 class UsersController {
   constructor(service) {
@@ -101,25 +101,36 @@ class UsersController {
   async getUserRoleIsUserOrInstructor(req, res) {
     try {
       const { page, limit } = req.query;
+      let { key, role } = req.query;
 
-      if (page || limit) {
-        const data = await this.service.getUsers({
-          // eslint-disable-next-line radix
-          page: parseInt(page || pages.PAGE_DEFAULT),
-          // eslint-disable-next-line radix
-          limit: parseInt(limit || pages.LIMIT_DEFAULT),
-        });
+      const pagination = {
+        // eslint-disable-next-line radix
+        page: parseInt(page || pages.PAGE_DEFAULT),
+        // eslint-disable-next-line radix
+        limit: parseInt(limit || pages.LIMIT_DEFAULT),
+      };
 
-        return Response.success(
-          res,
-          { docs: data.users, pagination: data.pagination },
-          httpCodes.STATUS_OK
-        );
-        // eslint-disable-next-line no-else-return
-      } else {
-        const data = await this.service.getUsers();
-        return Response.success(res, { docs: data.users }, httpCodes.STATUS_OK);
-      }
+      key = key || '';
+      role = role || '';
+      role =
+        role.toUpperCase() === roles.INSTRUCTOR_ROLE ||
+        role.toUpperCase() === roles.USER_ROLE
+          ? [role.toUpperCase()]
+          : [roles.INSTRUCTOR_ROLE, roles.USER_ROLE];
+
+      const condition = {
+        keyword: key,
+        roles: role,
+      };
+
+      const data = await this.service.getUsers(condition, pagination);
+
+      return Response.success(
+        res,
+        { docs: data.users, pagination: data.pagination },
+        httpCodes.STATUS_OK
+      );
+      // eslint-disable-next-line no-else-return
     } catch (error) {
       return Response.error(
         res,

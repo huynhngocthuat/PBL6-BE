@@ -177,6 +177,7 @@ export default class BaseRepository {
           paranoid: !isDeleted,
           offset,
           limit,
+          logging: console.log,
         });
 
         const total = await this.model.count({
