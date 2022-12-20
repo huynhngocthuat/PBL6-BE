@@ -6,7 +6,7 @@ export default {
     await queryInterface.changeColumn('UserStatuss', 'status', {
       type: Sequelize.ENUM(
         status.WAITING_STATUS,
-        status.ACTIVATED_STATUS,
+        status.ACCEPTED_STATUS,
         status.DENIED_STATUS
       ),
       allowNull: false,
@@ -14,7 +14,7 @@ export default {
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.renameColumn('UserStatuss', 'status', {
+    await queryInterface.changeColumn('UserStatuss', 'status', {
       type: Sequelize.STRING,
       allowNull: false,
     });

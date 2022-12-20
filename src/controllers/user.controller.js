@@ -15,6 +15,7 @@ class UsersController {
       this.getUserRoleIsUserOrInstructor.bind(this);
     this.getVideoViewOfUser = this.getVideoViewOfUser.bind(this);
     this.getRequestsOfUser = this.getRequestsOfUser.bind(this);
+    this.requestBecomeToInstructor = this.requestBecomeToInstructor.bind(this);
   }
 
   async getCourses(req, res) {
@@ -190,23 +191,16 @@ class UsersController {
     }
   }
 
-  async searchUser(req, res) {
+  // eslint-disable-next-line class-methods-use-this
+  requestBecomeToInstructor(req, res) {
     try {
-      const { key, page, limit } = req.query;
-      const data = await this.service.searchUser(key, {
-        // eslint-disable-next-line radix
-        page: parseInt(page || pages.PAGE_DEFAULT),
-        // eslint-disable-next-line radix
-        limit: parseInt(limit || pages.LIMIT_DEFAULT),
-      });
-
-      return Response.success(
-        res,
-        { docs: data, pagination: data.pagination },
-        httpCodes.STATUS_OK
-      );
+      return Response.success(res, { docs: {} }, httpCodes.STATUS_OK);
     } catch (error) {
-      return Response.error(res, errors.WHILE_SEARCH.format('user'), 400);
+      return Response.error(
+        res,
+        errors.ERR_WHILE_REQUEST_BECOME_INSTRUCTOR,
+        httpCodes.STATUS_BAD_REQUEST
+      );
     }
   }
 }

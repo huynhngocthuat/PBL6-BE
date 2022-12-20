@@ -49,6 +49,7 @@ export default {
   GET_USER_BY_ID_OAUTH_FAILED: 'Get user by id oAuth failed',
   TOKEN_REJECT: 'Token is rejected',
   USER_NOT_AUTHORIZED: 'User not authorized',
+  USER_NOT_AUTHENTICATED: 'User not authenticated',
 
   // UsersService
   USER_NOT_FOUND: 'User not found',
@@ -68,4 +69,7 @@ export default {
   ERR_WHITE_COUNT_COURSE_AT_REPO: 'Cannot count course at repo',
 
   ERR_WHILE_UPDATE_VIEW_AT_SERVICE: 'Cannot update view of video at service',
+
+  ERR_WHILE_REQUEST_BECOME_INSTRUCTOR:
+    'Something wrong while request become instructor',
 };
