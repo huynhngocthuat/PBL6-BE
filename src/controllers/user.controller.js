@@ -1,7 +1,6 @@
 import { UsersService } from 'services';
 import Response from 'helpers/response';
-import { httpCodes, errors, pages } from 'constants';
-import { roles } from 'constants';
+import { httpCodes, errors, pages, roles } from 'constants';
 
 class UsersController {
   constructor(service) {
