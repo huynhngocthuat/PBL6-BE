@@ -255,6 +255,40 @@ class UsersService extends BaseService {
       throw new Error(error);
     }
   }
+
+  // eslint-disable-next-line consistent-return
+  async searchUser(keyword, pagination) {
+    try {
+      if (pagination) {
+        const condition = {
+          role: {
+            $or: [roles.INSTRUCTOR_ROLE, roles.USER_ROLE],
+          },
+          $and: {
+            $or: [
+              {
+                fullName: {
+                  $iLike: `%${keyword}%`,
+                },
+              },
+              {
+                email: {
+                  $iLike: `%${keyword}%`,
+                },
+              },
+            ],
+          },
+        };
+        const { offset, limit } = getPagination(pagination);
+        return await this.repo.findAllByCondition(condition, false, {
+          offset,
+          limit,
+        });
+      }
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
 }
 
 export default new UsersService(usersRepository, {
