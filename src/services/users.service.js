@@ -2,7 +2,7 @@ import { usersRepository } from 'repositories';
 import { v4 as uuidv4 } from 'uuid';
 import { sendEmailConfirm } from 'helpers/mail';
 import { json } from 'utils';
-import { errors, infors } from 'constants';
+import { errors, infors, roles } from 'constants';
 import {
   UserDetailsResponse,
   GetMeResponse,
