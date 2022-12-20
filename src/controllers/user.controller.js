@@ -15,7 +15,6 @@ class UsersController {
       this.getUserRoleIsUserOrInstructor.bind(this);
     this.getVideoViewOfUser = this.getVideoViewOfUser.bind(this);
     this.getRequestsOfUser = this.getRequestsOfUser.bind(this);
-    this.searchUser = this.searchUser.bind(this);
   }
 
   async getCourses(req, res) {
