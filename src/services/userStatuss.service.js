@@ -1,4 +1,6 @@
 import { UserResponse } from 'commons/responses/auth';
+import { status } from 'constants';
+import StatisticRequest from 'dtos/statisticRequest';
 import { getPagination } from 'helpers/pagging';
 import { userStatussRepository } from 'repositories';
 import { json } from 'utils';
@@ -53,6 +55,24 @@ class UserStatussService extends BaseService {
     } catch (error) {
       throw new Error(error);
     }
+  }
+
+  async statisticRequestBecomeInstructorOfUser() {
+    const data = await this.repo.statisticRequestBecomeInstructorOfUser();
+    const jsonData = json(data);
+    const res = [
+      new StatisticRequest({ status: status.WAITING_STATUS }),
+      new StatisticRequest({ status: status.ACCEPTED_STATUS }),
+      new StatisticRequest({ status: status.DENIED_STATUS }),
+    ];
+
+    res.forEach((item, index) => {
+      const temp = jsonData.find((x) => x.status === res[index].status);
+      if (temp) {
+        res[index].total = temp.total;
+      }
+    });
+    return res;
   }
 }
 

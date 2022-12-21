@@ -74,4 +74,8 @@ export default {
     'Something wrong while request become instructor',
   ERR_WHILE_REQUEST_BECOME_INSTRUCTOR_IS_EXISTED:
     'Cannot request. Your request already exist, it is in waiting status',
+  ERR_WHILE_ANS_REQUEST_BECOME_INSTRUCTOR:
+    'Something wrong while answer request become instructor of user',
+  ERR_WHILE_STATISTIC_REQUEST_BECOME_INSTRUCTOR:
+    'Something wrong while statistic requests become instructor of user',
 };
