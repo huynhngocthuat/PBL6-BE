@@ -1,8 +1,7 @@
 import { UsersService } from 'services';
 import Response from 'helpers/response';
-import { httpCodes, errors, pages, roles } from 'constants';
-import UserRequestStatus from 'dtos/userRequestStatus';
-import { status } from 'constants';
+import { httpCodes, errors, pages, roles, status } from 'constants';
+import UserRequestStatus from 'dtos/userRequest';
 
 class UsersController {
   constructor(service) {
@@ -18,6 +17,8 @@ class UsersController {
     this.getVideoViewOfUser = this.getVideoViewOfUser.bind(this);
     this.getRequestsOfUser = this.getRequestsOfUser.bind(this);
     this.requestBecomeToInstructor = this.requestBecomeToInstructor.bind(this);
+    this.answerRequestBecomeToInstructor =
+      this.answerRequestBecomeToInstructor.bind(this);
   }
 
   async getCourses(req, res) {
@@ -212,6 +213,17 @@ class UsersController {
         });
       }
 
+      return Response.error(res, {
+        message: errors.ERR_WHILE_REQUEST_BECOME_INSTRUCTOR,
+      });
+    }
+  }
+
+  async answerRequestBecomeToInstructor(req, res) {
+    try {
+      const data = await this.service.updateRequestBecomeToInstructor(req.body);
+      return Response.success(res, { docs: data }, httpCodes.STATUS_OK);
+    } catch (error) {
       return Response.error(res, {
         message: errors.ERR_WHILE_REQUEST_BECOME_INSTRUCTOR,
       });

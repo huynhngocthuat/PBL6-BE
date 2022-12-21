@@ -3,7 +3,6 @@ import { VideosService } from 'services';
 import { errors } from 'constants';
 import { sectionIdExist } from './section.schema';
 
-// eslint-disable-next-line import/prefer-default-export
 export const video = Joi.object({
   description: Joi.string().trim(),
   duration: Joi.number().positive().required(),

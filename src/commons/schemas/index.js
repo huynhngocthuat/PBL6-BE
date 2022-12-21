@@ -16,6 +16,7 @@ import { avatar, updateProfile, userIdExist } from './user.schema';
 import { hashtag } from './hashtag.schema';
 import { id } from './common.schema';
 import { videoComment } from './videoComment.schema';
+import { answerRequest, userRequestIdExist } from './answerRequest.chema';
 import { videoView } from './videoView.schema';
 
 export {
@@ -49,4 +50,6 @@ export {
   updateProfile,
   userIdExist,
   // end user
+  answerRequest,
+  userRequestIdExist,
 };
