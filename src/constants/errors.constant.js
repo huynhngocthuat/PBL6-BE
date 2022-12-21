@@ -82,4 +82,6 @@ export default {
     'Something wrong while get information detail of user',
   ERR_WHILE_ACTION_NOT_VALID:
     'Action is not valid. Status of request is ACCEPTED or DENIED',
+  ERR_WHILE_CHECK_REQUEST_OF_USER:
+    'Something wrong while check request of user',
 };

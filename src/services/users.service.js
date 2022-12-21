@@ -353,6 +353,23 @@ class UsersService extends BaseService {
       throw new Error(error);
     }
   }
+
+  async checkRequestOfUser(userId) {
+    try {
+      const state = {
+        $or: [status.WAITING_STATUS, status.ACCEPTED_STATUS],
+      };
+
+      const data = await this.userStatussService.findUserRequestByStatus(
+        userId,
+        state
+      );
+
+      return json(data);
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
 }
 
 export default new UsersService(usersRepository, {

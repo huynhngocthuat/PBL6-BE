@@ -31,6 +31,13 @@ router.get(
 );
 
 router.get(
+  '/check-request',
+  AuthMiddleware.isRequired,
+  AuthMiddleware.isRole(roles.USER_ROLE),
+  UserController.checkRequestOfUser
+);
+
+router.get(
   '/:id/videos/:idVideo/videoviews',
   UserController.getVideoViewOfUser
 );
