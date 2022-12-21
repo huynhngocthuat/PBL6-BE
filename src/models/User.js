@@ -5,7 +5,10 @@ import { roles } from 'constants';
 export const UserModel = (sequelize, DataTypes) => {
   class User extends Model {
     static associate(models) {
-      this.hasOne(models.UserDetail, { foreignKey: 'userId', as: 'user' });
+      this.hasOne(models.UserDetail, {
+        foreignKey: 'userId',
+        as: 'userDetail',
+      });
       this.hasMany(models.OauthAccessToken, {
         foreignKey: 'userId',
         as: 'oauthAccessTokens',

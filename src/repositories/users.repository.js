@@ -33,56 +33,6 @@ export class UsersRepository extends BaseRepository {
     });
     return user;
   }
-
-  // async searchUser(keyword, pagination) {
-  //   try {
-  //     if (pagination) {
-  //       const { offset, limit } = pagination;
-
-  //       const data = await this.model.findAll({
-  //         where: {
-  //           role: {
-  //             $or: [roles.INSTRUCTOR_ROLE, roles.USER_ROLE],
-  //           },
-  //           $and: {
-  //             $or: [
-  //               {
-  //                 fullName: {
-  //                   $iLike: `%${keyword}%`,
-  //                 },
-  //               },
-  //               {
-  //                 email: {
-  //                   $iLike: `%${keyword}%`,
-  //                 },
-  //               },
-  //             ],
-  //           },
-  //         },
-  //         logging: console.log,
-  //         offset,
-  //         limit,
-  //       });
-
-  //       const total = await this.model.count({
-  //         where: { ...condition },
-  //         paranoid: !isDeleted,
-  //       });
-
-  //       const pagingData = getPagingData(
-  //         total,
-  //         Math.ceil(offset / limit) + 1,
-  //         limit
-  //       );
-
-  //       data.pagination = pagingData;
-
-  //       return data;
-  //     }
-  //   } catch (error) {
-  //     throw new Error(error);
-  //   }
-  // }
 }
 
 export default new UsersRepository(User);
