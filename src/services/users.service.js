@@ -9,6 +9,7 @@ import {
   UserResponse,
 } from 'commons/responses/auth';
 import { getPagination } from 'helpers/pagging';
+import UserInforDetailResponse from 'commons/responses/userInforDetail.response';
 import UserRequestUpdate from 'dtos/userRequestUpdate';
 import oAuthAccessTokenService from './oAuthAccessToken.service';
 import UserDetailsService from './userDetails.service';
@@ -333,6 +334,24 @@ class UsersService extends BaseService {
     const data =
       await this.userStatussService.statisticRequestBecomeInstructorOfUser();
     return data;
+  }
+
+  async getInforDetailOfUserByUserId(userId) {
+    try {
+      const data = await this.repo.findOneByCondition({ id: userId }, false, {
+        association: 'userDetail',
+      });
+      const jsonData = json(data);
+
+      const userResponse = new UserInforDetailResponse({
+        ...jsonData.userDetail,
+        ...jsonData,
+      });
+
+      return userResponse;
+    } catch (error) {
+      throw new Error(error);
+    }
   }
 }
 

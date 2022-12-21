@@ -78,4 +78,6 @@ export default {
     'Something wrong while answer request become instructor of user',
   ERR_WHILE_STATISTIC_REQUEST_BECOME_INSTRUCTOR:
     'Something wrong while statistic requests become instructor of user',
+  ERR_WHILE_GET_INFOR_DETAIL_OF_USER:
+    'Something wrong while get information detail of user',
 };

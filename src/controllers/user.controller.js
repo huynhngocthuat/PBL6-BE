@@ -21,6 +21,7 @@ class UsersController {
       this.answerRequestBecomeToInstructor.bind(this);
     this.statisticRequestBecomeToInstructor =
       this.statisticRequestBecomeToInstructor.bind(this);
+    this.getInforDetailOfUser = this.getInforDetailOfUser.bind(this);
   }
 
   async getCourses(req, res) {
@@ -239,6 +240,19 @@ class UsersController {
     } catch (error) {
       return Response.error(res, {
         message: errors.ERR_WHILE_STATISTIC_REQUEST_BECOME_INSTRUCTOR,
+      });
+    }
+  }
+
+  async getInforDetailOfUser(req, res) {
+    try {
+      const { id } = req.params;
+      const data = await this.service.getInforDetailOfUserByUserId(id);
+
+      return Response.success(res, { docs: data }, httpCodes.STATUS_OK);
+    } catch (error) {
+      return Response.error(res, {
+        message: errors.ERR_WHILE_GET_INFOR_DETAIL_OF_USER,
       });
     }
   }
