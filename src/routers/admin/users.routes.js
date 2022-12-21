@@ -10,6 +10,7 @@ const router = express.Router();
 
 router.get('/', UserController.getUserRoleIsUserOrInstructor);
 router.get('/requests', UserController.getRequestsOfUser);
+
 router.get(
   '/requests/statistic',
   UserController.statisticRequestBecomeToInstructor
@@ -36,7 +37,6 @@ router.post(
         message: errors.ERR_WHILE_ACTION_NOT_VALID,
       });
     } catch (error) {
-      console.log(error);
       return Response.error(res, {
         message: errors.ERR_WHILE_ANS_REQUEST_BECOME_INSTRUCTOR,
       });
