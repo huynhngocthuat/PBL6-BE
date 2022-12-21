@@ -1,5 +1,5 @@
 import dotenv from 'dotenv';
-
+import logger from 'configs/winston.config';
 import express from 'express';
 import morgan from 'morgan';
 import db from 'models';
@@ -9,6 +9,7 @@ import routerAdmin from 'routers/admin';
 import stringFormat from 'utils/string-format';
 import { swagger } from 'helpers/swagger';
 import bodyParser from 'body-parser';
+import cron from 'node-cron';
 
 dotenv.config();
 
@@ -24,6 +25,12 @@ app.use(
     extended: true,
   })
 );
+
+const task = cron.schedule('0 0 0 * * *', () => {
+  logger.info(`Cron job test every day at 12am`, Date(Date.now()).toString());
+});
+
+task.start();
 
 app.use('/api-docs', swagger());
 
