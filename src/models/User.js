@@ -39,6 +39,7 @@ export const UserModel = (sequelize, DataTypes) => {
         foreignKey: 'userId',
         as: 'sectionViews',
       });
+      this.hasMany(models.Follow, { foreignKey: 'userId', as: 'follows' });
     }
   }
 
