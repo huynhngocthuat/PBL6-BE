@@ -1,4 +1,5 @@
 /* eslint-disable import/prefer-default-export */
+import { status } from 'constants';
 import { Model } from 'sequelize';
 
 export const UserStatusModel = (sequelize, DataTypes) => {
@@ -21,8 +22,12 @@ export const UserStatusModel = (sequelize, DataTypes) => {
         allowNull: true,
       },
       status: {
-        type: DataTypes.STRING,
-        allowNull: true,
+        type: DataTypes.ENUM(
+          status.WAITING_STATUS,
+          status.ACCEPTED_STATUS,
+          status.DENIED_STATUS
+        ),
+        allowNull: false,
       },
       createdAt: {
         type: DataTypes.DATE,

@@ -1,6 +1,8 @@
 import { UsersService } from 'services';
 import Response from 'helpers/response';
 import { httpCodes, errors, pages, roles } from 'constants';
+import UserRequestStatus from 'dtos/userRequestStatus';
+import { status } from 'constants';
 
 class UsersController {
   constructor(service) {
@@ -15,6 +17,7 @@ class UsersController {
       this.getUserRoleIsUserOrInstructor.bind(this);
     this.getVideoViewOfUser = this.getVideoViewOfUser.bind(this);
     this.getRequestsOfUser = this.getRequestsOfUser.bind(this);
+    this.requestBecomeToInstructor = this.requestBecomeToInstructor.bind(this);
   }
 
   async getCourses(req, res) {
@@ -190,23 +193,28 @@ class UsersController {
     }
   }
 
-  async searchUser(req, res) {
+  async requestBecomeToInstructor(req, res) {
     try {
-      const { key, page, limit } = req.query;
-      const data = await this.service.searchUser(key, {
-        // eslint-disable-next-line radix
-        page: parseInt(page || pages.PAGE_DEFAULT),
-        // eslint-disable-next-line radix
-        limit: parseInt(limit || pages.LIMIT_DEFAULT),
+      const userRequest = new UserRequestStatus({
+        userId: req.user.id,
+        status: status.WAITING_STATUS,
       });
 
-      return Response.success(
-        res,
-        { docs: data, pagination: data.pagination },
-        httpCodes.STATUS_OK
-      );
+      const data = await this.service.requestBecomeToInstructor(userRequest);
+      return Response.success(res, { docs: data }, httpCodes.STATUS_OK);
     } catch (error) {
-      return Response.error(res, errors.WHILE_SEARCH.format('user'), 400);
+      if (
+        error.message ===
+        `Error: ${errors.ERR_WHILE_REQUEST_BECOME_INSTRUCTOR_IS_EXISTED}`
+      ) {
+        return Response.error(res, {
+          message: errors.ERR_WHILE_REQUEST_BECOME_INSTRUCTOR_IS_EXISTED,
+        });
+      }
+
+      return Response.error(res, {
+        message: errors.ERR_WHILE_REQUEST_BECOME_INSTRUCTOR,
+      });
     }
   }
 }

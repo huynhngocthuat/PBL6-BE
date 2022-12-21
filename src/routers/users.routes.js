@@ -2,6 +2,7 @@ import express from 'express';
 import { UserController } from 'controllers';
 import { ValidatorBody, ValidatorParams } from 'validations';
 import AuthMiddleware from 'middlewares/auth';
+import { roles } from 'constants';
 
 const router = express.Router();
 
@@ -40,6 +41,13 @@ router.put(
   '/update-view',
   ValidatorBody('videoView'),
   UserController.updateViewOfUserForVideo
+);
+
+router.post(
+  '/request-instructor',
+  AuthMiddleware.isRequired,
+  AuthMiddleware.isRole(roles.USER_ROLE),
+  UserController.requestBecomeToInstructor
 );
 
 export default router;
