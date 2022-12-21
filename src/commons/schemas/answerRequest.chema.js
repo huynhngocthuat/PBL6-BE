@@ -7,11 +7,12 @@ export const userRequestIdExist = Joi.object({
     .trim()
     .uuid()
     .required()
-    .external(async (userId) => {
+    .external(async (id) => {
       try {
         const data = await userStatussService.findOneByCondition({
-          id: userId,
+          id,
         });
+
         if (!data) {
           throw new Error(errors.NOT_EXIST.format('user request'));
         }
@@ -35,7 +36,7 @@ export const answerRequest = Joi.object({
         value.toUpperCase() !== actions.ACTION_ACCEPT_REQUEST_TO_INSRUCTOR &&
         value.toUpperCase() !== actions.ACTION_DENIED_REQUEST_TO_INSTRUCTOR
       ) {
-        return helper.message('Action must be ACCEPT or DENIED');
+        return helper.message('Action must be ACCEPT or DENY');
       }
 
       return value;

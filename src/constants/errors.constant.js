@@ -80,4 +80,6 @@ export default {
     'Something wrong while statistic requests become instructor of user',
   ERR_WHILE_GET_INFOR_DETAIL_OF_USER:
     'Something wrong while get information detail of user',
+  ERR_WHILE_ACTION_NOT_VALID:
+    'Action is not valid. Status of request is ACCEPTED or DENIED',
 };
