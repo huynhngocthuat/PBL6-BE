@@ -40,6 +40,20 @@ class UserStatussService extends BaseService {
       throw new Error(error);
     }
   }
+
+  async findUserRequestByStatus(userId, status) {
+    try {
+      const condition = {
+        status,
+        userId,
+      };
+      const data = await this.repo.findOneByCondition(condition);
+
+      return json(data);
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
 }
 
 export default new UserStatussService(userStatussRepository);

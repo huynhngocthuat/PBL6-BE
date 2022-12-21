@@ -2,7 +2,7 @@ import { usersRepository } from 'repositories';
 import { v4 as uuidv4 } from 'uuid';
 import { sendEmailConfirm } from 'helpers/mail';
 import { json } from 'utils';
-import { errors, infors } from 'constants';
+import { errors, infors, status } from 'constants';
 import {
   UserDetailsResponse,
   GetMeResponse,
@@ -267,6 +267,25 @@ class UsersService extends BaseService {
   async getRequestsOfUser(pagination = null) {
     try {
       return await this.userStatussService.getAll(pagination);
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  async requestBecomeToInstructor(userRequestStatus) {
+    try {
+      const userRequest = await this.userStatussService.findUserRequestByStatus(
+        userRequestStatus.userId,
+        status.WAITING_STATUS
+      );
+
+      // check if the user has a request that is in the waiting state, return error
+      if (userRequest) {
+        throw new Error(errors.ERR_WHILE_REQUEST_BECOME_INSTRUCTOR_IS_EXISTED);
+      }
+
+      const data = await this.userStatussService.create(userRequestStatus);
+      return json(data);
     } catch (error) {
       throw new Error(error);
     }

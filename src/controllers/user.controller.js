@@ -1,6 +1,8 @@
 import { UsersService } from 'services';
 import Response from 'helpers/response';
 import { httpCodes, errors, pages, roles } from 'constants';
+import UserRequestStatus from 'dtos/userRequestStatus';
+import { status } from 'constants';
 
 class UsersController {
   constructor(service) {
@@ -191,16 +193,28 @@ class UsersController {
     }
   }
 
-  // eslint-disable-next-line class-methods-use-this
-  requestBecomeToInstructor(req, res) {
+  async requestBecomeToInstructor(req, res) {
     try {
-      return Response.success(res, { docs: {} }, httpCodes.STATUS_OK);
+      const userRequest = new UserRequestStatus({
+        userId: req.user.id,
+        status: status.WAITING_STATUS,
+      });
+
+      const data = await this.service.requestBecomeToInstructor(userRequest);
+      return Response.success(res, { docs: data }, httpCodes.STATUS_OK);
     } catch (error) {
-      return Response.error(
-        res,
-        errors.ERR_WHILE_REQUEST_BECOME_INSTRUCTOR,
-        httpCodes.STATUS_BAD_REQUEST
-      );
+      if (
+        error.message ===
+        `Error: ${errors.ERR_WHILE_REQUEST_BECOME_INSTRUCTOR_IS_EXISTED}`
+      ) {
+        return Response.error(res, {
+          message: errors.ERR_WHILE_REQUEST_BECOME_INSTRUCTOR_IS_EXISTED,
+        });
+      }
+
+      return Response.error(res, {
+        message: errors.ERR_WHILE_REQUEST_BECOME_INSTRUCTOR,
+      });
     }
   }
 }

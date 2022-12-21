@@ -72,4 +72,6 @@ export default {
 
   ERR_WHILE_REQUEST_BECOME_INSTRUCTOR:
     'Something wrong while request become instructor',
+  ERR_WHILE_REQUEST_BECOME_INSTRUCTOR_IS_EXISTED:
+    'Cannot request. Your request already exist, it is in waiting status',
 };

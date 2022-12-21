@@ -46,7 +46,7 @@ router.put(
 router.post(
   '/request-instructor',
   AuthMiddleware.isRequired,
-  AuthMiddleware.isRole(roles.INSTRUCTOR_ROLE),
+  AuthMiddleware.isRole(roles.USER_ROLE),
   UserController.requestBecomeToInstructor
 );
 
