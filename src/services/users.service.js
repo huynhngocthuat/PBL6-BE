@@ -2,13 +2,14 @@ import { usersRepository } from 'repositories';
 import { v4 as uuidv4 } from 'uuid';
 import { sendEmailConfirm } from 'helpers/mail';
 import { json } from 'utils';
-import { errors, infors, status } from 'constants';
+import { errors, infors, status, actions } from 'constants';
 import {
   UserDetailsResponse,
   GetMeResponse,
   UserResponse,
 } from 'commons/responses/auth';
 import { getPagination } from 'helpers/pagging';
+import UserRequestUpdate from 'dtos/userRequestUpdate';
 import oAuthAccessTokenService from './oAuthAccessToken.service';
 import UserDetailsService from './userDetails.service';
 import videoViewsService from './videoViews.service';
@@ -286,6 +287,44 @@ class UsersService extends BaseService {
 
       const data = await this.userStatussService.create(userRequestStatus);
       return json(data);
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  async updateRequestBecomeToInstructor(userRequestStatusUpdate) {
+    try {
+      let reason = '';
+      let state = '';
+
+      if (
+        userRequestStatusUpdate.action ===
+        actions.ACTION_DENIED_REQUEST_TO_INSTRUCTOR
+      ) {
+        reason = userRequestStatusUpdate.reason;
+      }
+
+      if (
+        userRequestStatusUpdate.action ===
+        actions.ACTION_DENIED_REQUEST_TO_INSTRUCTOR
+      ) {
+        state = status.DENIED_STATUS;
+      } else {
+        state = status.ACCEPTED_STATUS;
+      }
+
+      const condition = {
+        id: userRequestStatusUpdate.id,
+      };
+
+      const input = new UserRequestUpdate({
+        id: userRequestStatusUpdate.id,
+        reason,
+        status: state,
+      });
+
+      console.log(input);
+      return await this.userStatussService.updateByCondition(condition, input);
     } catch (error) {
       throw new Error(error);
     }

@@ -7,6 +7,7 @@ import infors from './infors.constant';
 import pages from './pagging.constant';
 import time from './time.constant';
 import status from './status.constant';
+import actions from './actions.constant';
 
 export {
   notiTypes,
@@ -18,4 +19,5 @@ export {
   pages,
   time,
   status,
+  actions,
 };
