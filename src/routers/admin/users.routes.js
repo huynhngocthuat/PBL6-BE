@@ -6,8 +6,13 @@ const router = express.Router();
 
 router.get('/', UserController.getUserRoleIsUserOrInstructor);
 router.get('/requests', UserController.getRequestsOfUser);
+router.get(
+  '/requests/statistic',
+  UserController.statisticRequestBecomeToInstructor
+);
+
 router.post(
-  '/request/answer-request-instructor',
+  '/requests/answer-request-instructor',
   ValidatorBody('answerRequest'),
   UserController.answerRequestBecomeToInstructor
 );

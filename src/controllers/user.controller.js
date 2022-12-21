@@ -19,6 +19,8 @@ class UsersController {
     this.requestBecomeToInstructor = this.requestBecomeToInstructor.bind(this);
     this.answerRequestBecomeToInstructor =
       this.answerRequestBecomeToInstructor.bind(this);
+    this.statisticRequestBecomeToInstructor =
+      this.statisticRequestBecomeToInstructor.bind(this);
   }
 
   async getCourses(req, res) {
@@ -225,7 +227,18 @@ class UsersController {
       return Response.success(res, { docs: data }, httpCodes.STATUS_OK);
     } catch (error) {
       return Response.error(res, {
-        message: errors.ERR_WHILE_REQUEST_BECOME_INSTRUCTOR,
+        message: errors.ERR_WHILE_ANS_REQUEST_BECOME_INSTRUCTOR,
+      });
+    }
+  }
+
+  async statisticRequestBecomeToInstructor(req, res) {
+    try {
+      const data = await this.service.statisticRequestBecomeInstructorOfUser();
+      return Response.success(res, { docs: data }, httpCodes.STATUS_OK);
+    } catch (error) {
+      return Response.error(res, {
+        message: errors.ERR_WHILE_STATISTIC_REQUEST_BECOME_INSTRUCTOR,
       });
     }
   }

@@ -323,11 +323,16 @@ class UsersService extends BaseService {
         status: state,
       });
 
-      console.log(input);
       return await this.userStatussService.updateByCondition(condition, input);
     } catch (error) {
       throw new Error(error);
     }
+  }
+
+  async statisticRequestBecomeInstructorOfUser() {
+    const data =
+      await this.userStatussService.statisticRequestBecomeInstructorOfUser();
+    return data;
   }
 }
 
