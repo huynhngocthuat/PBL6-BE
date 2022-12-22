@@ -18,9 +18,17 @@ class UploadController {
         },
         file
       );
-      const url = image.secure_url;
 
-      return Response.success(res, { docs: { url } }, httpCodes.STATUS_OK);
+      const data = {
+        id: image.public_id,
+        url: image.secure_url,
+      };
+
+      // use db 1 in Redis
+      // await redisClient.select(1);
+      // await redisClient.set(data.id, data.url);
+
+      return Response.success(res, { docs: data }, httpCodes.STATUS_OK);
     } catch (error) {
       return Response.error(res, error, 400);
     }
@@ -37,9 +45,16 @@ class UploadController {
       file
     );
 
-    const url = video.secure_url;
+    const data = {
+      id: video.public_id,
+      url: video.secure_url,
+    };
 
-    return Response.success(res, { docs: { url } }, httpCodes.STATUS_OK);
+    // use db 1 in Redis
+    // await redisClient.select(1);
+    // await redisClient.set(data.id, data.url);
+
+    return Response.success(res, { docs: data }, httpCodes.STATUS_OK);
   }
 }
 
