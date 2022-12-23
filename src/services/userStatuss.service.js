@@ -1,7 +1,6 @@
 import { UserResponse } from 'commons/responses/auth';
 import { status } from 'constants';
 import StatisticRequest from 'dtos/statisticRequest';
-import { getPagination } from 'helpers/pagging';
 import { userStatussRepository } from 'repositories';
 import { json } from 'utils';
 import BaseService from './base.service';
@@ -11,25 +10,56 @@ class UserStatussService extends BaseService {
     super(repo);
   }
 
-  async getAll(pagination) {
+  /**
+   * It gets all user requests from the database and returns them in a paginated format
+   * @param {object} condition is condition to filter request of user
+   * @param {object} pagination is paging data have page and limit data
+   * @return {object} is obejct have list user request and pagination
+   */
+  async getRequestsOfUserByCondition(condition, pagination) {
     try {
-      let userRequests = [];
       const data = {};
-      if (pagination) {
-        const { offset, limit } = getPagination(pagination);
-        userRequests = await this.repo.findAll(
-          { offset, limit },
-          {
-            association: 'user',
-          }
-        );
+      // eslint-disable-next-line no-param-reassign
+      condition.status =
+        condition.status.toUpperCase() === status.WAITING_STATUS ||
+        condition.status.toUpperCase() === status.ACCEPTED_STATUS ||
+        condition.status.toUpperCase() === status.DENIED_STATUS
+          ? [condition.status.toUpperCase()]
+          : [
+              status.WAITING_STATUS,
+              status.ACCEPTED_STATUS,
+              status.DENIED_STATUS,
+            ];
 
-        data.pagination = userRequests.pagination;
+      let statusCondition;
+      if (condition.status.length === 1) {
+        statusCondition = condition.status.toString();
       } else {
-        userRequests = await this.repo.findAll(null, {
-          association: 'user',
-        });
+        statusCondition = {
+          $or: condition.status,
+        };
       }
+
+      const cond = {
+        status: statusCondition,
+      };
+
+      const include = {
+        association: 'user',
+        where: {
+          fullName: {
+            $iLike: `%${condition.keyword}%`,
+          },
+        },
+      };
+
+      const userRequests = await this.repo.getRequestsOfUserByCondition(
+        cond,
+        include,
+        pagination
+      );
+
+      data.pagination = userRequests.pagination;
 
       data.userRequests = Array.from(json(userRequests) || [], (x) => {
         // eslint-disable-next-line no-param-reassign

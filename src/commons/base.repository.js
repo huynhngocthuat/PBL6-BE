@@ -110,7 +110,11 @@ export default class BaseRepository {
     }
   }
 
-  async findAll(pagination = null, include = null) {
+  async findAll(
+    pagination = null,
+    include = null,
+    order = [['createdAt', 'DESC']]
+  ) {
     try {
       let data;
       if (pagination) {
@@ -118,9 +122,10 @@ export default class BaseRepository {
 
         data = await this.model.findAll({
           include,
-          logging: console.log,
           offset,
           limit,
+          order,
+          logging: console.log,
         });
 
         const total = await this.model.count();
@@ -131,7 +136,11 @@ export default class BaseRepository {
         );
         data.pagination = pagingData;
       } else {
-        data = await this.model.findAll({ include, logging: console.log });
+        data = await this.model.findAll({
+          include,
+          order,
+          logging: console.log,
+        });
       }
 
       logger.info(infors.FIND_AT_REPO_SUCCESS.format(this.model.name));
@@ -166,17 +175,25 @@ export default class BaseRepository {
     }
   }
 
-  async findAllByCondition(condition, isDeleted = false, pagination = null) {
+  async findAllByCondition(
+    condition,
+    isDeleted = false,
+    pagination = null,
+    include = null,
+    order = [['createdAt', 'DESC']]
+  ) {
     try {
       let data;
       if (pagination) {
         const { offset, limit } = pagination;
 
         data = await this.model.findAll({
+          include,
           where: { ...condition },
           paranoid: !isDeleted,
           offset,
           limit,
+          order,
           logging: console.log,
         });
 
@@ -196,6 +213,8 @@ export default class BaseRepository {
         data = await this.model.findAll({
           where: { ...condition },
           paranoid: !isDeleted,
+          order,
+          logging: console.log,
         });
       }
 

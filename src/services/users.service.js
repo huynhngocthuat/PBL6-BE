@@ -266,9 +266,12 @@ class UsersService extends BaseService {
     }
   }
 
-  async getRequestsOfUser(pagination = null) {
+  async getRequestsOfUserByCondition(condition, pagination = null) {
     try {
-      return await this.userStatussService.getAll(pagination);
+      return await this.userStatussService.getRequestsOfUserByCondition(
+        condition,
+        pagination
+      );
     } catch (error) {
       throw new Error(error);
     }
