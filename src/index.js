@@ -10,6 +10,7 @@ import stringFormat from 'utils/string-format';
 import { swagger } from 'helpers/swagger';
 import bodyParser from 'body-parser';
 import cron from 'node-cron';
+import { getAllKey, getKey } from 'helpers/redis';
 
 dotenv.config();
 
@@ -26,8 +27,16 @@ app.use(
   })
 );
 
-const task = cron.schedule('0 0 0 * * *', () => {
-  logger.info(`Cron job test every day at 12am`, Date(Date.now()).toString());
+const task = cron.schedule('0 */1 * * * *', async () => {
+  // logger.info(`Cron job test every minute`, Date(Date.now()).toString());
+  // const keys = await getAllKey(0, 'publicId_*');
+  // if (keys.length > 0) {
+  //   for (let i = 0; i < keys.length; i += 1) {
+  //     // eslint-disable-next-line no-await-in-loop
+  //     const data = await getKey(0, keys[i]);
+  //     console.log(JSON.parse(data).publicId);
+  //   }
+  // }
 });
 
 task.start();
