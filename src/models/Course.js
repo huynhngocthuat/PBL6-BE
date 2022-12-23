@@ -51,6 +51,11 @@ export const CourseModel = (sequelize, DataTypes) => {
         defaultValue: true,
         allowNull: false,
       },
+      isPublic: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+        allowNull: false,
+      },
       createdAt: {
         type: DataTypes.DATE,
         allowNull: true,
