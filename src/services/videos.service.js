@@ -5,12 +5,17 @@ import VideoResponse from 'commons/responses/video.response';
 import BaseService from './base.service';
 import videoViewsService from './videoViews.service';
 import videoCommentsService from './videoComments.service';
+import emotionReactsService from './emotionReacts.service';
 
 class VideosService extends BaseService {
-  constructor(repo, { videoViewsService, videoCommentsService }) {
+  constructor(
+    repo,
+    { videoViewsService, videoCommentsService, emotionReactsService }
+  ) {
     super(repo);
     this.videoViewsService = videoViewsService;
     this.videoCommentsService = videoCommentsService;
+    this.emotionReactsService = emotionReactsService;
   }
 
   /**
@@ -50,8 +55,20 @@ class VideosService extends BaseService {
       const totalComment = await this.videoCommentsService.countCommentOfVideo(
         videoId
       );
+      const totalLike =
+        // eslint-disable-next-line no-await-in-loop
+        await this.emotionReactsService.countLikesOfVideo(videoId);
+      const totalDisLike =
+        // eslint-disable-next-line no-await-in-loop
+        await this.emotionReactsService.countDisLikesOfVideo(videoId);
 
-      return new VideoResponse({ ...video, ...viewVideo, ...totalComment });
+      return new VideoResponse({
+        ...video,
+        ...viewVideo,
+        ...totalComment,
+        ...totalLike,
+        ...totalDisLike,
+      });
     } catch (error) {
       throw new Error(error);
     }
@@ -74,10 +91,22 @@ class VideosService extends BaseService {
         const totalComment =
           // eslint-disable-next-line no-await-in-loop
           await this.videoCommentsService.countCommentOfVideo(videoId);
+        const totalLike =
+          // eslint-disable-next-line no-await-in-loop
+          await this.emotionReactsService.countLikesOfVideo(videoId);
+        const totalDisLike =
+          // eslint-disable-next-line no-await-in-loop
+          await this.emotionReactsService.countDisLikesOfVideo(videoId);
 
         response.data = [
           ...response.data,
-          new VideoResponse({ ...listVideo[i], ...viewVideo, ...totalComment }),
+          new VideoResponse({
+            ...listVideo[i],
+            ...viewVideo,
+            ...totalComment,
+            ...totalLike,
+            ...totalDisLike,
+          }),
         ];
       }
 
@@ -91,4 +120,5 @@ class VideosService extends BaseService {
 export default new VideosService(VideosRepository, {
   videoViewsService,
   videoCommentsService,
+  emotionReactsService,
 });
