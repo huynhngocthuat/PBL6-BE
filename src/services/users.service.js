@@ -10,6 +10,7 @@ import {
 } from 'commons/responses/auth';
 import { getPagination } from 'helpers/pagging';
 import UserInforDetailResponse from 'commons/responses/userInforDetail.response';
+import TotalUser from 'dtos/TotalUser';
 import UserRequestUpdate from 'dtos/userRequestUpdate';
 import oAuthAccessTokenService from './oAuthAccessToken.service';
 import UserDetailsService from './userDetails.service';
@@ -369,6 +370,24 @@ class UsersService extends BaseService {
       );
 
       return json(data);
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  async countAllUser() {
+    try {
+      const data = await this.repo.countAllUser();
+      const totalUser = {};
+
+      // if data is null assign 0
+      if (!data) {
+        totalUser.total = 0;
+      } else {
+        totalUser.total = data;
+      }
+
+      return new TotalUser(totalUser);
     } catch (error) {
       throw new Error(error);
     }

@@ -141,6 +141,15 @@ export class CoursesRepository extends BaseRepository {
       throw new Error(error);
     }
   }
+
+  async countAllCourse() {
+    try {
+      const data = await this.model.count({ paranoid: false });
+      return data;
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
 }
 
 export default new CoursesRepository(Course);

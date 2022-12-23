@@ -84,4 +84,6 @@ export default {
     'Action is not valid. Status of request is ACCEPTED or DENIED',
   ERR_WHILE_CHECK_REQUEST_OF_USER:
     'Something wrong while check request of user',
+  ERR_WHILE_STATISTIC_OVERVIEW:
+    'Something wrong while get information statistics overview',
 };
