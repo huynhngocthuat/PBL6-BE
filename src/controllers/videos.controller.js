@@ -53,6 +53,7 @@ class VideosController {
         }
       }
     } catch (error) {
+      console.log(error);
       return Response.error(res, errors.WHILE_GET.format('video'), 400);
     }
   }

@@ -51,7 +51,6 @@ class VideoViewsService extends BaseService {
     try {
       const data = await this.repo.getViewOfVideo(videoId);
       let viewVideo = {};
-
       // if data is null assign 0
       if (!data) {
         viewVideo.total = 0;
