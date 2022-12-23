@@ -4,11 +4,13 @@ import { json } from 'utils';
 import VideoResponse from 'commons/responses/video.response';
 import BaseService from './base.service';
 import videoViewsService from './videoViews.service';
+import videoCommentsService from './videoComments.service';
 
 class VideosService extends BaseService {
-  constructor(repo, { videoViewsService }) {
+  constructor(repo, { videoViewsService, videoCommentsService }) {
     super(repo);
     this.videoViewsService = videoViewsService;
+    this.videoCommentsService = videoCommentsService;
   }
 
   /**
@@ -45,8 +47,11 @@ class VideosService extends BaseService {
       const data = await this.find(videoId);
       const video = json(data);
       const viewVideo = await this.getViewOfVideo(videoId);
+      const totalComment = await this.videoCommentsService.countCommentOfVideo(
+        videoId
+      );
 
-      return new VideoResponse({ ...video, ...viewVideo });
+      return new VideoResponse({ ...video, ...viewVideo, ...totalComment });
     } catch (error) {
       throw new Error(error);
     }
@@ -63,11 +68,16 @@ class VideosService extends BaseService {
       };
 
       for (let i = 0; i < listVideo.length; i += 1) {
+        const videoId = listVideo[i].id;
         // eslint-disable-next-line no-await-in-loop
-        const viewVideo = await this.getViewOfVideo(listVideo[i].id);
+        const viewVideo = await this.getViewOfVideo(videoId);
+        const totalComment =
+          // eslint-disable-next-line no-await-in-loop
+          await this.videoCommentsService.countCommentOfVideo(videoId);
+
         response.data = [
           ...response.data,
-          new VideoResponse({ ...listVideo[i], ...viewVideo }),
+          new VideoResponse({ ...listVideo[i], ...viewVideo, ...totalComment }),
         ];
       }
 
@@ -78,4 +88,7 @@ class VideosService extends BaseService {
   }
 }
 
-export default new VideosService(VideosRepository, { videoViewsService });
+export default new VideosService(VideosRepository, {
+  videoViewsService,
+  videoCommentsService,
+});
