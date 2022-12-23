@@ -1,19 +1,23 @@
-import { AdminsService } from 'services';
+import { AdminService } from 'services';
+import Response from 'helpers/response';
+import { httpCodes, errors } from 'constants';
 
-class AdminsController {
+class AdminController {
   constructor(service) {
     this.service = service;
     this.statisticOverview = this.statisticOverview.bind(this);
   }
 
   // eslint-disable-next-line class-methods-use-this, no-unused-vars
-  statisticOverview(req, res) {
+  async statisticOverview(req, res) {
     try {
-      console.log('oke');
+      const data = await this.service.statisticOverview();
+
+      return Response.success(res, { docs: data }, httpCodes.STATUS_OK);
     } catch (error) {
-      console.log(error);
+      return Response.error(res, errors.ERR_WHILE_STATISTIC_OVERVIEW, 400);
     }
   }
 }
 
-export default new AdminsController(AdminsService);
+export default new AdminController(AdminService);

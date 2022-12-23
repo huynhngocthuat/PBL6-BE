@@ -33,6 +33,15 @@ export class UsersRepository extends BaseRepository {
     });
     return user;
   }
+
+  async countAllUser() {
+    try {
+      const data = await this.model.count({ paranoid: false });
+      return data;
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
 }
 
 export default new UsersRepository(User);

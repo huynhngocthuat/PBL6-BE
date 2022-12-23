@@ -5,6 +5,7 @@ import { errors, infors } from 'constants';
 import { AttendanceOfCourse } from 'commons/responses/auth';
 import db from 'models';
 import logger from 'configs/winston.config';
+import TotalCourse from 'dtos/totalCourse';
 import BaseService from './base.service';
 import SectionsService from './sections.service';
 import HashtagsService from './hashtag.service';
@@ -177,6 +178,24 @@ class CoursesService extends BaseService {
       }));
 
       return new AttendanceOfCourse({ year, data });
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  async countAllCourse() {
+    try {
+      const data = await this.repo.countAllCourse();
+      const totalCourse = {};
+
+      // if data is null assign 0
+      if (!data) {
+        totalCourse.total = 0;
+      } else {
+        totalCourse.total = data;
+      }
+
+      return new TotalCourse(totalCourse);
     } catch (error) {
       throw new Error(error);
     }
