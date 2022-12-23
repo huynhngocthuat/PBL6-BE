@@ -27,7 +27,6 @@ class UploadController {
       // use db 1 in Redis
       // await redisClient.select(1);
       // await redisClient.set(data.id, data.url);
-
       return Response.success(res, { docs: data }, httpCodes.STATUS_OK);
     } catch (error) {
       return Response.error(res, error, 400);

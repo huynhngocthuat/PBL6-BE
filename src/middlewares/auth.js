@@ -1,5 +1,5 @@
 import { UsersService, oAuthAccessTokenService } from 'services';
-import { getData } from 'helpers/redis';
+import { getKey } from 'helpers/redis';
 import Response from '../helpers/response';
 import jwt from '../helpers/jwt';
 import { errors, roles, httpCodes } from '../constants';
@@ -33,7 +33,7 @@ export default class AuthMiddleware {
     }
 
     // token in black list
-    const inBlackList = await getData(0, `revoke_${token}`);
+    const inBlackList = await getKey(0, `revoke_${token}`);
     if (inBlackList) {
       return Response.error(
         res,

@@ -12,6 +12,7 @@ class VideosController {
     this.getInstructorUploadVideo = this.getInstructorUploadVideo.bind(this);
   }
 
+  // eslint-disable-next-line class-methods-use-this
   async create(req, res) {
     try {
       const data = await this.service.create(req.body);
