@@ -28,6 +28,14 @@ class AdminService extends BaseService {
       throw new Error(error);
     }
   }
+
+  async getAllSoldCourses(pagination) {
+    try {
+      return await this.subscribesService.getAllSoldCourses(pagination);
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
 }
 
 export default new AdminService(usersRepository, {

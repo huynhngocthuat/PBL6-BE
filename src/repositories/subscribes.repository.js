@@ -16,6 +16,15 @@ export class SubscribeRepository extends BaseRepository {
       throw new Error(error);
     }
   }
+
+  async getAllSoldCourses(pagination, include) {
+    try {
+      const data = await this.repo.findAll(pagination, include);
+      return data;
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
 }
 
 export default new SubscribeRepository(Subscribe);

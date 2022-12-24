@@ -1,5 +1,8 @@
+import { UserResponse } from 'commons/responses/auth';
 import TotalPurchaser from 'dtos/totalPurchaser';
+import { getPagination } from 'helpers/pagging';
 import { SubscribesRepository } from 'repositories';
+import { json } from 'utils';
 import BaseService from './base.service';
 
 class SubscribesService extends BaseService {
@@ -20,6 +23,33 @@ class SubscribesService extends BaseService {
       }
 
       return new TotalPurchaser(totalPurchaser);
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  async getAllSoldCourses(pagination) {
+    try {
+      const include = [
+        {
+          association: 'user',
+        },
+        {
+          association: 'course',
+        },
+      ];
+
+      const { offset, limit } = getPagination(pagination);
+
+      const data = await this.repo.findAll({ offset, limit }, include);
+
+      data.soldCourses = Array.from(json(data) || [], (x) => {
+        // eslint-disable-next-line no-param-reassign
+        x.user = new UserResponse(x.user);
+        return x;
+      });
+
+      return data;
     } catch (error) {
       throw new Error(error);
     }
