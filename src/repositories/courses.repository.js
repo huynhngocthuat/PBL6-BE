@@ -150,6 +150,26 @@ export class CoursesRepository extends BaseRepository {
       throw new Error(error);
     }
   }
+
+  // eslint-disable-next-line class-methods-use-this
+  async sumAllRevenueOfAllSoldCourse() {
+    try {
+      const query = `SELECT
+                          SUM(c.price)
+                       FROM
+                          "JSubscribes" j
+                       INNER JOIN "Courses" c ON j."courseId" = c.id`;
+
+      const data = await db.sequelize.query(query, {
+        logging: console.log,
+        type: QueryTypes.SELECT,
+      });
+
+      return data;
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
 }
 
 export default new CoursesRepository(Course);
