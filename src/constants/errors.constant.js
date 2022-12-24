@@ -89,4 +89,6 @@ export default {
   ERR_WHILE_GET_ALL_SOLD_COURSES: 'Something wrong while get all sold courses',
   ERR_WHILE_ACTIVATION_USER: 'Something wrong while activation user',
   ERR_ACTION_IS_INVALID: 'Action is invalid',
+  ERR_WHILE_USER_DETAIL_NOT_ENOUGH_COND:
+    'Information about user not enough condition request become instructor',
 };
