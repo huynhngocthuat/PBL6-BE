@@ -87,4 +87,6 @@ export default {
   ERR_WHILE_STATISTIC_OVERVIEW:
     'Something wrong while get information statistics overview',
   ERR_WHILE_GET_ALL_SOLD_COURSES: 'Something wrong while get all sold courses',
+  ERR_WHILE_ACTIVATION_USER: 'Something wrong while activation user',
+  ERR_ACTION_IS_INVALID: 'Action is invalid',
 };
