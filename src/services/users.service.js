@@ -10,7 +10,7 @@ import {
 } from 'commons/responses/auth';
 import { getPagination } from 'helpers/pagging';
 import UserInforDetailResponse from 'commons/responses/userInforDetail.response';
-import TotalUser from 'dtos/TotalUser';
+import TotalUser from 'dtos/totalUser';
 import UserRequestUpdate from 'dtos/userRequestUpdate';
 import oAuthAccessTokenService from './oAuthAccessToken.service';
 import UserDetailsService from './userDetails.service';
