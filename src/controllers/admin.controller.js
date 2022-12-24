@@ -1,12 +1,13 @@
 import { AdminService } from 'services';
 import Response from 'helpers/response';
-import { httpCodes, errors, pages } from 'constants';
+import { httpCodes, errors, pages, actions } from 'constants';
 
 class AdminController {
   constructor(service) {
     this.service = service;
     this.statisticOverview = this.statisticOverview.bind(this);
     this.getAllSoldCourses = this.getAllSoldCourses.bind(this);
+    this.activationUser = this.activationUser.bind(this);
   }
 
   async statisticOverview(req, res) {
@@ -15,7 +16,11 @@ class AdminController {
 
       return Response.success(res, { docs: data }, httpCodes.STATUS_OK);
     } catch (error) {
-      return Response.error(res, errors.ERR_WHILE_STATISTIC_OVERVIEW, 400);
+      return Response.error(
+        res,
+        { message: errors.ERR_WHILE_STATISTIC_OVERVIEW },
+        400
+      );
     }
   }
 
@@ -32,7 +37,6 @@ class AdminController {
 
       const data = await this.service.getAllSoldCourses(pagination);
 
-      console.log(data);
       return Response.success(
         res,
         { docs: data.soldCourses, pagination: data.pagination },
@@ -40,6 +44,30 @@ class AdminController {
       );
     } catch (error) {
       return Response.error(res, errors.ERR_WHILE_GET_ALL_SOLD_COURSES, 400);
+    }
+  }
+
+  async activationUser(req, res) {
+    try {
+      const { id } = req.params;
+      const { action } = req.body;
+      let isActivated;
+
+      if (action === actions.ACTION_ACTIVATED) {
+        isActivated = true;
+      } else {
+        isActivated = false;
+      }
+
+      const data = await this.service.activatedUser(id, isActivated);
+
+      return Response.success(res, { docs: data }, httpCodes.STATUS_OK);
+    } catch (error) {
+      return Response.error(
+        res,
+        { message: errors.ERR_WHILE_ACTIVATION_USER },
+        400
+      );
     }
   }
 }

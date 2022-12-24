@@ -1,5 +1,7 @@
 import StatisticOverview from 'dtos/statisticOverview';
 import { usersRepository } from 'repositories';
+import { json } from 'utils';
+import { UserResponse } from 'commons/responses/auth';
 import BaseService from './base.service';
 import SubscribesService from './subscribes.service';
 import CoursesService from './courses.service';
@@ -35,6 +37,23 @@ class AdminService extends BaseService {
   async getAllSoldCourses(pagination) {
     try {
       return await this.subscribesService.getAllSoldCourses(pagination);
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  async activatedUser(idUser, isActivated) {
+    try {
+      const data = await this.usersService.updateByCondition(
+        {
+          id: idUser,
+        },
+        {
+          isActivated,
+        }
+      );
+
+      return new UserResponse(json(data[1][0]));
     } catch (error) {
       throw new Error(error);
     }
