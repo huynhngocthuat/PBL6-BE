@@ -19,7 +19,6 @@ class AdminController {
     }
   }
 
-  // eslint-disable-next-line no-unused-vars, class-methods-use-this
   async getAllSoldCourses(req, res) {
     try {
       const { page, limit } = req.query;
@@ -33,13 +32,13 @@ class AdminController {
 
       const data = await this.service.getAllSoldCourses(pagination);
 
+      console.log(data);
       return Response.success(
         res,
         { docs: data.soldCourses, pagination: data.pagination },
         httpCodes.STATUS_OK
       );
     } catch (error) {
-      console.log(error);
       return Response.error(res, errors.ERR_WHILE_GET_ALL_SOLD_COURSES, 400);
     }
   }

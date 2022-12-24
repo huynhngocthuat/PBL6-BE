@@ -3,6 +3,6 @@ import { AdminsController } from 'controllers';
 
 const router = express.Router();
 
-router.get('', AdminsController.statisticOverview);
+router.get('', AdminsController.getAllSoldCourses);
 
 export default router;

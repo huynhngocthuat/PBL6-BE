@@ -1,4 +1,7 @@
-import { UserResponse } from 'commons/responses/auth';
+/* eslint-disable no-param-reassign */
+import SoldCourse from 'commons/responses/soldCourse.response';
+import BasicInfoCourse from 'dtos/basicInfoCourse';
+import BasicInfoUser from 'dtos/basicInfoUser';
 import TotalPurchaser from 'dtos/totalPurchaser';
 import { getPagination } from 'helpers/pagging';
 import { SubscribesRepository } from 'repositories';
@@ -44,9 +47,9 @@ class SubscribesService extends BaseService {
       const data = await this.repo.findAll({ offset, limit }, include);
 
       data.soldCourses = Array.from(json(data) || [], (x) => {
-        // eslint-disable-next-line no-param-reassign
-        x.user = new UserResponse(x.user);
-        return x;
+        x.user = new BasicInfoUser(x.user);
+        x.course = new BasicInfoCourse(x.course);
+        return new SoldCourse(x);
       });
 
       return data;
