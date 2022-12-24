@@ -25,7 +25,7 @@ class UsersService extends BaseService {
   ) {
     super(repo);
     this.oAuthService = oAuthService;
-    this.UserDetailsService = UserDetailsService;
+    this.userDetailsService = UserDetailsService;
     this.videoViewsService = videoViewsService;
     this.userStatussService = userStatussService;
   }
@@ -101,7 +101,7 @@ class UsersService extends BaseService {
 
   async getUserDetailsByUserId(userId, user = {}) {
     try {
-      const userDetails = await this.UserDetailsService.getUserDetailsByUserId(
+      const userDetails = await this.userDetailsService.getUserDetailsByUserId(
         userId
       );
 
@@ -127,7 +127,7 @@ class UsersService extends BaseService {
   async create(data) {
     try {
       const user = await this.repo.create(data);
-      await this.UserDetailsService.create({
+      await this.userDetailsService.create({
         userId: user.id,
       });
 
@@ -214,7 +214,7 @@ class UsersService extends BaseService {
     }
 
     try {
-      await this.UserDetailsService.updateByCondition(
+      await this.userDetailsService.updateByCondition(
         {
           userId,
         },
@@ -280,6 +280,31 @@ class UsersService extends BaseService {
 
   async requestBecomeToInstructor(userRequestStatus) {
     try {
+      const userDetail = await this.userDetailsService.findOneByCondition({
+        userId: userRequestStatus.userId,
+      });
+      const jsonUserDetail = json(userDetail);
+
+      if (
+        !jsonUserDetail.identityImageUrl ||
+        !jsonUserDetail.phone ||
+        !jsonUserDetail.occupation
+      )
+        throw new Error(errors.ERR_WHILE_USER_DETAIL_NOT_ENOUGH_COND);
+
+      const identityImageUrl = jsonUserDetail.identityImageUrl
+        .trim()
+        .split(' - ')
+        // eslint-disable-next-line consistent-return, array-callback-return
+        .map((s) => {
+          if (s.trim().length > 0) return s;
+        });
+
+      // if identityImageUrl not have 2 image return error
+      if (identityImageUrl.length !== 2) {
+        throw new Error(errors.ERR_WHILE_USER_DETAIL_NOT_ENOUGH_COND);
+      }
+
       const userRequest = await this.userStatussService.findUserRequestByStatus(
         userRequestStatus.userId,
         status.WAITING_STATUS

@@ -224,6 +224,15 @@ class UsersController {
         return Response.error(res, {
           message: errors.ERR_WHILE_REQUEST_BECOME_INSTRUCTOR_IS_EXISTED,
         });
+        // eslint-disable-next-line no-else-return
+      } else if (
+        // eslint-disable-next-line no-dupe-else-if
+        error.message ===
+        `Error: ${errors.ERR_WHILE_USER_DETAIL_NOT_ENOUGH_COND}`
+      ) {
+        return Response.error(res, {
+          message: errors.ERR_WHILE_USER_DETAIL_NOT_ENOUGH_COND,
+        });
       }
 
       return Response.error(res, {
