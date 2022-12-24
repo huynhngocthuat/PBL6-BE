@@ -18,11 +18,14 @@ class AdminService extends BaseService {
       const totalPurchaser = await this.subscribesService.countAllSubcriber();
       const totalCourse = await this.coursesService.countAllCourse();
       const totalUser = await this.usersService.countAllUser();
+      const totalRevenue =
+        await this.coursesService.sumAllRevenueOfAllSoldCourse();
 
       return new StatisticOverview({
         ...totalPurchaser,
         ...totalCourse,
         ...totalUser,
+        ...totalRevenue,
       });
     } catch (error) {
       throw new Error(error);
