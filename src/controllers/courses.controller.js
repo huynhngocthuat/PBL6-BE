@@ -80,12 +80,16 @@ class CoursesController {
           lteq: req.query.lteq ?? 0,
         };
 
-        const courses = await this.service.searchCourses(false, condition, {
+        const data = await this.service.searchCourses(false, condition, {
           page: parseInt(page || pages.PAGE_DEFAULT),
           limit: parseInt(limit || pages.LIMIT_DEFAULT),
         });
 
-        return Response.success(res, { docs: courses }, httpCodes.STATUS_OK);
+        return Response.success(
+          res,
+          { docs: data.courses, pagination: data.pagination },
+          httpCodes.STATUS_OK
+        );
       }
     } catch (error) {
       console.log(error);
