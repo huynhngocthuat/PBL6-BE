@@ -19,6 +19,7 @@ class CoursesController {
     this.search = this.search.bind(this);
     this.analysisCourseOfInstructor =
       this.analysisCourseOfInstructor.bind(this);
+    this.getCoursesForAdmin = this.getCoursesForAdmin.bind(this);
   }
 
   async create(req, res) {
@@ -50,12 +51,16 @@ class CoursesController {
           lteq: req.query.lteq ?? 0,
         };
 
-        const courses = await this.service.searchCourses(isAdmin, condition, {
+        const data = await this.service.searchCourses(isAdmin, condition, {
           page: parseInt(page || pages.PAGE_DEFAULT),
           limit: parseInt(limit || pages.LIMIT_DEFAULT),
         });
 
-        return Response.success(res, { docs: courses }, httpCodes.STATUS_OK);
+        return Response.success(
+          res,
+          { docs: data.courses, pagination: data.pagination },
+          httpCodes.STATUS_OK
+        );
       }
     } catch (error) {
       console.log(error);
