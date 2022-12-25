@@ -182,6 +182,21 @@ export class CoursesRepository extends BaseRepository {
       throw new Error(error);
     }
   }
+
+  async countCoursesOfInstructor(userId, isDeleted = false) {
+    try {
+      const total = await this.model.count({
+        where: {
+          userId,
+        },
+        paranoid: !isDeleted,
+      });
+
+      return total;
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
 }
 
 export default new CoursesRepository(Course);

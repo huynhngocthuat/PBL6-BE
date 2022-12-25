@@ -8,7 +8,7 @@ import {
   GetMeResponse,
   UserResponse,
 } from 'commons/responses/auth';
-import { getPagination } from 'helpers/pagging';
+import { getPagination, getPagingData } from 'helpers/pagging';
 import UserInforDetailResponse from 'commons/responses/userInforDetail.response';
 import TotalUser from 'dtos/totalUser';
 import UserRequestUpdate from 'dtos/userRequestUpdate';
@@ -16,18 +16,26 @@ import oAuthAccessTokenService from './oAuthAccessToken.service';
 import UserDetailsService from './userDetails.service';
 import videoViewsService from './videoViews.service';
 import userStatussService from './userStatuss.service';
+import coursesService from './courses.service';
 import BaseService from './base.service';
 
 class UsersService extends BaseService {
   constructor(
     repo,
-    { oAuthService, UserDetailsService, videoViewsService, userStatussService }
+    {
+      oAuthService,
+      UserDetailsService,
+      videoViewsService,
+      userStatussService,
+      coursesService,
+    }
   ) {
     super(repo);
     this.oAuthService = oAuthService;
     this.userDetailsService = UserDetailsService;
     this.videoViewsService = videoViewsService;
     this.userStatussService = userStatussService;
+    this.coursesService = coursesService;
   }
 
   /**
@@ -166,17 +174,29 @@ class UsersService extends BaseService {
    * @param {bool} isDeleted is optional param to get with video was deleted or not, default value: false
    * @returns {array} list object course of instructor
    */
-  async findCourseByInstructor(userId, isDeleted = false) {
+  async findCourseByInstructor(userId, pagination, isDeleted = false) {
     try {
+      const resp = {};
+      const { offset, limit } = getPagination(pagination);
+
       const data = await this.repo.findOneByCondition(
         { id: userId },
         isDeleted,
-        { association: 'courses' }
+        { association: 'courses', offset, limit }
+      );
+
+      const total = await this.coursesService.countCoursesOfInstructor(userId);
+
+      resp.pagination = getPagingData(
+        total,
+        Math.ceil(offset / limit) + 1,
+        limit
       );
 
       const { courses } = json(data);
+      resp.courses = courses;
 
-      return courses;
+      return resp;
     } catch (error) {
       throw new Error(error);
     }
@@ -424,4 +444,5 @@ export default new UsersService(usersRepository, {
   UserDetailsService,
   videoViewsService,
   userStatussService,
+  coursesService,
 });
