@@ -8,11 +8,10 @@ import {
   ValidatorName,
   ValidatorNameUpdate,
 } from 'validations';
-import AuthMiddleware from 'middlewares/auth';
 
 const router = express.Router();
 
-router.get('/', AuthMiddleware.isRequired, CategoryTopicsController.get);
+router.get('/', CategoryTopicsController.get);
 
 router.get('/:id', ValidatorId, CategoryTopicsController.get);
 router.post(
