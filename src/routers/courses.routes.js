@@ -1,12 +1,24 @@
 import express from 'express';
 import { CoursesController } from 'controllers';
 import { ValidatorBody, ValidatorId } from 'validations';
+import AuthMiddleware from 'middlewares/auth';
+import { roles } from 'constants';
 
 const router = express.Router();
 
 router.get('/:id/analysis', CoursesController.analysisCourseOfInstructor);
-router.get('/search', CoursesController.search);
-router.get('/', CoursesController.get);
+router.get(
+  '/search',
+  AuthMiddleware.isRequired,
+  AuthMiddleware.isRole(roles.USER_ROLE, roles.INSTRUCTOR_ROLE),
+  CoursesController.search
+);
+router.get(
+  '/',
+  AuthMiddleware.isRequired,
+  AuthMiddleware.isRole(roles.USER_ROLE, roles.INSTRUCTOR_ROLE),
+  CoursesController.get
+);
 
 router.get('/:id', ValidatorId, CoursesController.get);
 router.get('/:id/sections', ValidatorId, CoursesController.getSections);
