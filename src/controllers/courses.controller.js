@@ -36,12 +36,12 @@ class CoursesController {
     try {
       const { id } = req.params;
       const { page, limit } = req.query;
-      const isAdmin = req.user.role === roles.ADMIN_ROLE;
 
       if (id) {
         const data = await this.service.find(id);
         return Response.success(res, { docs: data }, httpCodes.STATUS_OK);
       } else {
+        const isAdmin = req.user.role === roles.ADMIN_ROLE;
         const condition = {
           key: req.query.key || '',
           category: req.query.category ?? [],
@@ -58,6 +58,7 @@ class CoursesController {
         return Response.success(res, { docs: courses }, httpCodes.STATUS_OK);
       }
     } catch (error) {
+      console.log(error);
       return Response.error(res, errors.WHILE_GET.format('course'), 400);
     }
   }
@@ -178,7 +179,7 @@ class CoursesController {
       console.log(error);
       return Response.error(
         res,
-        errors.WHILE_GET.format('analysis course'),
+        { message: errors.WHILE_GET.format('analysis course') },
         400
       );
     }
