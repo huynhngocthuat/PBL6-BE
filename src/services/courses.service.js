@@ -11,13 +11,34 @@ import BaseService from './base.service';
 import SectionsService from './sections.service';
 import HashtagsService from './hashtag.service';
 import CourseHashtagsService from './courseHashtags.service';
+import SubscribesService from './subscribes.service';
 
 class CoursesService extends BaseService {
-  constructor(repo, sectionsService, hashtagsService, courseHashtagsService) {
+  constructor(
+    repo,
+    sectionsService,
+    hashtagsService,
+    courseHashtagsService,
+    subscribesService
+  ) {
     super(repo);
     this.sectionsService = sectionsService;
     this.hashtagsService = hashtagsService;
     this.courseHashtagsService = courseHashtagsService;
+    this.subscribesService = subscribesService;
+  }
+
+  async getCourseById(courseId) {
+    try {
+      const data = await this.find(courseId);
+      const totalPurchaser =
+        await this.subscribesService.countSubcribersOfCourse(courseId);
+      const jsonData = json(data);
+
+      return { ...jsonData, ...totalPurchaser };
+    } catch (error) {
+      throw new Error(error);
+    }
   }
 
   // eslint-disable-next-line class-methods-use-this
@@ -241,5 +262,6 @@ export default new CoursesService(
   CoursesRepository,
   SectionsService,
   HashtagsService,
-  CourseHashtagsService
+  CourseHashtagsService,
+  SubscribesService
 );
