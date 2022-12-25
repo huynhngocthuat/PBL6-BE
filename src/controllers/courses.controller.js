@@ -32,7 +32,7 @@ class CoursesController {
     }
   }
 
-  async get(req, res) {
+  async getCoursesForAdmin(req, res) {
     try {
       const { id } = req.params;
       const { page, limit } = req.query;
@@ -51,6 +51,36 @@ class CoursesController {
         };
 
         const courses = await this.service.searchCourses(isAdmin, condition, {
+          page: parseInt(page || pages.PAGE_DEFAULT),
+          limit: parseInt(limit || pages.LIMIT_DEFAULT),
+        });
+
+        return Response.success(res, { docs: courses }, httpCodes.STATUS_OK);
+      }
+    } catch (error) {
+      console.log(error);
+      return Response.error(res, errors.WHILE_GET.format('course'), 400);
+    }
+  }
+
+  async get(req, res) {
+    try {
+      const { id } = req.params;
+      const { page, limit } = req.query;
+
+      if (id) {
+        const data = await this.service.getCourseById(id);
+        return Response.success(res, { docs: data }, httpCodes.STATUS_OK);
+      } else {
+        const condition = {
+          key: req.query.key || '',
+          category: req.query.category ?? [],
+          hashtag: req.query.tag ?? [],
+          gteq: req.query.gteq ?? Number.MAX_SAFE_INTEGER,
+          lteq: req.query.lteq ?? 0,
+        };
+
+        const courses = await this.service.searchCourses(false, condition, {
           page: parseInt(page || pages.PAGE_DEFAULT),
           limit: parseInt(limit || pages.LIMIT_DEFAULT),
         });
