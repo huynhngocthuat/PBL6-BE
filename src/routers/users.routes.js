@@ -6,7 +6,7 @@ import { roles } from 'constants';
 
 const router = express.Router();
 
-router.get('/courses/:id', UserController.getCourses);
+router.get('/:id/courses', UserController.getCourses);
 
 router.put(
   '/update-avatar',
