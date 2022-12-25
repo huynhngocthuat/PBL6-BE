@@ -10,7 +10,7 @@ router.get(
   '/',
   AuthMiddleware.isRequired,
   AuthMiddleware.isRole(roles.ADMIN_ROLE),
-  CoursesController.get
+  CoursesController.getCoursesForAdmin
 );
 
 router.get(
@@ -18,7 +18,7 @@ router.get(
   ValidatorId,
   AuthMiddleware.isRequired,
   AuthMiddleware.isRole(roles.ADMIN_ROLE),
-  CoursesController.get
+  CoursesController.getCoursesForAdmin
 );
 
 export default router;
