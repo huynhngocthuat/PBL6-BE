@@ -38,7 +38,7 @@ class CoursesController {
       const { page, limit } = req.query;
 
       if (id) {
-        const data = await this.service.find(id);
+        const data = await this.service.getCourseById(id);
         return Response.success(res, { docs: data }, httpCodes.STATUS_OK);
       } else {
         const isAdmin = req.user.role === roles.ADMIN_ROLE;

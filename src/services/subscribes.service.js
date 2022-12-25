@@ -31,6 +31,24 @@ class SubscribesService extends BaseService {
     }
   }
 
+  async countSubcribersOfCourse(courseId) {
+    try {
+      const data = await this.repo.countSubcribersOfCourse(courseId);
+      const totalPurchaser = {};
+
+      // if data is null assign 0
+      if (!data) {
+        totalPurchaser.total = 0;
+      } else {
+        totalPurchaser.total = data;
+      }
+
+      return new TotalPurchaser(totalPurchaser);
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
   async getAllSoldCourses(pagination) {
     try {
       const include = [
