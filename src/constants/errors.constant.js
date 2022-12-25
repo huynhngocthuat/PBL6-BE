@@ -91,4 +91,6 @@ export default {
   ERR_ACTION_IS_INVALID: 'Action is invalid',
   ERR_WHILE_USER_DETAIL_NOT_ENOUGH_COND:
     'Information about user not enough condition request become instructor',
+  ERR_WHILE_COUNT_SUBSCRIBERS_OF_COURSE:
+    'Something wrong while count subscribers of course',
 };
