@@ -10,6 +10,7 @@ import { v4 as uuid } from 'uuid';
 import { errors, infors, time, roles } from 'constants';
 import { randomVerifiedCode } from 'utils';
 import { sendVerifyCode } from 'helpers/mail';
+import { sendDataToRabbitMQ } from 'helpers/rabbitMQ';
 import oAuthAccessTokenService from './oAuthAccessToken.service';
 import UsersService from './users.service';
 
@@ -46,7 +47,7 @@ class AuthService {
       ...data,
       password: hashedPassword,
     });
-
+    await sendDataToRabbitMQ('create_user', user);
     return new SignUpResponse(user);
   }
 
