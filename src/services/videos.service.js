@@ -3,12 +3,20 @@ import { InstructorResponse } from 'commons/responses/auth';
 import { json } from 'utils';
 import VideoResponse from 'commons/responses/video.response';
 import BaseService from './base.service';
+// eslint-disable-next-line import/no-cycle
 import videoViewsService from './videoViews.service';
+import videoCommentsService from './videoComments.service';
+import emotionReactsService from './emotionReacts.service';
 
 class VideosService extends BaseService {
-  constructor(repo, { videoViewsService }) {
+  constructor(
+    repo,
+    { videoViewsService, videoCommentsService, emotionReactsService }
+  ) {
     super(repo);
     this.videoViewsService = videoViewsService;
+    this.videoCommentsService = videoCommentsService;
+    this.emotionReactsService = emotionReactsService;
   }
 
   /**
@@ -45,8 +53,23 @@ class VideosService extends BaseService {
       const data = await this.find(videoId);
       const video = json(data);
       const viewVideo = await this.getViewOfVideo(videoId);
+      const totalComment = await this.videoCommentsService.countCommentOfVideo(
+        videoId
+      );
+      const totalLike =
+        // eslint-disable-next-line no-await-in-loop
+        await this.emotionReactsService.countLikesOfVideo(videoId);
+      const totalDisLike =
+        // eslint-disable-next-line no-await-in-loop
+        await this.emotionReactsService.countDisLikesOfVideo(videoId);
 
-      return new VideoResponse({ ...video, ...viewVideo });
+      return new VideoResponse({
+        ...video,
+        ...viewVideo,
+        ...totalComment,
+        ...totalLike,
+        ...totalDisLike,
+      });
     } catch (error) {
       throw new Error(error);
     }
@@ -63,11 +86,28 @@ class VideosService extends BaseService {
       };
 
       for (let i = 0; i < listVideo.length; i += 1) {
+        const videoId = listVideo[i].id;
         // eslint-disable-next-line no-await-in-loop
-        const viewVideo = await this.getViewOfVideo(listVideo[i].id);
+        const viewVideo = await this.getViewOfVideo(videoId);
+        const totalComment =
+          // eslint-disable-next-line no-await-in-loop
+          await this.videoCommentsService.countCommentOfVideo(videoId);
+        const totalLike =
+          // eslint-disable-next-line no-await-in-loop
+          await this.emotionReactsService.countLikesOfVideo(videoId);
+        const totalDisLike =
+          // eslint-disable-next-line no-await-in-loop
+          await this.emotionReactsService.countDisLikesOfVideo(videoId);
+
         response.data = [
           ...response.data,
-          new VideoResponse({ ...listVideo[i], ...viewVideo }),
+          new VideoResponse({
+            ...listVideo[i],
+            ...viewVideo,
+            ...totalComment,
+            ...totalLike,
+            ...totalDisLike,
+          }),
         ];
       }
 
@@ -76,6 +116,32 @@ class VideosService extends BaseService {
       throw new Error(error);
     }
   }
+
+  async getSectionOfVideo(videoId) {
+    try {
+      const data = await this.repo.findOneByCondition(
+        {
+          id: videoId,
+        },
+        false,
+        {
+          association: 'section',
+        }
+      );
+
+      if (json(data)) {
+        return json(data).section;
+      }
+      return null;
+    } catch (error) {
+      console.log(error);
+      throw new Error(error);
+    }
+  }
 }
 
-export default new VideosService(VideosRepository, { videoViewsService });
+export default new VideosService(VideosRepository, {
+  videoViewsService,
+  videoCommentsService,
+  emotionReactsService,
+});

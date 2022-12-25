@@ -8,25 +8,34 @@ import {
   GetMeResponse,
   UserResponse,
 } from 'commons/responses/auth';
-import { getPagination } from 'helpers/pagging';
+import { getPagination, getPagingData } from 'helpers/pagging';
 import UserInforDetailResponse from 'commons/responses/userInforDetail.response';
+import TotalUser from 'dtos/totalUser';
 import UserRequestUpdate from 'dtos/userRequestUpdate';
 import oAuthAccessTokenService from './oAuthAccessToken.service';
 import UserDetailsService from './userDetails.service';
 import videoViewsService from './videoViews.service';
 import userStatussService from './userStatuss.service';
+import coursesService from './courses.service';
 import BaseService from './base.service';
 
 class UsersService extends BaseService {
   constructor(
     repo,
-    { oAuthService, UserDetailsService, videoViewsService, userStatussService }
+    {
+      oAuthService,
+      UserDetailsService,
+      videoViewsService,
+      userStatussService,
+      coursesService,
+    }
   ) {
     super(repo);
     this.oAuthService = oAuthService;
-    this.UserDetailsService = UserDetailsService;
+    this.userDetailsService = UserDetailsService;
     this.videoViewsService = videoViewsService;
     this.userStatussService = userStatussService;
+    this.coursesService = coursesService;
   }
 
   /**
@@ -100,7 +109,7 @@ class UsersService extends BaseService {
 
   async getUserDetailsByUserId(userId, user = {}) {
     try {
-      const userDetails = await this.UserDetailsService.getUserDetailsByUserId(
+      const userDetails = await this.userDetailsService.getUserDetailsByUserId(
         userId
       );
 
@@ -126,7 +135,7 @@ class UsersService extends BaseService {
   async create(data) {
     try {
       const user = await this.repo.create(data);
-      await this.UserDetailsService.create({
+      await this.userDetailsService.create({
         userId: user.id,
       });
 
@@ -165,17 +174,29 @@ class UsersService extends BaseService {
    * @param {bool} isDeleted is optional param to get with video was deleted or not, default value: false
    * @returns {array} list object course of instructor
    */
-  async findCourseByInstructor(userId, isDeleted = false) {
+  async findCourseByInstructor(userId, pagination, isDeleted = false) {
     try {
+      const resp = {};
+      const { offset, limit } = getPagination(pagination);
+
       const data = await this.repo.findOneByCondition(
         { id: userId },
         isDeleted,
-        { association: 'courses' }
+        { association: 'courses', offset, limit }
+      );
+
+      const total = await this.coursesService.countCoursesOfInstructor(userId);
+
+      resp.pagination = getPagingData(
+        total,
+        Math.ceil(offset / limit) + 1,
+        limit
       );
 
       const { courses } = json(data);
+      resp.courses = courses;
 
-      return courses;
+      return resp;
     } catch (error) {
       throw new Error(error);
     }
@@ -213,7 +234,7 @@ class UsersService extends BaseService {
     }
 
     try {
-      await this.UserDetailsService.updateByCondition(
+      await this.userDetailsService.updateByCondition(
         {
           userId,
         },
@@ -266,9 +287,12 @@ class UsersService extends BaseService {
     }
   }
 
-  async getRequestsOfUser(pagination = null) {
+  async getRequestsOfUserByCondition(condition, pagination = null) {
     try {
-      return await this.userStatussService.getAll(pagination);
+      return await this.userStatussService.getRequestsOfUserByCondition(
+        condition,
+        pagination
+      );
     } catch (error) {
       throw new Error(error);
     }
@@ -276,6 +300,31 @@ class UsersService extends BaseService {
 
   async requestBecomeToInstructor(userRequestStatus) {
     try {
+      const userDetail = await this.userDetailsService.findOneByCondition({
+        userId: userRequestStatus.userId,
+      });
+      const jsonUserDetail = json(userDetail);
+
+      if (
+        !jsonUserDetail.identityImageUrl ||
+        !jsonUserDetail.phone ||
+        !jsonUserDetail.occupation
+      )
+        throw new Error(errors.ERR_WHILE_USER_DETAIL_NOT_ENOUGH_COND);
+
+      const identityImageUrl = jsonUserDetail.identityImageUrl
+        .trim()
+        .split(' - ')
+        // eslint-disable-next-line consistent-return, array-callback-return
+        .map((s) => {
+          if (s.trim().length > 0) return s;
+        });
+
+      // if identityImageUrl not have 2 image return error
+      if (identityImageUrl.length !== 2) {
+        throw new Error(errors.ERR_WHILE_USER_DETAIL_NOT_ENOUGH_COND);
+      }
+
       const userRequest = await this.userStatussService.findUserRequestByStatus(
         userRequestStatus.userId,
         status.WAITING_STATUS
@@ -370,6 +419,24 @@ class UsersService extends BaseService {
       throw new Error(error);
     }
   }
+
+  async countAllUser() {
+    try {
+      const data = await this.repo.countAllUser();
+      const totalUser = {};
+
+      // if data is null assign 0
+      if (!data) {
+        totalUser.total = 0;
+      } else {
+        totalUser.total = data;
+      }
+
+      return new TotalUser(totalUser);
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
 }
 
 export default new UsersService(usersRepository, {
@@ -377,4 +444,5 @@ export default new UsersService(usersRepository, {
   UserDetailsService,
   videoViewsService,
   userStatussService,
+  coursesService,
 });

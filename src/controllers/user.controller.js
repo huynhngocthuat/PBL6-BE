@@ -29,12 +29,25 @@ class UsersController {
     try {
       // id of instructor
       const { id } = req.params;
-      const data = await this.service.findCourseByInstructor(id);
-      return Response.success(res, { docs: data }, httpCodes.STATUS_OK);
+      const { page, limit } = req.query;
+
+      const pagination = {
+        // eslint-disable-next-line radix
+        page: parseInt(page || pages.PAGE_DEFAULT),
+        // eslint-disable-next-line radix
+        limit: parseInt(limit || pages.LIMIT_DEFAULT),
+      };
+
+      const data = await this.service.findCourseByInstructor(id, pagination);
+      return Response.success(
+        res,
+        { docs: data.courses, pagination: data.pagination },
+        httpCodes.STATUS_OK
+      );
     } catch (error) {
       return Response.error(
         res,
-        errors.WHILE_GET.format('courses of instructor'),
+        { message: errors.WHILE_GET.format('courses of instructor') },
         400
       );
     }
@@ -166,33 +179,42 @@ class UsersController {
   async getRequestsOfUser(req, res) {
     try {
       const { page, limit } = req.query;
+      let { key, status } = req.query;
 
-      if (page || limit) {
-        const data = await this.service.getRequestsOfUser({
-          // eslint-disable-next-line radix
-          page: parseInt(page || pages.PAGE_DEFAULT),
-          // eslint-disable-next-line radix
-          limit: parseInt(limit || pages.LIMIT_DEFAULT),
-        });
+      key = key || '';
+      status = status || '';
 
-        return Response.success(
-          res,
-          { docs: data.userRequests, pagination: data.pagination },
-          httpCodes.STATUS_OK
-        );
-        // eslint-disable-next-line no-else-return
-      } else {
-        const data = await this.service.getRequestsOfUser();
-        return Response.success(
-          res,
-          { docs: data.userRequests },
-          httpCodes.STATUS_OK
-        );
-      }
+      const condition = {
+        keyword: key,
+        status,
+      };
+
+      const pagination = {
+        // eslint-disable-next-line radix
+        page: parseInt(page || pages.PAGE_DEFAULT),
+        // eslint-disable-next-line radix
+        limit: parseInt(limit || pages.LIMIT_DEFAULT),
+      };
+
+      const data = await this.service.getRequestsOfUserByCondition(
+        condition,
+        pagination
+      );
+
+      if (data.userRequests.length === 0)
+        return Response.success(res, { docs: {} }, httpCodes.STATUS_OK);
+
+      return Response.success(
+        res,
+        { docs: data.userRequests, pagination: data.pagination },
+        httpCodes.STATUS_OK
+      );
     } catch (error) {
       return Response.error(
         res,
-        errors.WHILE_GET.format('get user requests'),
+        {
+          message: errors.WHILE_GET.format('user requests'),
+        },
         httpCodes.STATUS_BAD_REQUEST
       );
     }
@@ -214,6 +236,15 @@ class UsersController {
       ) {
         return Response.error(res, {
           message: errors.ERR_WHILE_REQUEST_BECOME_INSTRUCTOR_IS_EXISTED,
+        });
+        // eslint-disable-next-line no-else-return
+      } else if (
+        // eslint-disable-next-line no-dupe-else-if
+        error.message ===
+        `Error: ${errors.ERR_WHILE_USER_DETAIL_NOT_ENOUGH_COND}`
+      ) {
+        return Response.error(res, {
+          message: errors.ERR_WHILE_USER_DETAIL_NOT_ENOUGH_COND,
         });
       }
 

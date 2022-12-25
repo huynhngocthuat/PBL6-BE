@@ -5,7 +5,7 @@
 /* eslint-disable no-lonely-if */
 import { CoursesService } from 'services';
 import Response from 'helpers/response';
-import { httpCodes, errors, pages, infors } from 'constants';
+import { httpCodes, errors, pages, infors, roles } from 'constants';
 import logger from 'configs/winston.config';
 import { delUrlFilesOnRedis } from 'helpers/redis';
 
@@ -20,6 +20,7 @@ class CoursesController {
     this.search = this.search.bind(this);
     this.analysisCourseOfInstructor =
       this.analysisCourseOfInstructor.bind(this);
+    this.getCoursesForAdmin = this.getCoursesForAdmin.bind(this);
   }
 
   async create(req, res) {
@@ -36,34 +37,80 @@ class CoursesController {
     }
   }
 
+  async getCoursesForAdmin(req, res) {
+    try {
+      const { id } = req.params;
+      const { page, limit } = req.query;
+
+      if (id) {
+        const data = await this.service.getCourseById(id);
+        return Response.success(res, { docs: data }, httpCodes.STATUS_OK);
+      } else {
+        const isAdmin = req.user.role === roles.ADMIN_ROLE;
+        const condition = {
+          key: req.query.key || '',
+          category: req.query.category ?? [],
+          hashtag: req.query.tag ?? [],
+          gteq: req.query.gteq ?? Number.MAX_SAFE_INTEGER,
+          lteq: req.query.lteq ?? 0,
+        };
+
+        const data = await this.service.searchCourses(isAdmin, condition, {
+          page: parseInt(page || pages.PAGE_DEFAULT),
+          limit: parseInt(limit || pages.LIMIT_DEFAULT),
+        });
+
+        return Response.success(
+          res,
+          { docs: data.courses, pagination: data.pagination },
+          httpCodes.STATUS_OK
+        );
+      }
+    } catch (error) {
+      console.log(error);
+      return Response.error(
+        res,
+        { message: errors.WHILE_GET.format('course') },
+        400
+      );
+    }
+  }
+
   async get(req, res) {
     try {
       const { id } = req.params;
       const { page, limit } = req.query;
 
       if (id) {
-        const data = await this.service.find(id);
+        const data = await this.service.getCourseById(id);
         return Response.success(res, { docs: data }, httpCodes.STATUS_OK);
       } else {
-        // check on query page or limit valid
-        if (page || limit) {
-          const data = await this.service.findAll({
-            page: parseInt(page || pages.PAGE_DEFAULT),
-            limit: parseInt(limit || pages.LIMIT_DEFAULT),
-          });
+        const condition = {
+          key: req.query.key || '',
+          category: req.query.category ?? [],
+          hashtag: req.query.tag ?? [],
+          gteq: req.query.gteq ?? Number.MAX_SAFE_INTEGER,
+          lteq: req.query.lteq ?? 0,
+        };
 
-          return Response.success(
-            res,
-            { docs: data, pagination: data.pagination },
-            httpCodes.STATUS_OK
-          );
-        } else {
-          const data = await this.service.findAll();
-          return Response.success(res, { docs: data }, httpCodes.STATUS_OK);
-        }
+        const data = await this.service.searchCourses(false, condition, {
+          page: parseInt(page || pages.PAGE_DEFAULT),
+          limit: parseInt(limit || pages.LIMIT_DEFAULT),
+        });
+
+        return Response.success(
+          res,
+          { docs: data.courses, pagination: data.pagination },
+          httpCodes.STATUS_OK
+        );
       }
     } catch (error) {
-      return Response.error(res, errors.WHILE_GET.format('course'), 400);
+      console.log(error);
+      return Response.error(
+        res,
+        { message: errors.WHILE_GET.format('course') },
+        400
+      );
     }
   }
 
@@ -91,7 +138,7 @@ class CoursesController {
     } catch (error) {
       return Response.error(
         res,
-        errors.WHILE_GET.format('sections of course'),
+        { message: errors.WHILE_GET.format('sections of course') },
         400
       );
     }
@@ -108,9 +155,17 @@ class CoursesController {
       if (data) {
         return Response.success(res, { docs: data }, httpCodes.STATUS_OK);
       }
-      return Response.error(res, errors.WHILE_UPDATE.format('course'), 400);
+      return Response.error(
+        res,
+        { message: errors.WHILE_UPDATE.format('course') },
+        400
+      );
     } catch (error) {
-      return Response.error(res, errors.WHILE_UPDATE.format('course'), 400);
+      return Response.error(
+        res,
+        { message: errors.WHILE_UPDATE.format('course') },
+        400
+      );
     }
   }
 
@@ -121,7 +176,11 @@ class CoursesController {
 
       return Response.success(res, { docs: data }, httpCodes.STATUS_OK);
     } catch (error) {
-      return Response.error(res, errors.WHILE_DELETE.format('course'), 400);
+      return Response.error(
+        res,
+        { message: errors.WHILE_DELETE.format('course') },
+        400
+      );
     }
   }
 
@@ -142,12 +201,12 @@ class CoursesController {
       let courses;
 
       if (page || limit) {
-        courses = await this.service.searchCourses(condition, {
+        courses = await this.service.searchCourses(false, condition, {
           page: parseInt(page || pages.PAGE_DEFAULT),
           limit: parseInt(limit || pages.LIMIT_DEFAULT),
         });
       } else {
-        courses = await this.service.searchCourses(condition, null);
+        courses = await this.service.searchCourses(false, condition, null);
       }
 
       logger.info(
@@ -169,7 +228,11 @@ class CoursesController {
         )} - ${error}`
       );
 
-      return Response.error(res, errors.WHILE_SEARCH.format('course'), 400);
+      return Response.error(
+        res,
+        { message: errors.WHILE_SEARCH.format('course') },
+        400
+      );
     }
   }
 
@@ -186,7 +249,7 @@ class CoursesController {
       console.log(error);
       return Response.error(
         res,
-        errors.WHILE_GET.format('analysis course'),
+        { message: errors.WHILE_GET.format('analysis course') },
         400
       );
     }

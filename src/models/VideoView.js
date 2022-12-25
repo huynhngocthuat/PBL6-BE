@@ -27,6 +27,11 @@ export const VideoViewModel = (sequelize, DataTypes) => {
         defaultValue: 0,
         allowNull: false,
       },
+      highestDuration: {
+        type: DataTypes.FLOAT,
+        defaultValue: 0,
+        allowNull: false,
+      },
       lastestViewDate: {
         type: DataTypes.DATE,
         allowNull: true,

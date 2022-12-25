@@ -8,6 +8,9 @@ class VideoResponse {
     url,
     isLock,
     totalView,
+    totalComment,
+    totalLike,
+    totalDislike,
     createdAt,
     updatedAt,
     sectionId,
@@ -21,6 +24,9 @@ class VideoResponse {
     this.url = url;
     this.isLock = isLock;
     this.totalView = totalView || 0;
+    this.totalComment = totalComment || 0;
+    this.totalLike = totalLike || 0;
+    this.totalDislike = totalDislike || 0;
     this.sectionId = sectionId;
     this.userId = userId;
     this.createdAt = createdAt;

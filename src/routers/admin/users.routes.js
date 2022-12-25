@@ -1,9 +1,9 @@
 import express from 'express';
-import { UserController } from 'controllers';
+import { AdminsController, UserController } from 'controllers';
 import { ValidatorBody, ValidatorId } from 'validations';
-import { userStatussService } from 'services';
+import { userStatussService, UsersService } from 'services';
 import Response from 'helpers/response';
-import { status, errors } from 'constants';
+import { status, errors, actions } from 'constants';
 import { json } from 'utils';
 
 const router = express.Router();
@@ -43,6 +43,52 @@ router.post(
     }
   },
   UserController.answerRequestBecomeToInstructor
+);
+
+router.put(
+  '/:id',
+  ValidatorId,
+  ValidatorBody('activatedAction'),
+  // eslint-disable-next-line consistent-return
+  async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const { action } = req.body;
+
+      const data = await UsersService.findOneByCondition({
+        id,
+      });
+
+      let jsonData;
+      if (data) {
+        jsonData = json(data);
+        if (
+          jsonData.isActivated === true &&
+          action === actions.ACTION_DEACTIVED
+        ) {
+          next();
+        } else if (
+          jsonData.isActivated === false &&
+          action === actions.ACTION_ACTIVATED
+        ) {
+          next();
+        } else {
+          return Response.error(res, {
+            message: errors.ERR_ACTION_IS_INVALID,
+          });
+        }
+      } else {
+        return Response.error(res, {
+          message: errors.USER_NOT_FOUND,
+        });
+      }
+    } catch (error) {
+      return Response.error(res, {
+        message: errors.ERR_WHILE_ACTIVATION_USER,
+      });
+    }
+  },
+  AdminsController.activationUser
 );
 
 export default router;

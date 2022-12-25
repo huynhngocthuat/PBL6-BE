@@ -5,17 +5,40 @@ import { errors, infors } from 'constants';
 import { AttendanceOfCourse } from 'commons/responses/auth';
 import db from 'models';
 import logger from 'configs/winston.config';
+import TotalRevenue from 'dtos/totalRevenue';
+import TotalCourse from 'dtos/totalCourse';
 import BaseService from './base.service';
 import SectionsService from './sections.service';
 import HashtagsService from './hashtag.service';
 import CourseHashtagsService from './courseHashtags.service';
+import SubscribesService from './subscribes.service';
 
 class CoursesService extends BaseService {
-  constructor(repo, sectionsService, hashtagsService, courseHashtagsService) {
+  constructor(
+    repo,
+    sectionsService,
+    hashtagsService,
+    courseHashtagsService,
+    subscribesService
+  ) {
     super(repo);
     this.sectionsService = sectionsService;
     this.hashtagsService = hashtagsService;
     this.courseHashtagsService = courseHashtagsService;
+    this.subscribesService = subscribesService;
+  }
+
+  async getCourseById(courseId) {
+    try {
+      const data = await this.find(courseId);
+      const totalPurchaser =
+        await this.subscribesService.countSubcribersOfCourse(courseId);
+      const jsonData = json(data);
+
+      return { ...jsonData, ...totalPurchaser };
+    } catch (error) {
+      throw new Error(error);
+    }
   }
 
   // eslint-disable-next-line class-methods-use-this
@@ -120,7 +143,7 @@ class CoursesService extends BaseService {
     }
   }
 
-  async searchCourses(condition, pagination) {
+  async searchCourses(isAdmin, condition, pagination) {
     try {
       const data = {};
       const tagFilter = {
@@ -133,7 +156,7 @@ class CoursesService extends BaseService {
 
       if (pagination) {
         const { offset, limit } = getPagination(pagination);
-        const courses = await this.repo.searchCourses({
+        const courses = await this.repo.searchCourses(isAdmin, {
           ...tagFilter,
           limit,
           offset,
@@ -141,7 +164,10 @@ class CoursesService extends BaseService {
 
         data.courses = courses;
 
-        const total = await this.repo.countResultFromSearchCourses(tagFilter);
+        const total = await this.repo.countResultFromSearchCourses(
+          isAdmin,
+          tagFilter
+        );
         const pagingData = getPagingData(
           total,
           Math.ceil(offset / limit) + 1, // cal current_page
@@ -150,7 +176,7 @@ class CoursesService extends BaseService {
 
         data.pagination = pagingData;
       } else {
-        const courses = await this.repo.searchCourses({
+        const courses = await this.repo.searchCourses(false, {
           ...tagFilter,
           limit: null,
           offset: null,
@@ -181,11 +207,61 @@ class CoursesService extends BaseService {
       throw new Error(error);
     }
   }
+
+  async countAllCourse() {
+    try {
+      const data = await this.repo.countAllCourse();
+      const totalCourse = {};
+
+      // if data is null assign 0
+      if (!data) {
+        totalCourse.total = 0;
+      } else {
+        totalCourse.total = data;
+      }
+
+      return new TotalCourse(totalCourse);
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  async sumAllRevenueOfAllSoldCourse() {
+    try {
+      const data = await this.repo.sumAllRevenueOfAllSoldCourse();
+      const totalRevenue = {};
+
+      // if data is null assign 0
+      if (!data) {
+        totalRevenue.total = 0;
+      } else {
+        totalRevenue.total = +data[0].sum;
+      }
+
+      return new TotalRevenue(totalRevenue);
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  /**
+   * Count all courses not deleted yet of instructor
+   * @param {string} userId is id of course, e.g, "92599851-3c92-4d37-b194-977a6d5223fe"
+   * @returns {number} is number represents the total record courses of instructor
+   */
+  async countCoursesOfInstructor(userId) {
+    try {
+      return this.repo.countCoursesOfInstructor(userId);
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
 }
 
 export default new CoursesService(
   CoursesRepository,
   SectionsService,
   HashtagsService,
-  CourseHashtagsService
+  CourseHashtagsService,
+  SubscribesService
 );

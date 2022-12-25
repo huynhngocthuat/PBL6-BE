@@ -12,7 +12,9 @@ import VideoCommentsService from './videoComments.service';
 import videoViewsService from './videoViews.service';
 import userStatussService from './userStatuss.service';
 import EmotionReactsService from './emotionReacts.service';
-import SubscribesService from './subscribes.service'
+import SubscribesService from './subscribes.service';
+import AdminService from './admin.service';
+import SectionViewsService from './sectionViews.service';
 
 export {
   UsersService,
@@ -29,5 +31,7 @@ export {
   videoViewsService,
   userStatussService,
   EmotionReactsService,
-  SubscribesService
+  SubscribesService,
+  AdminService,
+  SectionViewsService,
 };

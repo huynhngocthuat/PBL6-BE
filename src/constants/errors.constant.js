@@ -84,4 +84,13 @@ export default {
     'Action is not valid. Status of request is ACCEPTED or DENIED',
   ERR_WHILE_CHECK_REQUEST_OF_USER:
     'Something wrong while check request of user',
+  ERR_WHILE_STATISTIC_OVERVIEW:
+    'Something wrong while get information statistics overview',
+  ERR_WHILE_GET_ALL_SOLD_COURSES: 'Something wrong while get all sold courses',
+  ERR_WHILE_ACTIVATION_USER: 'Something wrong while activation user',
+  ERR_ACTION_IS_INVALID: 'Action is invalid',
+  ERR_WHILE_USER_DETAIL_NOT_ENOUGH_COND:
+    'Information about user not enough condition request become instructor',
+  ERR_WHILE_COUNT_SUBSCRIBERS_OF_COURSE:
+    'Something wrong while count subscribers of course',
 };

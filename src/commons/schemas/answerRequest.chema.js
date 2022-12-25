@@ -30,6 +30,7 @@ export const userRequestIdExist = Joi.object({
 
 export const answerRequest = Joi.object({
   action: Joi.string()
+    .trim()
     .required()
     .custom((value, helper) => {
       if (
