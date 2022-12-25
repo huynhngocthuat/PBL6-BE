@@ -3,6 +3,7 @@ import { InstructorResponse } from 'commons/responses/auth';
 import { json } from 'utils';
 import VideoResponse from 'commons/responses/video.response';
 import BaseService from './base.service';
+// eslint-disable-next-line import/no-cycle
 import videoViewsService from './videoViews.service';
 import videoCommentsService from './videoComments.service';
 import emotionReactsService from './emotionReacts.service';
@@ -112,6 +113,28 @@ class VideosService extends BaseService {
 
       return response;
     } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  async getSectionOfVideo(videoId) {
+    try {
+      const data = await this.repo.findOneByCondition(
+        {
+          id: videoId,
+        },
+        false,
+        {
+          association: 'section',
+        }
+      );
+
+      if (json(data)) {
+        return json(data).section;
+      }
+      return null;
+    } catch (error) {
+      console.log(error);
       throw new Error(error);
     }
   }

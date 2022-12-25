@@ -13,6 +13,7 @@ import videoViewsRepository from './videoViews.repository';
 import userStatussRepository from './userStatuss.repository';
 import EmotionReactsRepository from './emotionReacts.repository';
 import SubscribesRepository from './subscribes.repository';
+import SectionViewsRepository from './sectionViews.repository';
 
 export {
   usersRepository,
@@ -29,4 +30,5 @@ export {
   userStatussRepository,
   EmotionReactsRepository,
   SubscribesRepository,
+  SectionViewsRepository,
 };

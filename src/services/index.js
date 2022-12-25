@@ -14,6 +14,7 @@ import userStatussService from './userStatuss.service';
 import EmotionReactsService from './emotionReacts.service';
 import SubscribesService from './subscribes.service';
 import AdminService from './admin.service';
+import SectionViewsService from './sectionViews.service';
 
 export {
   UsersService,
@@ -32,4 +33,5 @@ export {
   EmotionReactsService,
   SubscribesService,
   AdminService,
+  SectionViewsService,
 };

@@ -1,3 +1,4 @@
+import TotalDuration from 'dtos/totalDuration';
 import { SectionsRepository } from 'repositories';
 import { json } from 'utils';
 import BaseService from './base.service';
@@ -50,6 +51,24 @@ class SectionsService extends BaseService {
   async countSectionsOfCourse(courseId) {
     try {
       return this.repo.countSectionsOfCourse(courseId);
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  async sumDurationOfAllVideosInSection(sectionId) {
+    try {
+      const data = await this.repo.sumDurationOfAllVideosInSection(sectionId);
+      const totalDuration = {};
+
+      // if data is null assign 0
+      if (!data) {
+        totalDuration.total = 0;
+      } else {
+        totalDuration.total = +data[0].sum;
+      }
+
+      return new TotalDuration(totalDuration);
     } catch (error) {
       throw new Error(error);
     }
