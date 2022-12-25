@@ -5,7 +5,7 @@
 /* eslint-disable no-lonely-if */
 import { CoursesService } from 'services';
 import Response from 'helpers/response';
-import { httpCodes, errors, pages, infors } from 'constants';
+import { httpCodes, errors, pages, infors, roles } from 'constants';
 import logger from 'configs/winston.config';
 
 class CoursesController {
@@ -36,27 +36,26 @@ class CoursesController {
     try {
       const { id } = req.params;
       const { page, limit } = req.query;
+      const isAdmin = req.user.role === roles.ADMIN_ROLE;
 
       if (id) {
         const data = await this.service.find(id);
         return Response.success(res, { docs: data }, httpCodes.STATUS_OK);
       } else {
-        // check on query page or limit valid
-        if (page || limit) {
-          const data = await this.service.findAll({
-            page: parseInt(page || pages.PAGE_DEFAULT),
-            limit: parseInt(limit || pages.LIMIT_DEFAULT),
-          });
+        const condition = {
+          key: req.query.key || '',
+          category: req.query.category ?? [],
+          hashtag: req.query.tag ?? [],
+          gteq: req.query.gteq ?? Number.MAX_SAFE_INTEGER,
+          lteq: req.query.lteq ?? 0,
+        };
 
-          return Response.success(
-            res,
-            { docs: data, pagination: data.pagination },
-            httpCodes.STATUS_OK
-          );
-        } else {
-          const data = await this.service.findAll();
-          return Response.success(res, { docs: data }, httpCodes.STATUS_OK);
-        }
+        const courses = await this.service.searchCourses(isAdmin, condition, {
+          page: parseInt(page || pages.PAGE_DEFAULT),
+          limit: parseInt(limit || pages.LIMIT_DEFAULT),
+        });
+
+        return Response.success(res, { docs: courses }, httpCodes.STATUS_OK);
       }
     } catch (error) {
       return Response.error(res, errors.WHILE_GET.format('course'), 400);

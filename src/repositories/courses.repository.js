@@ -13,8 +13,11 @@ export class CoursesRepository extends BaseRepository {
   }
 
   // eslint-disable-next-line class-methods-use-this
-  async searchCourses(condition) {
+  async searchCourses(isAdmin, condition) {
     try {
+      const subQuery = isAdmin
+        ? ''
+        : `Users."isActivated" != 'false' AND Courses."isActived" != 'false' AND Courses."isPublic" != 'false' AND `;
       let query = ` SELECT
                         DISTINCT ON (id) Courses."id",  
                         Courses."name",
@@ -34,7 +37,10 @@ export class CoursesRepository extends BaseRepository {
                                                                             CourseHashtags."courseId" = Courses."id"
                         LEFT JOIN public."Hashtags" AS Hashtags ON
                                                                 Hashtags.id = CourseHashtags."hashtagId"
-                    WHERE 
+                        LEFT JOIN public."Users" as Users ON
+                                                          Users.id = Courses."userId"
+                    WHERE
+                        ${subQuery}
                         (Courses."name" ILIKE :key OR 
                         COALESCE(Courses."description", '') ILIKE :key)`;
 
@@ -64,8 +70,11 @@ export class CoursesRepository extends BaseRepository {
   }
 
   // eslint-disable-next-line class-methods-use-this
-  async countResultFromSearchCourses(condition) {
+  async countResultFromSearchCourses(isAdmin, condition) {
     try {
+      const subQuery = isAdmin
+        ? ''
+        : `Users."isActivated" != 'false' AND Courses."isActived" != 'false' AND Courses."isPublic" != 'false' AND `;
       let query = ` SELECT
                         COUNT (DISTINCT Courses."id")
                     FROM public."Courses" AS Courses 
@@ -75,7 +84,10 @@ export class CoursesRepository extends BaseRepository {
                                                                             CourseHashtags."courseId" = Courses."id"
                         LEFT JOIN public."Hashtags" AS Hashtags ON
                                                                 Hashtags.id = CourseHashtags."hashtagId"
+                        LEFT JOIN public."Users" as Users ON
+                                                          Users.id = Courses."userId"
                     WHERE 
+                        ${subQuery}
                         (Courses."name" ILIKE :key OR 
                         COALESCE(Courses."description", '') ILIKE :key)`;
 

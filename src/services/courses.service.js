@@ -122,7 +122,7 @@ class CoursesService extends BaseService {
     }
   }
 
-  async searchCourses(condition, pagination) {
+  async searchCourses(isAdmin, condition, pagination) {
     try {
       const data = {};
       const tagFilter = {
@@ -135,7 +135,7 @@ class CoursesService extends BaseService {
 
       if (pagination) {
         const { offset, limit } = getPagination(pagination);
-        const courses = await this.repo.searchCourses({
+        const courses = await this.repo.searchCourses(isAdmin, {
           ...tagFilter,
           limit,
           offset,
@@ -143,7 +143,10 @@ class CoursesService extends BaseService {
 
         data.courses = courses;
 
-        const total = await this.repo.countResultFromSearchCourses(tagFilter);
+        const total = await this.repo.countResultFromSearchCourses(
+          isAdmin,
+          tagFilter
+        );
         const pagingData = getPagingData(
           total,
           Math.ceil(offset / limit) + 1, // cal current_page

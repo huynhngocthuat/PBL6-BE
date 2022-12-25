@@ -4,6 +4,7 @@ import statistics from './statistics.routes';
 import auth from './auth.routes';
 import soldCourses from './sold-courses.routes';
 import categoryTopics from './categoryTopics.routes';
+import courses from './courses.routes';
 
 const router = express.Router();
 
@@ -13,6 +14,7 @@ router.use('', auth);
 
 router.use('/category-topics', categoryTopics);
 router.use('/users', users);
+router.use('/courses', courses);
 router.use('/statistics', statistics);
 router.use('/sold-courses', soldCourses);
 
