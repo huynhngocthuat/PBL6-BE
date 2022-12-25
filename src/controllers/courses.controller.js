@@ -169,12 +169,12 @@ class CoursesController {
       let courses;
 
       if (page || limit) {
-        courses = await this.service.searchCourses(condition, {
+        courses = await this.service.searchCourses(false, condition, {
           page: parseInt(page || pages.PAGE_DEFAULT),
           limit: parseInt(limit || pages.LIMIT_DEFAULT),
         });
       } else {
-        courses = await this.service.searchCourses(condition, null);
+        courses = await this.service.searchCourses(false, condition, null);
       }
 
       logger.info(

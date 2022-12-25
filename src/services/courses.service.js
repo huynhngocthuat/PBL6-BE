@@ -176,7 +176,7 @@ class CoursesService extends BaseService {
 
         data.pagination = pagingData;
       } else {
-        const courses = await this.repo.searchCourses({
+        const courses = await this.repo.searchCourses(false, {
           ...tagFilter,
           limit: null,
           offset: null,
