@@ -43,7 +43,11 @@ class AdminController {
         httpCodes.STATUS_OK
       );
     } catch (error) {
-      return Response.error(res, errors.ERR_WHILE_GET_ALL_SOLD_COURSES, 400);
+      return Response.error(
+        res,
+        { message: errors.ERR_WHILE_GET_ALL_SOLD_COURSES },
+        400
+      );
     }
   }
 

@@ -1,4 +1,6 @@
 import express from 'express';
+import { roles } from 'constants';
+import AuthMiddleware from 'middlewares/auth';
 import users from './users.routes';
 import statistics from './statistics.routes';
 import auth from './auth.routes';
@@ -11,6 +13,8 @@ const router = express.Router();
 router.use('', auth);
 
 // middleware check authen and author
+
+router.use(AuthMiddleware.isRequired, AuthMiddleware.isRole(roles.ADMIN_ROLE));
 
 router.use('/category-topics', categoryTopics);
 router.use('/users', users);

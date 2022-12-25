@@ -22,7 +22,9 @@ class CategoryTopicsController {
     } catch (error) {
       return Response.error(
         res,
-        errors.WHILE_CREATE.format('category topic'),
+        {
+          message: errors.WHILE_CREATE.format('category topic'),
+        },
         400
       );
     }
@@ -62,7 +64,9 @@ class CategoryTopicsController {
     } catch (error) {
       return Response.error(
         res,
-        errors.WHILE_GET.format('category topic'),
+        {
+          message: errors.WHILE_GET.format('category topic'),
+        },
         400
       );
     }
@@ -77,13 +81,15 @@ class CategoryTopicsController {
       }
       return Response.error(
         res,
-        errors.WHILE_UPDATE.format('category topic'),
+        {
+          message: errors.WHILE_UPDATE.format('category topic'),
+        },
         400
       );
     } catch (error) {
       return Response.error(
         res,
-        errors.WHILE_UPDATE.format('category topic'),
+        { message: errors.WHILE_UPDATE.format('category topic') },
         400
       );
     }
@@ -98,7 +104,7 @@ class CategoryTopicsController {
     } catch (error) {
       return Response.error(
         res,
-        errors.WHILE_DELETE.format('category topic'),
+        { message: errors.WHILE_DELETE.format('category topic') },
         400
       );
     }

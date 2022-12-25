@@ -64,7 +64,11 @@ class CoursesController {
       }
     } catch (error) {
       console.log(error);
-      return Response.error(res, errors.WHILE_GET.format('course'), 400);
+      return Response.error(
+        res,
+        { message: errors.WHILE_GET.format('course') },
+        400
+      );
     }
   }
 
@@ -98,7 +102,11 @@ class CoursesController {
       }
     } catch (error) {
       console.log(error);
-      return Response.error(res, errors.WHILE_GET.format('course'), 400);
+      return Response.error(
+        res,
+        { message: errors.WHILE_GET.format('course') },
+        400
+      );
     }
   }
 
@@ -126,7 +134,7 @@ class CoursesController {
     } catch (error) {
       return Response.error(
         res,
-        errors.WHILE_GET.format('sections of course'),
+        { message: errors.WHILE_GET.format('sections of course') },
         400
       );
     }
@@ -140,9 +148,17 @@ class CoursesController {
       if (data) {
         return Response.success(res, { docs: data }, httpCodes.STATUS_OK);
       }
-      return Response.error(res, errors.WHILE_UPDATE.format('course'), 400);
+      return Response.error(
+        res,
+        { message: errors.WHILE_UPDATE.format('course') },
+        400
+      );
     } catch (error) {
-      return Response.error(res, errors.WHILE_UPDATE.format('course'), 400);
+      return Response.error(
+        res,
+        { message: errors.WHILE_UPDATE.format('course') },
+        400
+      );
     }
   }
 
@@ -153,7 +169,11 @@ class CoursesController {
 
       return Response.success(res, { docs: data }, httpCodes.STATUS_OK);
     } catch (error) {
-      return Response.error(res, errors.WHILE_DELETE.format('course'), 400);
+      return Response.error(
+        res,
+        { message: errors.WHILE_DELETE.format('course') },
+        400
+      );
     }
   }
 
@@ -201,7 +221,11 @@ class CoursesController {
         )} - ${error}`
       );
 
-      return Response.error(res, errors.WHILE_SEARCH.format('course'), 400);
+      return Response.error(
+        res,
+        { message: errors.WHILE_SEARCH.format('course') },
+        400
+      );
     }
   }
 
