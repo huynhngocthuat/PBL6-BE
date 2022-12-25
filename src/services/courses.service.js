@@ -222,6 +222,19 @@ class CoursesService extends BaseService {
       throw new Error(error);
     }
   }
+
+  /**
+   * Count all courses not deleted yet of instructor
+   * @param {string} userId is id of course, e.g, "92599851-3c92-4d37-b194-977a6d5223fe"
+   * @returns {number} is number represents the total record courses of instructor
+   */
+  async countCoursesOfInstructor(userId) {
+    try {
+      return this.repo.countCoursesOfInstructor(userId);
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
 }
 
 export default new CoursesService(

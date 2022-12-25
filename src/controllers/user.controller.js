@@ -29,12 +29,25 @@ class UsersController {
     try {
       // id of instructor
       const { id } = req.params;
-      const data = await this.service.findCourseByInstructor(id);
-      return Response.success(res, { docs: data }, httpCodes.STATUS_OK);
+      const { page, limit } = req.query;
+
+      const pagination = {
+        // eslint-disable-next-line radix
+        page: parseInt(page || pages.PAGE_DEFAULT),
+        // eslint-disable-next-line radix
+        limit: parseInt(limit || pages.LIMIT_DEFAULT),
+      };
+
+      const data = await this.service.findCourseByInstructor(id, pagination);
+      return Response.success(
+        res,
+        { docs: data.courses, pagination: data.pagination },
+        httpCodes.STATUS_OK
+      );
     } catch (error) {
       return Response.error(
         res,
-        errors.WHILE_GET.format('courses of instructor'),
+        { message: errors.WHILE_GET.format('courses of instructor') },
         400
       );
     }
