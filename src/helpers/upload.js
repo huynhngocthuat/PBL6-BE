@@ -26,7 +26,7 @@ export async function upload(option, file) {
     const result = await streamUpload(option, file);
     logger.info(infors.UPLOAD_FILE_TO_CLOUD_SUCCESS);
 
-    await setData(1, result.public_id, result.secure_url);
+    await setData(0, result.public_id, result.secure_url);
 
     return result;
   } catch (error) {
