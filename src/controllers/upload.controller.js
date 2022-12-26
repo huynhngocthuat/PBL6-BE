@@ -38,23 +38,27 @@ class UploadController {
   async uploadVideo(req, res) {
     const { file } = req;
 
-    const video = await upload(
-      {
-        resource_type: 'video',
-      },
-      file
-    );
+    try {
+      const video = await upload(
+        {
+          resource_type: 'video',
+        },
+        file
+      );
 
-    const data = {
-      id: video.public_id,
-      url: video.secure_url,
-    };
+      const data = {
+        id: video.public_id,
+        url: video.secure_url,
+      };
 
-    // use db 1 in Redis
-    // await redisClient.select(1);
-    // await redisClient.set(data.id, data.url);
+      // use db 1 in Redis
+      // await redisClient.select(1);
+      // await redisClient.set(data.id, data.url);
 
-    return Response.success(res, { docs: data }, httpCodes.STATUS_OK);
+      return Response.success(res, { docs: data }, httpCodes.STATUS_OK);
+    } catch (error) {
+      return Response.error(res, error, 400);
+    }
   }
 }
 

@@ -17,7 +17,11 @@ class SectionsController {
       const data = await this.service.create(req.body);
       return Response.success(res, { docs: data }, httpCodes.STATUS_OK);
     } catch (error) {
-      return Response.error(res, errors.WHILE_CREATE.format('section'), 400);
+      return Response.error(
+        res,
+        { message: errors.WHILE_CREATE.format('section') },
+        400
+      );
     }
   }
 
@@ -53,7 +57,11 @@ class SectionsController {
         }
       }
     } catch (error) {
-      return Response.error(res, errors.WHILE_GET.format('section'), 400);
+      return Response.error(
+        res,
+        { message: errors.WHILE_GET.format('section') },
+        400
+      );
     }
   }
 
@@ -66,7 +74,7 @@ class SectionsController {
     } catch (error) {
       return Response.error(
         res,
-        errors.WHILE_GET.format('videos of section'),
+        { message: errors.WHILE_GET.format('videos of section') },
         400
       );
     }
@@ -79,9 +87,17 @@ class SectionsController {
       if (data) {
         return Response.success(res, { docs: data }, httpCodes.STATUS_OK);
       }
-      return Response.error(res, errors.WHILE_UPDATE.format('section'), 400);
+      return Response.error(
+        res,
+        { message: errors.WHILE_GET.format('videos of section') },
+        400
+      );
     } catch (error) {
-      return Response.error(res, errors.WHILE_UPDATE.format('section'), 400);
+      return Response.error(
+        res,
+        { message: errors.WHILE_GET.format('videos of section') },
+        400
+      );
     }
   }
 
@@ -92,7 +108,11 @@ class SectionsController {
 
       return Response.success(res, { docs: data }, httpCodes.STATUS_OK);
     } catch (error) {
-      return Response.error(res, errors.WHILE_DELETE.format('section'), 400);
+      return Response.error(
+        res,
+        { message: errors.WHILE_DELETE.format('section') },
+        400
+      );
     }
   }
 }
