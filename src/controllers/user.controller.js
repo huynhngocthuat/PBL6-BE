@@ -202,7 +202,11 @@ class UsersController {
       );
 
       if (data.userRequests.length === 0)
-        return Response.success(res, { docs: {} }, httpCodes.STATUS_OK);
+        return Response.success(
+          res,
+          { docs: data.userRequests },
+          httpCodes.STATUS_OK
+        );
 
       return Response.success(
         res,
