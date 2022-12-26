@@ -11,7 +11,11 @@ router.get('/', CoursesController.get);
 router.get('/:id', ValidatorId, CoursesController.get);
 router.get('/:id/sections', ValidatorId, CoursesController.getSections);
 
-router.post('/', ValidatorBody('course'), CoursesController.create);
+router.post(
+  '/check-finish-course',
+  ValidatorBody('checkFinishCourse'),
+  CoursesController.checkUserFinishCourse
+);
 
 router.put(
   '/:id',
@@ -21,5 +25,6 @@ router.put(
 );
 
 router.delete('/:id', ValidatorId, CoursesController.delete);
+router.post('/:id', ValidatorId, CoursesController.delete);
 
 export default router;
