@@ -197,6 +197,57 @@ export class CoursesRepository extends BaseRepository {
       throw new Error(error);
     }
   }
+
+  // eslint-disable-next-line class-methods-use-this
+  async checkUserFinishCourse(userId, courseId) {
+    try {
+      const query = `SELECT
+                          (
+                            SELECT
+                                  arr_view.set_section
+                            FROM
+                            (
+                              SELECT
+                                    s."courseId" ,
+                                    array_agg(s.id) as set_section
+                              FROM "Sections" s
+                              INNER JOIN "SectionViews" sv ON
+                                                            sv."sectionId" = s.id
+                              WHERE
+                                  "userId" = :userId AND 
+                                  s."courseId" = :courseId
+                              GROUP BY s."courseId" 
+                            ) AS arr_view
+                          ) @> (
+                                SELECT
+                                      arr_base.set_section
+                                FROM
+                                (
+                                  SELECT
+                                        c.id,
+                                        array_agg(distinct s.id) as set_section
+                                  FROM "Courses" c
+                                  INNER JOIN "Sections" s ON
+                                                          s."courseId" = c.id
+                                  INNER JOIN "Videos" v ON
+                                                          s.id = v."sectionId"
+                                  WHERE
+                                      c.id = :courseId
+                                  GROUP BY c.id
+                                ) AS arr_base
+                              ) AS check_done`;
+
+      const data = await db.sequelize.query(query, {
+        logging: console.log,
+        replacements: { userId, courseId },
+        type: QueryTypes.SELECT,
+      });
+
+      return data;
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
 }
 
 export default new CoursesRepository(Course);

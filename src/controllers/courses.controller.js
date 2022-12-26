@@ -20,6 +20,7 @@ class CoursesController {
     this.analysisCourseOfInstructor =
       this.analysisCourseOfInstructor.bind(this);
     this.getCoursesForAdmin = this.getCoursesForAdmin.bind(this);
+    this.checkUserFinishCourse = this.checkUserFinishCourse.bind(this);
   }
 
   async create(req, res) {
@@ -243,6 +244,22 @@ class CoursesController {
       return Response.error(
         res,
         { message: errors.WHILE_GET.format('analysis course') },
+        400
+      );
+    }
+  }
+
+  async checkUserFinishCourse(req, res) {
+    try {
+      const { userId, courseId } = req.body;
+      console.log(req.body);
+      const data = await this.service.checkUserFinishCourse(userId, courseId);
+      return Response.success(res, { docs: data }, httpCodes.STATUS_OK);
+    } catch (error) {
+      console.log(error);
+      return Response.error(
+        res,
+        { message: errors.ERR_WHILE_CHECK_USER_FINISH_COURSE },
         400
       );
     }

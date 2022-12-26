@@ -19,6 +19,7 @@ import { videoComment } from './videoComment.schema';
 import { answerRequest, userRequestIdExist } from './answerRequest.chema';
 import { videoView } from './videoView.schema';
 import { activatedAction } from './activatedAction.schema';
+import { checkFinishCourse } from './checkFinishCourse.schema';
 
 export {
   // common
@@ -54,4 +55,5 @@ export {
   answerRequest,
   userRequestIdExist,
   activatedAction,
+  checkFinishCourse,
 };
