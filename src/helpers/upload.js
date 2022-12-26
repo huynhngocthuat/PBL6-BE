@@ -37,6 +37,7 @@ export async function upload(option, file) {
 
     return result;
   } catch (error) {
+    console.log(error);
     throw new Error(JSON.stringify(error));
   }
 }
