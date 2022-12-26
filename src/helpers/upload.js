@@ -30,6 +30,6 @@ export async function upload(option, file) {
 
     return result;
   } catch (error) {
-    throw new Error(JSON.stringify(error));
+    throw new Error(error);
   }
 }
