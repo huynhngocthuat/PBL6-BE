@@ -12,15 +12,11 @@ class VideoCommentsController {
   async create(req, res) {
     try {
       const videoComment = await this.service.create(req.body);
-      return Response.success(
-        res,
-        { docs: videoComment },
-        httpCodes.STATUS_OK
-      );
+      return Response.success(res, { docs: videoComment }, httpCodes.STATUS_OK);
     } catch (error) {
       return Response.error(
         res,
-        errors.WHILE_CREATE.format('video comment'),
+        { message: errors.WHILE_CREATE.format('video comment') },
         400
       );
     }
@@ -60,12 +56,11 @@ class VideoCommentsController {
     } catch (error) {
       return Response.error(
         res,
-        errors.WHILE_GET.format('video comment'),
+        { message: errors.WHILE_GET.format('video comment') },
         400
       );
     }
   }
-
 }
 
 export default new VideoCommentsController(VideoCommentsService);

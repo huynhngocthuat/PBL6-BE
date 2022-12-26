@@ -112,7 +112,7 @@ class UsersController {
     } catch (error) {
       return Response.error(
         res,
-        errors.WHILE_UPDATE_VIEW,
+        { message: errors.WHILE_UPDATE_VIEW },
         httpCodes.STATUS_BAD_REQUEST
       );
     }
@@ -154,7 +154,7 @@ class UsersController {
     } catch (error) {
       return Response.error(
         res,
-        errors.WHILE_GET.format('get users'),
+        { message: errors.WHILE_GET.format('get users') },
         httpCodes.STATUS_BAD_REQUEST
       );
     }
@@ -170,7 +170,7 @@ class UsersController {
     } catch (error) {
       return Response.error(
         res,
-        errors.WHILE_GET.format('video view'),
+        { message: errors.WHILE_GET.format('video view') },
         httpCodes.STATUS_BAD_REQUEST
       );
     }
@@ -202,7 +202,11 @@ class UsersController {
       );
 
       if (data.userRequests.length === 0)
-        return Response.success(res, { docs: {} }, httpCodes.STATUS_OK);
+        return Response.success(
+          res,
+          { docs: data.userRequests },
+          httpCodes.STATUS_OK
+        );
 
       return Response.success(
         res,

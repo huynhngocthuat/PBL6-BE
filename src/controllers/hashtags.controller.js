@@ -16,7 +16,11 @@ class HashtagsController {
       const data = await this.service.create(req.body);
       return Response.success(res, { docs: data }, httpCodes.STATUS_OK);
     } catch (error) {
-      return Response.error(res, errors.WHILE_CREATE.format('hashtag'), 400);
+      return Response.error(
+        res,
+        { message: errors.WHILE_CREATE.format('hashtag') },
+        400
+      );
     }
   }
 
@@ -52,7 +56,11 @@ class HashtagsController {
         }
       }
     } catch (error) {
-      return Response.error(res, errors.WHILE_GET.format('hashtag'), 400);
+      return Response.error(
+        res,
+        { message: errors.WHILE_GET.format('hashtag') },
+        400
+      );
     }
   }
 
@@ -63,9 +71,17 @@ class HashtagsController {
       if (data) {
         return Response.success(res, { docs: data }, httpCodes.STATUS_OK);
       }
-      return Response.error(res, errors.WHILE_UPDATE.format('hashtag'), 400);
+      return Response.error(
+        res,
+        { message: errors.WHILE_GET.format('hashtag') },
+        400
+      );
     } catch (error) {
-      return Response.error(res, errors.WHILE_UPDATE.format('hashtag'), 400);
+      return Response.error(
+        res,
+        { message: errors.WHILE_GET.format('hashtag') },
+        400
+      );
     }
   }
 
@@ -76,7 +92,11 @@ class HashtagsController {
 
       return Response.success(res, { docs: data }, httpCodes.STATUS_OK);
     } catch (error) {
-      return Response.error(res, errors.WHILE_DELETE.format('hashtag'), 400);
+      return Response.error(
+        res,
+        { message: errors.WHILE_DELETE.format('hashtag') },
+        400
+      );
     }
   }
 }

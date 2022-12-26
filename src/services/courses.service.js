@@ -256,6 +256,14 @@ class CoursesService extends BaseService {
       throw new Error(error);
     }
   }
+
+  async checkUserFinishCourse(userId, courseId) {
+    try {
+      return this.repo.checkUserFinishCourse(userId, courseId);
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
 }
 
 export default new CoursesService(

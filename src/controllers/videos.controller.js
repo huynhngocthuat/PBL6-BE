@@ -23,7 +23,11 @@ class VideosController {
 
       return Response.success(res, { docs: data }, httpCodes.STATUS_OK);
     } catch (error) {
-      return Response.error(res, errors.WHILE_CREATE.format('video'), 400);
+      return Response.error(
+        res,
+        { message: errors.WHILE_CREATE.format('video') },
+        400
+      );
     }
   }
 
@@ -60,7 +64,11 @@ class VideosController {
       }
     } catch (error) {
       console.log(error);
-      return Response.error(res, errors.WHILE_GET.format('video'), 400);
+      return Response.error(
+        res,
+        { message: errors.WHILE_GET.format('video') },
+        400
+      );
     }
   }
 
@@ -72,7 +80,7 @@ class VideosController {
     } catch (error) {
       return Response.error(
         res,
-        errors.WHILE_GET.format('instructor upload video'),
+        { message: errors.WHILE_GET.format('instructor upload video') },
         400
       );
     }
@@ -88,9 +96,17 @@ class VideosController {
       if (data) {
         return Response.success(res, { docs: data }, httpCodes.STATUS_OK);
       }
-      return Response.error(res, errors.WHILE_UPDATE.format('video'), 400);
+      return Response.error(
+        res,
+        { message: errors.WHILE_GET.format('instructor upload video') },
+        400
+      );
     } catch (error) {
-      return Response.error(res, errors.WHILE_UPDATE.format('video'), 400);
+      return Response.error(
+        res,
+        { message: errors.WHILE_GET.format('instructor upload video') },
+        400
+      );
     }
   }
 
@@ -101,7 +117,11 @@ class VideosController {
 
       return Response.success(res, { docs: data }, httpCodes.STATUS_OK);
     } catch (error) {
-      return Response.error(res, errors.WHILE_DELETE.format('video'), 400);
+      return Response.error(
+        res,
+        { message: errors.WHILE_DELETE.format('video') },
+        400
+      );
     }
   }
 }
