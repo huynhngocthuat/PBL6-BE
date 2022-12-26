@@ -1,6 +1,7 @@
 import { VideosService } from 'services';
 import Response from 'helpers/response';
 import { httpCodes, errors, pages } from 'constants';
+import { delUrlFilesOnRedis } from 'helpers/redis';
 
 class VideosController {
   constructor(service) {
@@ -12,9 +13,14 @@ class VideosController {
     this.getInstructorUploadVideo = this.getInstructorUploadVideo.bind(this);
   }
 
+  // eslint-disable-next-line class-methods-use-this
   async create(req, res) {
     try {
+      const { thumbnailUrl, url } = req.body;
+
+      await delUrlFilesOnRedis(0, thumbnailUrl, url);
       const data = await this.service.create(req.body);
+
       return Response.success(res, { docs: data }, httpCodes.STATUS_OK);
     } catch (error) {
       return Response.error(
@@ -83,6 +89,9 @@ class VideosController {
   async update(req, res) {
     try {
       const { id } = req.params;
+      const { thumbnailUrl, url } = req.body;
+      await delUrlFilesOnRedis(0, thumbnailUrl, url);
+
       const data = await this.service.update(id, req.body);
       if (data) {
         return Response.success(res, { docs: data }, httpCodes.STATUS_OK);

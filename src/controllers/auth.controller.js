@@ -1,7 +1,7 @@
 import { AuthService } from 'services';
 import Response from 'helpers/response';
 import redisClient from 'configs/redis.config';
-import { setData } from 'helpers/redis';
+import { setKey } from 'helpers/redis';
 
 class AuthController {
   constructor(service) {
@@ -41,10 +41,9 @@ class AuthController {
   async logout(req, res) {
     try {
       const { idOAuth, exp } = req.jwt;
-
       const tokenRevokeKey = `revoke_${req.token}`;
       // await redisClient.set(tokenRevokeKey, req.token);
-      await setData(0, tokenRevokeKey, req.token);
+      await setKey(0, tokenRevokeKey, req.token);
       await redisClient.expireAt(tokenRevokeKey, exp);
 
       const docs = await this.service.logout(idOAuth);

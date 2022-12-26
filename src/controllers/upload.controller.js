@@ -1,6 +1,7 @@
 import { upload } from 'helpers/upload';
 import { httpCodes } from 'constants';
 import Response from 'helpers/response';
+import { setKey } from 'helpers/redis';
 
 class UploadController {
   constructor() {
@@ -19,15 +20,18 @@ class UploadController {
         file
       );
 
+      const key = `publicId_${image.public_id}`;
       const data = {
-        id: image.public_id,
+        publicId: image.public_id,
         url: image.secure_url,
+        type: 'image',
       };
+
+      await setKey(0, key, JSON.stringify(data));
 
       // use db 1 in Redis
       // await redisClient.select(1);
       // await redisClient.set(data.id, data.url);
-
       return Response.success(res, { docs: data }, httpCodes.STATUS_OK);
     } catch (error) {
       return Response.error(res, error, 400);
@@ -46,10 +50,14 @@ class UploadController {
         file
       );
 
+      const key = `publicId_${video.public_id}`;
       const data = {
-        id: video.public_id,
+        publicId: video.public_id,
         url: video.secure_url,
+        type: 'video',
       };
+
+      await setKey(0, key, JSON.stringify(data));
 
       // use db 1 in Redis
       // await redisClient.select(1);

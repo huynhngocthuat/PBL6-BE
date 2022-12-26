@@ -2,7 +2,8 @@ import streamifier from 'streamifier';
 import cloudinary from 'configs/cloudinary.config';
 import logger from 'configs/winston.config';
 import { infors } from 'constants';
-import { setData } from './redis';
+// eslint-disable-next-line import/no-cycle
+import { setKey } from './redis';
 
 export function streamUpload(option, file) {
   return new Promise((resolve, reject) => {
@@ -26,10 +27,16 @@ export async function upload(option, file) {
     const result = await streamUpload(option, file);
     logger.info(infors.UPLOAD_FILE_TO_CLOUD_SUCCESS);
 
-    await setData(0, result.public_id, result.secure_url);
-
     return result;
   } catch (error) {
-    throw new Error(error);
+    console.log(error);
+    throw new Error(JSON.stringify(error));
   }
+}
+
+export function getPublicIdOnUrl(url) {
+  const arr = url.split('/');
+  const publicId = arr[arr.length - 1].split('.')[0];
+
+  return publicId;
 }

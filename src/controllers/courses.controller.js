@@ -7,6 +7,7 @@ import { CoursesService } from 'services';
 import Response from 'helpers/response';
 import { httpCodes, errors, pages, infors, roles } from 'constants';
 import logger from 'configs/winston.config';
+import { delUrlFilesOnRedis } from 'helpers/redis';
 
 class CoursesController {
   constructor(service) {
@@ -25,6 +26,9 @@ class CoursesController {
 
   async create(req, res) {
     try {
+      const { thumbnailUrl } = req.body;
+      await delUrlFilesOnRedis(0, thumbnailUrl);
+
       const data = await this.service.create(req.body);
 
       return Response.success(res, { docs: data }, httpCodes.STATUS_OK);
@@ -144,6 +148,9 @@ class CoursesController {
   async update(req, res) {
     try {
       const { id } = req.params;
+      const { thumbnailUrl } = req.body;
+      await delUrlFilesOnRedis(0, thumbnailUrl);
+
       const data = await this.service.update(id, req.body);
 
       if (data) {
