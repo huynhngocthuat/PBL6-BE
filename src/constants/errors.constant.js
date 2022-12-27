@@ -97,4 +97,5 @@ export default {
     'Something wrong while check user finish course',
   ERR_WHILE_PUBLIC_COURSE: 'Something wrong while instructor public course',
   COURSE_ALREADY_PUBLIC: 'Course is already public',
+  ERR_WHILE_UPLOAD_FILE: 'Something wrong while upload file',
 };

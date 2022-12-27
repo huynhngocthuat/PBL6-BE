@@ -1,9 +1,14 @@
 import express from 'express';
 import multer from 'multer';
 import { UploadController } from 'controllers';
+import AuthMiddleware from 'middlewares/auth';
+import { roles } from 'constants';
 
 const upload = multer();
 const router = express.Router();
+
+// Middle ware
+router.use(AuthMiddleware.isRequired);
 
 /**
  * @swagger
@@ -29,6 +34,7 @@ const router = express.Router();
  *                - file
  *              properties:
  *                file:
+ *                  description: File image to upload
  *                  type: string
  *                  format: binary
  *                  required: true
@@ -52,7 +58,13 @@ const router = express.Router();
  *              schema:
  *                $ref: '#/components/schemas/ErrorBadRequest'
  */
-router.post('/image', upload.single('file'), UploadController.uploadImage);
+router.post(
+  '/image',
+  AuthMiddleware.isRole(roles.INSTRUCTOR_ROLE, roles.USER_ROLES),
+  upload.single('file'),
+  UploadController.uploadImage
+);
+
 /**
  * @swagger
  * /upload/video:
@@ -70,6 +82,7 @@ router.post('/image', upload.single('file'), UploadController.uploadImage);
  *                - file
  *              properties:
  *                file:
+ *                  description: File videoa to upload
  *                  type: string
  *                  format: binary
  *                  required: true
@@ -93,6 +106,11 @@ router.post('/image', upload.single('file'), UploadController.uploadImage);
  *              schema:
  *                $ref: '#/components/schemas/ErrorBadRequest'
  */
-router.post('/video', upload.single('file'), UploadController.uploadVideo);
+router.post(
+  '/video',
+  AuthMiddleware.isRole(roles.INSTRUCTOR_ROLE),
+  upload.single('file'),
+  UploadController.uploadVideo
+);
 
 export default router;

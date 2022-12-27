@@ -1,7 +1,8 @@
 import { upload } from 'helpers/upload';
-import { httpCodes } from 'constants';
+import { httpCodes, errors } from 'constants';
 import Response from 'helpers/response';
 import { setKey } from 'helpers/redis';
+import logger from 'configs/winston.config';
 
 class UploadController {
   constructor() {
@@ -32,9 +33,17 @@ class UploadController {
       // use db 1 in Redis
       // await redisClient.select(1);
       // await redisClient.set(data.id, data.url);
+
       return Response.success(res, { docs: data }, httpCodes.STATUS_OK);
     } catch (error) {
-      return Response.error(res, error, 400);
+      logger.error('Error while upload image [upload-controller]:', error);
+      return Response.error(
+        res,
+        {
+          message: errors.ERR_WHILE_UPLOAD_FILE,
+        },
+        400
+      );
     }
   }
 
@@ -65,7 +74,14 @@ class UploadController {
 
       return Response.success(res, { docs: data }, httpCodes.STATUS_OK);
     } catch (error) {
-      return Response.error(res, error, 400);
+      logger.error('Error while upload image [upload-controller]:', error);
+      return Response.error(
+        res,
+        {
+          message: errors.ERR_WHILE_UPLOAD_FILE,
+        },
+        400
+      );
     }
   }
 }

@@ -27,7 +27,7 @@ export async function upload(option, file) {
 
     return result;
   } catch (error) {
-    console.log(error);
+    logger.error('Error while upload file [upload-helper]:', error);
     throw new Error(JSON.stringify(error));
   }
 }

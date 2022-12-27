@@ -94,7 +94,6 @@ class VideosService extends BaseService {
 
       for (let i = 0; i < listVideo.length; i += 1) {
         const videoId = listVideo[i].id;
-        console.log(this);
         // eslint-disable-next-line no-await-in-loop
         const viewVideo = await this.getViewOfVideo(videoId);
         const totalComment =

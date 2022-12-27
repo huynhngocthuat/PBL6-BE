@@ -6,6 +6,7 @@ import statistics from './statistics.routes';
 import auth from './auth.routes';
 import soldCourses from './sold-courses.routes';
 import categoryTopics from './categoryTopics.routes';
+import hashtags from './hashtags.routes';
 import courses from './courses.routes';
 
 const router = express.Router();
@@ -17,6 +18,7 @@ router.use('', auth);
 router.use(AuthMiddleware.isRequired, AuthMiddleware.isRole(roles.ADMIN_ROLE));
 
 router.use('/category-topics', categoryTopics);
+router.use('/hashtags', hashtags);
 router.use('/users', users);
 router.use('/courses', courses);
 router.use('/statistics', statistics);
