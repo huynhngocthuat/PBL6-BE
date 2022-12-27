@@ -1,20 +1,19 @@
-import { VideosRepository } from 'repositories';
+import { VideosRepository, videoViewsRepository } from 'repositories';
 import { InstructorResponse } from 'commons/responses/auth';
 import { json } from 'utils';
+import ViewVideo from 'dtos/viewVideo';
 import VideoResponse from 'commons/responses/video.response';
 import BaseService from './base.service';
-// eslint-disable-next-line import/no-cycle
-import videoViewsService from './videoViews.service';
 import videoCommentsService from './videoComments.service';
 import emotionReactsService from './emotionReacts.service';
 
 class VideosService extends BaseService {
   constructor(
     repo,
-    { videoViewsService, videoCommentsService, emotionReactsService }
+    { videoViewsRepository, videoCommentsService, emotionReactsService }
   ) {
     super(repo);
-    this.videoViewsService = videoViewsService;
+    this.videoViewsRepository = videoViewsRepository;
     this.videoCommentsService = videoCommentsService;
     this.emotionReactsService = emotionReactsService;
   }
@@ -40,9 +39,17 @@ class VideosService extends BaseService {
 
   async getViewOfVideo(videoId) {
     try {
-      const data = await this.videoViewsService.getViewOfVideo(videoId);
+      const data = await this.videoViewsRepository.getViewOfVideo(videoId);
+      let viewVideo = {};
+      // if data is null assign 0
+      if (!data) {
+        viewVideo.total = 0;
+      } else {
+        viewVideo = json(data);
+        viewVideo.total = +viewVideo.total;
+      }
 
-      return data;
+      return new ViewVideo(viewVideo);
     } catch (error) {
       throw new Error(error);
     }
@@ -87,6 +94,7 @@ class VideosService extends BaseService {
 
       for (let i = 0; i < listVideo.length; i += 1) {
         const videoId = listVideo[i].id;
+        console.log(this);
         // eslint-disable-next-line no-await-in-loop
         const viewVideo = await this.getViewOfVideo(videoId);
         const totalComment =
@@ -113,6 +121,7 @@ class VideosService extends BaseService {
 
       return response;
     } catch (error) {
+      console.log('Error', error);
       throw new Error(error);
     }
   }
@@ -141,7 +150,7 @@ class VideosService extends BaseService {
 }
 
 export default new VideosService(VideosRepository, {
-  videoViewsService,
+  videoViewsRepository,
   videoCommentsService,
   emotionReactsService,
 });

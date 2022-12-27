@@ -1,5 +1,4 @@
 import redisClient from 'configs/redis.config';
-// eslint-disable-next-line import/no-cycle
 import { getPublicIdOnUrl } from './upload';
 
 export async function setKey(database, key, data) {

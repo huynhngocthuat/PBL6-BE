@@ -5,7 +5,6 @@ import { errors } from 'constants';
 import ViewVideo from 'dtos/viewVideo';
 import TotalDuration from 'dtos/totalDuration';
 import BaseService from './base.service';
-// eslint-disable-next-line import/no-cycle, no-unused-vars
 import VideosService from './videos.service';
 import SectionsService from './sections.service';
 import SectionViewsService from './sectionViews.service';

@@ -2,8 +2,6 @@ import streamifier from 'streamifier';
 import cloudinary from 'configs/cloudinary.config';
 import logger from 'configs/winston.config';
 import { infors } from 'constants';
-// eslint-disable-next-line import/no-cycle
-import { setKey } from './redis';
 
 export function streamUpload(option, file) {
   return new Promise((resolve, reject) => {

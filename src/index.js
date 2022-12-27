@@ -30,7 +30,7 @@ app.use(
 
 const queue = 'task_queue';
 
-const task = cron.schedule('*/30 * * * * *', async () => {
+const task = cron.schedule('* * * 12 * *', async () => {
   logger.info(`Cron job test every minute`, Date(Date.now()).toString());
   const keys = await getAllKey(0, 'publicId_*');
   if (keys.length > 0) {
