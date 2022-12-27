@@ -264,6 +264,23 @@ class CoursesService extends BaseService {
       throw new Error(error);
     }
   }
+
+  async publicCourse(courseId) {
+    try {
+      const data = await this.updateByCondition(
+        {
+          id: courseId,
+        },
+        {
+          isPublic: true,
+        }
+      );
+
+      return json(data[1][0]);
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
 }
 
 export default new CoursesService(

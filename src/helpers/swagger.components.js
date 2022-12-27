@@ -19,6 +19,19 @@
  *           type: string
  *           description: The name of the category topic
  *
+ *     FileResponse:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: string
+ *           description: The id will be get from public id of api upload of api cloudinary
+ *         url:
+ *           type: string
+ *           description: The url will be get from secure_url of api upload of api cloudinary
+ *         type:
+ *          type: string
+ *          description: Type of file (video or image)
+ *
  *     CategoryTopicRequest:
  *       type: object
  *       required:

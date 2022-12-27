@@ -95,4 +95,6 @@ export default {
     'Something wrong while count subscribers of course',
   ERR_WHILE_CHECK_USER_FINISH_COURSE:
     'Something wrong while check user finish course',
+  ERR_WHILE_PUBLIC_COURSE: 'Something wrong while instructor public course',
+  COURSE_ALREADY_PUBLIC: 'Course is already public',
 };
