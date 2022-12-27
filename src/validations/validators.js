@@ -1,15 +1,17 @@
+/* eslint-disable func-names */
+/* eslint-disable consistent-return */
 import * as Schemas from 'commons/schemas';
 import Response from 'helpers/response';
 import { validate as uuidValidate } from 'uuid';
 import { messages, errors } from 'constants';
 import { json } from 'utils';
+import { CoursesService } from 'services';
 
 export function ValidatorBody(validator) {
   // eslint-disable-next-line no-prototype-builtins
   if (!Schemas.hasOwnProperty(validator))
     throw new Error(`'${validator}' validator is not exist`);
 
-  // eslint-disable-next-line consistent-return, func-names
   return async function (req, res, next) {
     try {
       const validated = await Schemas[validator].validateAsync(req.body);
@@ -29,7 +31,6 @@ export function ValidatorParams(validator) {
   if (!Schemas.hasOwnProperty(validator))
     throw new Error(`'${validator}' validator is not exist`);
 
-  // eslint-disable-next-line consistent-return
   return async function validate(req, res, next) {
     try {
       const validated = await Schemas[validator].validateAsync(req.params);
@@ -58,7 +59,6 @@ export function ValidatorId(req, res, next) {
 }
 
 export function ValidatorName(service, nameModel) {
-  // eslint-disable-next-line func-names, consistent-return
   return async function (req, res, next) {
     const { name } = req.body;
     const condition = {
@@ -85,7 +85,6 @@ export function ValidatorName(service, nameModel) {
 }
 
 export function ValidatorNameUpdate(service, nameModel) {
-  // eslint-disable-next-line func-names, consistent-return
   return async function (req, res, next) {
     const { id } = req.params;
     const { name } = req.body;
@@ -128,6 +127,52 @@ export function ValidatorNameUpdate(service, nameModel) {
     } catch (error) {
       return Response.error(res, {
         errors: errors.WHILE_UPDATE.format(nameModel),
+      });
+    }
+  };
+}
+
+export function ValidatorIdExist(service, nameModel) {
+  return async function (req, res, next) {
+    const { id } = req.params;
+    const condition = {
+      id,
+    };
+
+    try {
+      const data = await service.findOneByCondition(condition);
+
+      // if the id of model not exist on db return error
+      if (!data) {
+        return Response.error(res, {
+          message: messages.NOT_EXIST_ID.format(nameModel),
+        });
+      }
+
+      next();
+    } catch (error) {
+      return Response.error(res, error);
+    }
+  };
+}
+
+export function ValidatorPublicCourse() {
+  return async function (req, res, next) {
+    const { id } = req.params;
+    const course = await CoursesService.getCourseById(id);
+
+    if (course) {
+      const jsonCourse = json(course);
+
+      if (jsonCourse.isPublic) {
+        return Response.error(res, {
+          message: errors.COURSE_ALREADY_PUBLIC,
+        });
+      }
+      next();
+    } else {
+      return Response.error(res, {
+        message: errors.NOT_EXIST.format('course'),
       });
     }
   };
