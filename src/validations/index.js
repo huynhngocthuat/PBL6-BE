@@ -4,6 +4,8 @@ import {
   ValidatorId,
   ValidatorName,
   ValidatorNameUpdate,
+  ValidatorIdExist,
+  ValidatorPublicCourse,
 } from './validators';
 // import { ValidatorName, ValidatorNameUpdate } from './category.validations';
 // import {
@@ -17,4 +19,6 @@ export {
   ValidatorId,
   ValidatorName,
   ValidatorNameUpdate,
+  ValidatorIdExist,
+  ValidatorPublicCourse,
 };
