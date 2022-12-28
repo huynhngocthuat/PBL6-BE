@@ -50,12 +50,11 @@ export function ValidatorId(req, res, next) {
   const isUuid = uuidValidate(id);
   if (isUuid) {
     next();
-    return;
+  } else {
+    Response.error(res, {
+      message: messages.INVALID_ID,
+    });
   }
-
-  Response.error(res, {
-    message: messages.INVALID_ID,
-  });
 }
 
 export function ValidatorName(service, nameModel) {
@@ -158,6 +157,7 @@ export function ValidatorIdExist(service, nameModel) {
 
 export function ValidatorPublicCourse() {
   return async function (req, res, next) {
+    console.log('hello');
     const { id } = req.params;
     const course = await CoursesService.getCourseById(id);
 
