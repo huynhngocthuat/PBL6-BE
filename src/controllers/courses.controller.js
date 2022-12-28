@@ -24,6 +24,7 @@ class CoursesController {
     this.checkUserFinishCourse = this.checkUserFinishCourse.bind(this);
     this.publicCourse = this.publicCourse.bind(this);
     this.getHighestRevenueCourse = this.getHighestRevenueCourse.bind(this);
+    this.actionCourse = this.actionCourse.bind(this);
   }
 
   async create(req, res) {
@@ -313,21 +314,7 @@ class CoursesController {
 
       return Response.success(res, { docs: data }, httpCodes.STATUS_OK);
     } catch (error) {
-      return Response.error(
-        res,
-        { message: errors.ERR_WHILE_CHECK_USER_FINISH_COURSE },
-        400
-      );
-    }
-  }
-
-  async actionCourse(req, res) {
-    try {
-      const { action, id } = req.body;
-      const data = await this.service.actionCourse(id, action);
-
-      return Response.success(res, { docs: data }, httpCodes.STATUS_OK);
-    } catch (error) {
+      console.log(error);
       return Response.error(
         res,
         { message: errors.ERR_WHILE_CHECK_USER_FINISH_COURSE },
