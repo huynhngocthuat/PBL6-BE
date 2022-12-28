@@ -313,7 +313,7 @@ router.get(
 // user instructor
 /**
  * @swagger
- * /check-finish-course:
+ * /courses/check-finish-course:
  *    post:
  *      summary: Check finish course
  *      security:

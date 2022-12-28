@@ -4,6 +4,13 @@ import { ValidatorBody, ValidatorId } from 'validations';
 
 const router = express.Router();
 
+/**
+ * @swagger
+ * tags:
+ *   name: Videos
+ *   description: The video managing API
+ */
+
 router.get('/', VideosController.get);
 router.get('/:id', ValidatorId, VideosController.get);
 router.get('/:id/user', ValidatorId, VideosController.getInstructorUploadVideo);
