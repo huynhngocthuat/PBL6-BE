@@ -30,7 +30,7 @@ router.post(
 
       const jsonData = json(data);
       if (jsonData.status === status.WAITING_STATUS) {
-        next();
+        return next();
       }
 
       return Response.error(res, {

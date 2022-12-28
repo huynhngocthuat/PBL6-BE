@@ -2,6 +2,7 @@ import logger from 'configs/winston.config';
 import { errors, infors } from 'constants';
 import BaseRepository from 'commons/base.repository';
 import db from 'models';
+import { roles } from 'constants';
 
 const { User } = db;
 
@@ -36,7 +37,14 @@ export class UsersRepository extends BaseRepository {
 
   async countAllUser() {
     try {
-      const data = await this.model.count({ paranoid: false });
+      const data = await this.model.count({
+        where: {
+          role: {
+            $or: [roles.INSTRUCTOR_ROLE, roles.USER_ROLE],
+          },
+        },
+        paranoid: false,
+      });
       return data;
     } catch (error) {
       throw new Error(error);
