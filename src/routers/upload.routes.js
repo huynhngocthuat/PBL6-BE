@@ -60,7 +60,7 @@ router.use(AuthMiddleware.isRequired);
  */
 router.post(
   '/image',
-  AuthMiddleware.isRole(roles.INSTRUCTOR_ROLE, roles.USER_ROLES),
+  AuthMiddleware.isRole(roles.INSTRUCTOR_ROLE, roles.USER_ROLE),
   upload.single('file'),
   UploadController.uploadImage
 );
