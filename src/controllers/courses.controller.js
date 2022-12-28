@@ -23,6 +23,7 @@ class CoursesController {
     this.getCoursesForAdmin = this.getCoursesForAdmin.bind(this);
     this.checkUserFinishCourse = this.checkUserFinishCourse.bind(this);
     this.publicCourse = this.publicCourse.bind(this);
+    this.getHighestRevenueCourse = this.getHighestRevenueCourse.bind(this);
   }
 
   async create(req, res) {
@@ -277,6 +278,20 @@ class CoursesController {
       const { id } = req.params;
       console.log(id);
       const data = await this.service.publicCourse(id);
+
+      return Response.success(res, { docs: data }, httpCodes.STATUS_OK);
+    } catch (error) {
+      return Response.error(
+        res,
+        { message: errors.ERR_WHILE_CHECK_USER_FINISH_COURSE },
+        400
+      );
+    }
+  }
+
+  async getHighestRevenueCourse(req, res) {
+    try {
+      const data = await this.service.getTop10HighestCourse();
 
       return Response.success(res, { docs: data }, httpCodes.STATUS_OK);
     } catch (error) {

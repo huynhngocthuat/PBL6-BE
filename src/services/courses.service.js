@@ -287,6 +287,11 @@ class CoursesService extends BaseService {
       throw new Error(error);
     }
   }
+
+  async getTop10HighestCourse() {
+    const data = await this.repo.getTop10HighestCourse();
+    return data;
+  }
 }
 
 export default new CoursesService(
