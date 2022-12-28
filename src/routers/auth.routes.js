@@ -12,116 +12,157 @@ const router = express.Router();
  *   description: The authentication managing API
  */
 
+// input
+// {
+//   "email": "example+demo@gmail.com",
+//   "password": "PBL6@dut@123",
+//   "fullName": "PBL6"
+// }
+
+// output
+// {
+//   "status": "success",
+//   "data": {
+//       "email": "example+demo@gmail.com",
+//       "role": "USER",
+//       "fullName": "PBL6",
+//       "isActivated": false
+//   }
+// }
+
 /**
  * @swagger
  * /register:
- *    post:
- *      summary: Create a new user
- *      tags: [Auth]
- *      parameters:
- *        - in: body
- *          name: user
- *          description: The user to create.
- *          schema:
- *            type: object
- *            required:
- *              - fullName
- *              - email
- *              - password
- *            properties:
- *              fullName:
- *                type: string
- *                example: "PBL6"
- *                description: The name of the user.
- *              email:
- *                type: string
- *                example: "pbl6dut.tttln@gmail.com"
- *                description: The email of the user.
- *              password:
- *                type: string
- *                example: "PBL6@dut@123"
- *                description: The password of the user.
- *      responses:
- *        200:
- *          description: The password was successfully reset
- *          schema:
- *           type: object
- *           properties:
- *             status:
- *               type: string
- *               example: "success"
- *             data:
+ *   post:
+ *     summary: Register a new user
+ *     security:
+ *      - BearerAuth: []
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *               - password
+ *               - fullName
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 format: email
+ *               password:
+ *                 type: string
+ *               fullName:
+ *                 type: string
+ *             example:
+ *               email: example+demo@gmail.com
+ *               password: PBL6@dut@123
+ *               fullName: PBL6
+ *     responses:
+ *       '200':
+ *         description: Successful registration
+ *         content:
+ *           application/json:
+ *             schema:
  *               type: object
+ *               required:
+ *                 - status
+ *                 - data
  *               properties:
- *                email:
- *                  type: string
- *                  example: "pbl6dut.tttln@gmail.com"
- *                  description: The email of the user.
- *                role:
- *                  type: string
- *                  example: "USER"
- *                fullName:
- *                  type: string
- *                  example: "PBL6"
- *                  description: The name of the user.
- *                isActivated:
- *                  type: boolean
- *                  example: false
- *        400:
- *          description: Register failed
+ *                 status:
+ *                   type: string
+ *                   example: success
+ *                 data:
+ *                   type: object
+ *                   required:
+ *                     - email
+ *                     - role
+ *                     - fullName
+ *                     - isActivated
+ *                   properties:
+ *                     email:
+ *                       type: string
+ *                       format: email
+ *                       example: example+demo@gmail.com
+ *                     role:
+ *                       type: string
+ *                       example: USER
+ *                     fullName:
+ *                       type: string
+ *                       example: PBL6
+ *                     isActivated:
+ *                       type: boolean
+ *                       example: false
+ *       '400':
+ *         description: Something went wrong
+ *         content:
+ *          application/json:
+ *           schema:
+ *            $ref: '#/components/schemas/ErrorBadRequest'
  */
 
 router.post('/register', ValidatorBody('register'), authController.register);
 
 /**
  * @swagger
- * /login:
- *    post:
- *      summary: Login
- *      tags: [Auth]
- *      parameters:
- *        - in: body
- *          schema:
- *            type: object
- *            required:
- *              - email
- *              - password
- *            properties:
- *              email:
- *                type: string
- *                example: "pbl6dut.tttln@gmail.com"
- *                description: The email of the user.
- *              password:
- *                type: string
- *                example: "PBL6@dut@123"
- *                description: The password of the user.
- *      responses:
- *        200:
- *          description: Login successfully
- *          schema:
- *           type: object
- *           properties:
- *             status:
- *               type: string
- *               example: "success"
- *             data:
- *               type: object
- *               properties:
- *                token:
- *                  type: string
- *                  description: The token of the user.
- *                refreshToken:
- *                  type: string
- *                  description: The refresh token of the user.
- *                expiresIn:
- *                  type: string
- *                  example: "3600000"
- *                  description: The time of the token expires.
- *                type:
- *                  type: string
- *                  example: "Bearer"
- *        400:
- *          description: Register failed
+ *  paths:
+ *    /login:
+ *      post:
+ *        summary: Logs in a user
+ *        security:
+ *          - BearerAuth: []
+ *        tags: [Auth]
+ *        requestBody:
+ *          required: true
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                required:
+ *                  - email
+ *                  - password
+ *                properties:
+ *                  email:
+ *                    type: string
+ *                    format: email
+ *                    description: Email address of the user
+ *                  password:
+ *                    type: string
+ *                    description: Password of the user
+ *        responses:
+ *          200:
+ *            description: Successful login
+ *            content:
+ *              application/json:
+ *                schema:
+ *                  type: object
+ *                  properties:
+ *                    status:
+ *                      type: string
+ *                      enum: [success]
+ *                    data:
+ *                      type: object
+ *                      properties:
+ *                        token:
+ *                          type: string
+ *                          description: JWT token for the user' session
+ *                        refreshToken:
+ *                          type: string
+ *                          description: JWT token for refreshing the user's session
+ *                        expiresIn:
+ *                          type: string
+ *                          description: Expiration time of the token, in milliseconds
+ *                        type:
+ *                          type: string
+ *                          enum: [Bearer]
+ *          400:
+ *            description: Bad request
+ *            content:
+ *              application/json:
+ *                schema:
+ *                  $ref: '#/components/schemas/ErrorBadRequest'
  */
 
 router.post('/login', ValidatorBody('login'), authController.login);
@@ -142,27 +183,49 @@ router.post('/logout', AuthMiddleware.isRequired, authController.logout);
  * @swagger
  * /refresh-token:
  *   post:
- *     summary: Refresh token
  *     tags: [Auth]
- *     parameters:
- *      - in: body
- *        name: refreshToken
- *        description: The refresh token to refresh.
- *        schema:
- *          type: object
- *          required:
- *            - refreshToken
- *          properties:
- *            refreshToken:
- *              type: string
- *              description: The refresh token of the user.
+ *     summary: Refresh token
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               refreshToken:
+ *                 type: string
  *     responses:
- *      200:
- *        description: The jwt token was successfully created
- *      400:
- *          description: Refresh token is incorrect
+ *       200:
+ *         description: Success
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: success
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     token:
+ *                       type: string
+ *                       example: ""
+ *                     refreshToken:
+ *                       type: string
+ *                       example: "."
+ *                     expiresIn:
+ *                       type: string
+ *                       example: "3600000"
+ *                     type:
+ *                       type: string
+ *                       example: "Bearer"
+ *       400:
+ *         description: Success
+ *         content:
+ *           application/json:
+ *             schema:
+ *              $ref: '#/components/schemas/ErrorBadRequest'
  */
-
 router.post(
   '/refresh-token',
   ValidatorBody('refreshToken'),
@@ -202,83 +265,104 @@ router.get(
 
 /**
  * @swagger
- * /me:
+ *  /me:
  *    get:
- *      summary: Get user information
+ *      summary: Get information about the current user
  *      tags: [Auth]
+ *      security:
+ *        - BearerAuth: []
+ *      requestBody:
  *      responses:
- *        200:
- *          description: The user information
- *          schema:
- *           type: object
- *           properties:
- *             status:
- *               type: string
- *               example: "success"
- *             data:
- *               type: object
- *               properties:
- *                email:
- *                  type: string
- *                  example: "pbl6dut.tttln@gmail.com"
- *                  description: The email of the user.
- *                fullName:
- *                  type: string
- *                  example: "PBL6"
- *                  description: The name of the user.
- *                role:
- *                  type: string
- *                  example: "USER"
- *                userId:
- *                  type: string
- *                  example: "035c2785-0041-4ad5-bd18-4a2a894a9414"
- *                  description: The id of the user.
- *                avatarUrl:
- *                  type: string
- *                  example: "https://images.unsplash.com/photo-1667985847417-fbb8b638a2ef?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=736&q=80"
- *                  description: The avatar url of the user.
- *        400:
- *          description: The password was not reset
+ *        '200':
+ *          description: Success
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                properties:
+ *                  status:
+ *                    type: string
+ *                    description: The status of the request
+ *                    example: success
+ *                  data:
+ *                    type: object
+ *                    properties:
+ *                      email:
+ *                        type: string
+ *                        description: The email address of the user
+ *                        example: doantanty92+example@gmail.com
+ *                      fullName:
+ *                        type: string
+ *                        description: The full name of the user
+ *                        example: Đoàn Tân Tỵ
+ *                      role:
+ *                        type: string
+ *                        description: The role of the user
+ *                        example: USER
+ *                      userId:
+ *                        type: string
+ *                        format: uuid
+ *                        description: The unique ID of the user
+ *                        example: 160c5b61-9e0f-41fb-a78f-9008e63b4568
+ *                      createdAt:
+ *                        type: string
+ *                        format: date-time
+ *                        description: The date and time the user account was created
+ *                        example: 2022-12-28T15:52:51.023Z
+ *                      avatarUrl:
+ *                        type: string
+ *                        nullable: true
+ *                        description: The URL of the user's avatar image
+ *                        example: null
+ *        '400':
+ *          description: Something went wrong
+ *          content:
+ *           application/json:
+ *            schema:
+ *             $ref: '#/components/schemas/ErrorBadRequest'
  */
 
 router.get('/me', AuthMiddleware.isRequired, authController.getMe);
 
 /**
  * @swagger
- * /forgot-password:
- *   post:
- *     summary:  Forgot password
- *     tags: [Auth]
- *     parameters:
- *      - in: body
- *        name: email
- *        description: The email to send verify code.
- *        schema:
- *          type: object
- *          required:
- *           - email
- *          properties:
- *            email:
- *              type: string
- *              description: The email of the user.
- *              example: "pbl6@gmail.com"
- *     responses:
- *      200:
- *          description: The email was successfully sent
- *          schema:
- *            type: object
- *            properties:
- *              status:
- *                type: string
- *                example: "success"
- *              data:
- *                type: object
- *                properties:
- *                  message:
- *                    type: string
- *                    example: "Send verify code successfully"
- *      400:
- *          description: Email is incorrect
+ *   /forgot-password:
+ *     post:
+ *       summary: Forgot password
+ *       tags: [Auth]
+ *       requestBody:
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 email:
+ *                   type: string
+ *                   format: email
+ *                   example: pbl6dut@gmail.com
+ *       responses:
+ *         200:
+ *           description: Success
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 type: object
+ *                 properties:
+ *                   status:
+ *                     type: string
+ *                     example: success
+ *                   data:
+ *                     type: object
+ *                     properties:
+ *                       message:
+ *                         type: string
+ *                         example: Send verify code successfully
+ *         400:
+ *           description: Success
+ *           content:
+ *             application/json:
+ *               schema:
+ *                $ref: '#/components/schemas/ErrorBadRequest'
  */
 
 router.post(
@@ -293,39 +377,42 @@ router.post(
  *   post:
  *     summary: Verify code
  *     tags: [Auth]
- *     parameters:
- *      - in: body
- *        schema:
- *          type: object
- *          required:
- *            - email
- *            - verifyCode
- *          properties:
- *            email:
- *              type: string
- *              example: "pbl6dut@gmail.com"
- *              description: The email of the user.
- *            verifyCode:
- *              type: number
- *              example: 9999
- *              description: The verify code of the user.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 format: email
+ *               verifyCode:
+ *                 type: string
  *     responses:
- *      200:
- *          description: The verify code was successfully verified
- *          schema:
- *            type: object
- *            properties:
- *              status:
- *                type: string
- *                example: "success"
- *              data:
- *                type: object
- *                properties:
- *                  message:
- *                    type: string
- *                    example: "Reset password successfully"
- *      400:
- *         description:  Verify code is incorrect
+ *       200:
+ *         description: Success
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   enum: [success]
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     message:
+ *                       type: string
+ *                       example: Verify code successfully
+ *       400:
+ *         description: Success
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorBadRequest'
+ *
  */
 
 router.post(
@@ -334,51 +421,58 @@ router.post(
   authController.verifyCode
 );
 
-/**  
-@swagger
-*  /reset-password:
-*    post:
-*      summary: Reset password
-*      tags: [Auth]
-*      parameters:
-*        - in: body
-*          schema:
-*            type: object
-*            required:
-*              - email
-*              - password
-*              - verifyCode
-*            properties:
-*              email:
-*                type: string
-*                example: "pbl6dut@gmail.com"
-*                description: The email of the user.
-*              password:
-*                type: string
-*                example: "PBL6@dut@123"
-*                description: The password of the user.
-*              verifyCode:
-*                type: number
-*                example: 9999
-*                description: The verify code of the user.
-*      responses:
-*        200:
-*          description: The password was successfully reset
-*          schema:
-*            type: object
-*            properties:
-*              status:
-*                type: string
-*                example: "success"
-*              data:
-*                type: object
-*                properties:
-*                  message:
-*                    type: string
-*                    example: "Reset password successfully"
-*        400:
-*          description: The password was not reset
-*/
+/**
+ * @swagger
+ * /reset-password:
+ *   post:
+ *     summary: Reset password
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *               - verifyCode
+ *               - password
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 format: email
+ *               verifyCode:
+ *                 type: integer
+ *               password:
+ *                 type: string
+ *                 format: password
+ *     responses:
+ *       200:
+ *         description: Reset password successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   enum: [success]
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     message:
+ *                       type: string
+ *               example:
+ *                 status: success
+ *                 data:
+ *                   message: Reset password successfully
+ *       400:
+ *         description: Something went wrong
+ *         content:
+ *           application/json:
+ *            schema:
+ *             $ref: '#/components/schemas/ErrorBadRequest'
+ */
 
 router.post(
   '/reset-password',
@@ -386,46 +480,52 @@ router.post(
   authController.resetPassword
 );
 
-/**  
-@swagger
-*  /change-password:
-*    post:
-*      summary: Change password
-*      tags: [Auth]
-*      parameters:
-*        - in: body
-*          schema:
-*            type: object
-*            required:
-*              - oldPassword
-*              - newPassword
-*            properties:
-*              oldPassword:
-*                type: string
-*                example: "PBL6@dut@123"
-*                description: The old password of the user.
-*              newPassword:
-*                type: string
-*                example: "PBL6@12asc1"
-*                description: The new password of the user.
-*      responses:
-*        200:
-*          description: The password was successfully reset
-*          schema:
-*            type: object
-*            properties:
-*              status:
-*                type: string
-*                example: "success"
-*              data:
-*                type: object
-*                properties:
-*                  message:
-*                    type: string
-*                    example: "Change password successfully"
-*        400:
-*          description: The password was not reset
-*/
+/**
+ * @swagger
+ * /change-password:
+ *   post:
+ *     summary: Change password
+ *     tags: [Auth]
+ *     security:
+ *      - BearerAuth: []
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - oldPassword
+ *               - newPassword
+ *             properties:
+ *               oldPassword:
+ *                 type: string
+ *               newPassword:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Success
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: success
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     message:
+ *                       type: string
+ *                       example: Change password successfully
+ *       400:
+ *         description: Success
+ *         content:
+ *           application/json:
+ *             schema:
+ *              $ref: '#/components/schemas/ErrorBadRequest'
+ */
+
 router.post(
   '/change-password',
   ValidatorBody('changePassword'),
