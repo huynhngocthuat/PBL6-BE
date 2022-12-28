@@ -4,6 +4,13 @@ import { ValidatorBody, ValidatorId } from 'validations';
 
 const router = express.Router();
 
+/**
+ * @swagger
+ * tags:
+ *   name: Sections
+ *   description: The section managing API
+ */
+
 router.get('/', SectionsController.get);
 
 router.get('/:id', ValidatorId, SectionsController.get);

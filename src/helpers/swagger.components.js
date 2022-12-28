@@ -19,6 +19,30 @@
  *           type: string
  *           description: The name of the category topic
  *
+ *     HashtagRequest:
+ *       type: object
+ *       required:
+ *         - name
+ *       properties:
+ *         name:
+ *           type: string
+ *           description: The name of the section topic
+ *       example:
+ *         name: "mvc"
+ *
+ *     HashtagResponse:
+ *       type: object
+ *       required:
+ *         - name
+ *       properties:
+ *         id:
+ *           type: string
+ *           format: uuid
+ *           description: The auto-generated id of the hashtag
+ *         name:
+ *           type: string
+ *           description: The name of the hashtag
+ *
  *     CourseResponse:
  *       type: object
  *       required:

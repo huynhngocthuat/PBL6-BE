@@ -164,6 +164,14 @@ router.post(
  *      security:
  *       - BearerAuth: []
  *      tags: [Category Topics]
+ *      parameters:
+ *      - in: path
+ *        name: id
+ *        schema:
+ *          type: string
+ *          format: uuid
+ *        required: true
+ *        description: The id of category topic
  *      requestBody:
  *        description: A JSON object containing category topics
  *        required: true
