@@ -40,9 +40,8 @@ class CoursesService extends BaseService {
 
         jsonData = json(data);
         return { ...jsonData, ...totalPurchaser };
-      } else {
-        return data;
       }
+      return data;
     } catch (error) {
       throw new Error(error);
     }

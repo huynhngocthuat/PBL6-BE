@@ -8,6 +8,8 @@ import {
   ValidatorName,
   ValidatorNameUpdate,
 } from 'validations';
+import AuthMiddleware from 'middlewares/auth';
+import { roles } from 'constants';
 
 const router = express.Router();
 
@@ -144,6 +146,8 @@ router.get('/:id', ValidatorId, HashtagsController.get);
  */
 router.post(
   '/',
+  AuthMiddleware.isRequired,
+  AuthMiddleware.isRole(roles.ADMIN_ROLE),
   ValidatorBody('hashtag'),
   ValidatorName(hashtagsService, 'hashtag'),
   HashtagsController.create
@@ -196,6 +200,8 @@ router.post(
  */
 router.put(
   '/:id',
+  AuthMiddleware.isRequired,
+  AuthMiddleware.isRole(roles.ADMIN_ROLE),
   ValidatorId,
   ValidatorBody('hashtag'),
   ValidatorNameUpdate(hashtagsService, 'hashtag'),
@@ -241,6 +247,12 @@ router.put(
  *              schema:
  *                $ref: '#/components/schemas/ErrorBadRequest'
  */
-router.delete('/:id', ValidatorId, HashtagsController.delete);
+router.delete(
+  '/:id',
+  AuthMiddleware.isRequired,
+  AuthMiddleware.isRole(roles.ADMIN_ROLE),
+  ValidatorId,
+  HashtagsController.delete
+);
 
 export default router;
