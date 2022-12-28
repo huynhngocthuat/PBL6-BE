@@ -8,6 +8,7 @@ class AdminController {
     this.statisticOverview = this.statisticOverview.bind(this);
     this.getAllSoldCourses = this.getAllSoldCourses.bind(this);
     this.activationUser = this.activationUser.bind(this);
+    this.getUserDetail = this.getUserDetail.bind(this);
   }
 
   async statisticOverview(req, res) {
@@ -72,6 +73,20 @@ class AdminController {
         { message: errors.ERR_WHILE_ACTIVATION_USER },
         400
       );
+    }
+  }
+
+  async getUserDetail(req, res) {
+    try {
+      const { id } = req.params;
+      const data = await this.service.getUserDetail(id);
+
+      return Response.success(res, { docs: data }, httpCodes.STATUS_OK);
+    } catch (error) {
+      console.log(error);
+      return Response.error(res, {
+        message: errors.ERR_WHILE_GET_INFOR_DETAIL_OF_USER,
+      });
     }
   }
 }
