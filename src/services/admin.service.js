@@ -2,17 +2,23 @@ import StatisticOverview from 'dtos/statisticOverview';
 import { usersRepository } from 'repositories';
 import { json } from 'utils';
 import { UserResponse } from 'commons/responses/auth';
+import { status } from 'constants';
 import BaseService from './base.service';
 import SubscribesService from './subscribes.service';
 import CoursesService from './courses.service';
 import UsersService from './users.service';
+import UserStatussService from './userStatuss.service';
 
 class AdminService extends BaseService {
-  constructor(repo, { SubscribesService, CoursesService, UsersService }) {
+  constructor(
+    repo,
+    { SubscribesService, CoursesService, UsersService, UserStatussService }
+  ) {
     super(repo);
     this.subscribesService = SubscribesService;
     this.coursesService = CoursesService;
     this.usersService = UsersService;
+    this.userStatussService = UserStatussService;
   }
 
   async statisticOverview() {
@@ -58,10 +64,27 @@ class AdminService extends BaseService {
       throw new Error(error);
     }
   }
+
+  async getUserDetail(userId) {
+    try {
+      const data = await this.usersService.getInforDetailOfUserByUserId(userId);
+      const userRequest = await this.userStatussService.findUserRequestByStatus(
+        userId,
+        status.WAITING_STATUS
+      );
+
+      data.userRequest = userRequest;
+
+      return data;
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
 }
 
 export default new AdminService(usersRepository, {
   SubscribesService,
   CoursesService,
   UsersService,
+  UserStatussService,
 });

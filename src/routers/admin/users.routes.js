@@ -16,7 +16,7 @@ router.get(
   UserController.statisticRequestBecomeToInstructor
 );
 
-router.get('/detail/:id', ValidatorId, UserController.getInforDetailOfUser);
+router.get('/detail/:id', ValidatorId, AdminsController.getUserDetail);
 
 router.post(
   '/requests/answer-request-instructor',
