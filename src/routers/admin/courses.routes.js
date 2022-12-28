@@ -4,7 +4,9 @@ import { ValidatorId } from 'validations';
 
 const router = express.Router();
 
-router.get('/highest-revenue', CoursesController.getHighestRevenueCourse);
+router.get('/highest-sold-quantity', CoursesController.getHighestRevenueCourse);
+
+router.get('/action', CoursesController.actionCourse);
 
 router.get('/', CoursesController.getCoursesForAdmin);
 

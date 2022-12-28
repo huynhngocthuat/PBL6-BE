@@ -288,6 +288,25 @@ class CoursesService extends BaseService {
     }
   }
 
+  async actionCourse(courseId, action) {
+    const isActived = action === 'ACTIVATED';
+
+    try {
+      const data = await this.updateByCondition(
+        {
+          id: courseId,
+        },
+        {
+          isActived,
+        }
+      );
+
+      return json(data[1][0]);
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
   async getTop10HighestCourse() {
     const data = await this.repo.getTop10HighestCourse();
     return data;

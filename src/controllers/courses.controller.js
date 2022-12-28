@@ -302,6 +302,21 @@ class CoursesController {
       );
     }
   }
+
+  async actionCourse(req, res) {
+    try {
+      const { action, id } = req.body;
+      const data = await this.service.actionCourse(id, action);
+
+      return Response.success(res, { docs: data }, httpCodes.STATUS_OK);
+    } catch (error) {
+      return Response.error(
+        res,
+        { message: errors.ERR_WHILE_CHECK_USER_FINISH_COURSE },
+        400
+      );
+    }
+  }
 }
 
 export default new CoursesController(CoursesService);

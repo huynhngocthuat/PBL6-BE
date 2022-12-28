@@ -253,7 +253,7 @@ export class CoursesRepository extends BaseRepository {
   async getTop10HighestCourse() {
     try {
       const query = `SELECT 
-                          c."id", c."name", sum(c.price) AS "revenue" 
+                          c."id", c."name", COUNT(c.id) AS "total" 
                      FROM "Courses" c 
                      INNER JOIN "JSubscribes" j ON 
                                                 j."courseId"  = c.id 
