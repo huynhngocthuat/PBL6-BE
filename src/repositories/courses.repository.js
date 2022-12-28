@@ -258,7 +258,7 @@ export class CoursesRepository extends BaseRepository {
                      INNER JOIN "JSubscribes" j ON 
                                                 j."courseId"  = c.id 
                      GROUP BY(c.id)
-                     ORDER BY "revenue" desc 
+                     ORDER BY "total" desc 
                      LIMIT 10`;
 
       const data = await db.sequelize.query(query, {

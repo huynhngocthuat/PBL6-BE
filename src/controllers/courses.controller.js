@@ -295,6 +295,24 @@ class CoursesController {
 
       return Response.success(res, { docs: data }, httpCodes.STATUS_OK);
     } catch (error) {
+      console.log(error);
+      return Response.error(
+        res,
+        { message: errors.ERR_WHILE_CHECK_USER_FINISH_COURSE },
+        400
+      );
+    }
+  }
+
+  async actionCourse(req, res) {
+    try {
+      const { action } = req.body;
+      const { id } = req.params;
+
+      const data = await this.service.actionCourse(id, action);
+
+      return Response.success(res, { docs: data }, httpCodes.STATUS_OK);
+    } catch (error) {
       return Response.error(
         res,
         { message: errors.ERR_WHILE_CHECK_USER_FINISH_COURSE },

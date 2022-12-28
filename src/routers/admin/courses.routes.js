@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.get('/highest-sold-quantity', CoursesController.getHighestRevenueCourse);
 
-router.get('/action', CoursesController.actionCourse);
+router.put('/:id', CoursesController.actionCourse);
 
 router.get('/', CoursesController.getCoursesForAdmin);
 
