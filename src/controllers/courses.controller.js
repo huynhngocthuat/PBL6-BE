@@ -82,7 +82,7 @@ class CoursesController {
     try {
       const { id } = req.params;
       const { page, limit } = req.query;
-
+      console.log('id', id);
       if (id) {
         const data = await this.service.getCourseById(id);
         return Response.success(res, { docs: data }, httpCodes.STATUS_OK);

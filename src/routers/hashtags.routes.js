@@ -74,8 +74,6 @@ router.get('/', HashtagsController.get);
  *    get:
  *      summary: Get hashtag
  *      description: Get one hâshtag by condition is id
- *      security:
- *       - BearerAuth: []
  *      tags: [Hashtags]
  *      parameters:
  *      - in: path
