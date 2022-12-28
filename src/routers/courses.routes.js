@@ -41,6 +41,8 @@ router.get('/', CoursesController.get);
 router.get('/:id', ValidatorId, CoursesController.get);
 router.get('/:id/sections', ValidatorId, CoursesController.getSections);
 
+router.post('/', ValidatorBody('course'), CoursesController.create);
+
 router.post(
   '/check-finish-course',
   ValidatorBody('checkFinishCourse'),
