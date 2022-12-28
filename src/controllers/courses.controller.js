@@ -122,21 +122,16 @@ class CoursesController {
       const { id } = req.params;
       const { page, limit } = req.query;
 
-      if (page || limit) {
-        const data = await this.service.findSectionsByCourse(id, {
-          page: parseInt(page || pages.PAGE_DEFAULT),
-          limit: parseInt(limit || pages.LIMIT_DEFAULT),
-        });
+      const data = await this.service.findSectionsByCourse(id, {
+        page: parseInt(page || pages.PAGE_DEFAULT),
+        limit: parseInt(limit || pages.LIMIT_DEFAULT),
+      });
 
-        return Response.success(
-          res,
-          { docs: data.sections, pagination: data.pagination },
-          httpCodes.STATUS_OK
-        );
-      }
-
-      const data = await this.service.findSectionsByCourse(id);
-      return Response.success(res, { docs: data }, httpCodes.STATUS_OK);
+      return Response.success(
+        res,
+        { docs: data.sections, pagination: data.pagination },
+        httpCodes.STATUS_OK
+      );
     } catch (error) {
       return Response.error(
         res,
@@ -199,16 +194,15 @@ class CoursesController {
         lteq: req.query.lteq ?? 0,
       };
 
-      console.log(condition);
-      let courses;
+      let data;
 
       if (page || limit) {
-        courses = await this.service.searchCourses(false, condition, {
+        data = await this.service.searchCourses(false, condition, {
           page: parseInt(page || pages.PAGE_DEFAULT),
           limit: parseInt(limit || pages.LIMIT_DEFAULT),
         });
       } else {
-        courses = await this.service.searchCourses(false, condition, null);
+        data = await this.service.searchCourses(false, condition, null);
       }
 
       logger.info(
@@ -219,7 +213,12 @@ class CoursesController {
           JSON.stringify(req.params)
         )}`
       );
-      return Response.success(res, { docs: courses }, httpCodes.STATUS_OK);
+
+      return Response.success(
+        res,
+        { docs: data.courses, pagination: data.pagination },
+        httpCodes.STATUS_OK
+      );
     } catch (error) {
       logger.error(
         `${errors.REQUEST_AT_CONTROLLER.format(
@@ -260,9 +259,9 @@ class CoursesController {
   async checkUserFinishCourse(req, res) {
     try {
       const { userId, courseId } = req.body;
-      console.log(req.body);
       const data = await this.service.checkUserFinishCourse(userId, courseId);
-      return Response.success(res, { docs: data }, httpCodes.STATUS_OK);
+
+      return Response.success(res, { docs: data[0] }, httpCodes.STATUS_OK);
     } catch (error) {
       console.log(error);
       return Response.error(
@@ -276,6 +275,7 @@ class CoursesController {
   async publicCourse(req, res) {
     try {
       const { id } = req.params;
+      console.log(id);
       const data = await this.service.publicCourse(id);
 
       return Response.success(res, { docs: data }, httpCodes.STATUS_OK);
