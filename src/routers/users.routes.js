@@ -6,6 +6,59 @@ import { roles } from 'constants';
 
 const router = express.Router();
 
+/**
+ * @swagger
+ * tags:
+ *   name: Users
+ *   description: The user managing API
+ */
+
+/**
+ * @swagger
+ * /users/{id}/courses:
+ *    get:
+ *      summary: Get courses of instructor
+ *      tags: [Users]
+ *      parameters:
+ *      - in: query
+ *        name: page
+ *        schema:
+ *          type: integer
+ *          minimum: 1
+ *        required: false
+ *        description: The number of page to query for course
+ *      - in: query
+ *        name: limit
+ *        schema:
+ *          type: integer
+ *          minimum: 1
+ *          default: 10
+ *        required: false
+ *        description: The numbers of items to return
+ *      responses:
+ *        200:
+ *          description: Status success and data of course
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                properties:
+ *                  status:
+ *                    type: string
+ *                    example: "success"
+ *                  data:
+ *                    type: array
+ *                    items:
+ *                      $ref: '#/components/schemas/CourseResponse'
+ *                  pagination:
+ *                    $ref: '#/components/schemas/Pagination'
+ *        400:
+ *          description: Something wrong while get courses
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/ErrorBadRequest'
+ */
 router.get('/:id/courses', UserController.getCourses);
 
 router.put(

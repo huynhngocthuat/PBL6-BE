@@ -31,11 +31,18 @@ class CoursesService extends BaseService {
   async getCourseById(courseId) {
     try {
       const data = await this.find(courseId);
-      const totalPurchaser =
-        await this.subscribesService.countSubcribersOfCourse(courseId);
-      const jsonData = json(data);
+      let totalPurchaser;
+      let jsonData;
+      if (data) {
+        totalPurchaser = await this.subscribesService.countSubcribersOfCourse(
+          courseId
+        );
 
-      return { ...jsonData, ...totalPurchaser };
+        jsonData = json(data);
+        return { ...jsonData, ...totalPurchaser };
+      } else {
+        return data;
+      }
     } catch (error) {
       throw new Error(error);
     }
