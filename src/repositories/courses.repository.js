@@ -248,6 +248,29 @@ export class CoursesRepository extends BaseRepository {
       throw new Error(error);
     }
   }
+
+  // eslint-disable-next-line class-methods-use-this
+  async getTop10HighestCourse() {
+    try {
+      const query = `SELECT 
+                          c."id", c."name", sum(c.price) AS "revenue" 
+                     FROM "Courses" c 
+                     INNER JOIN "JSubscribes" j ON 
+                                                j."courseId"  = c.id 
+                     GROUP BY(c.id)
+                     ORDER BY "revenue" desc 
+                     LIMIT 10`;
+
+      const data = await db.sequelize.query(query, {
+        logging: console.log,
+        type: QueryTypes.SELECT,
+      });
+
+      return data;
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
 }
 
 export default new CoursesRepository(Course);

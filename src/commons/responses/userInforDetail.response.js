@@ -8,6 +8,7 @@ class UserInforDetailResponse {
     address,
     phone,
     occupation,
+    isActivated,
     dateOfBirth,
     identityImageUrl,
     createdAt,
@@ -21,6 +22,7 @@ class UserInforDetailResponse {
     this.address = address;
     this.phone = phone;
     this.occupation = occupation;
+    this.isActivated = isActivated;
     this.dateOfBirth = dateOfBirth;
 
     // eslint-disable-next-line no-param-reassign
