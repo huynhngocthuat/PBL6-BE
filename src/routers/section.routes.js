@@ -1,6 +1,8 @@
 import express from 'express';
 import { SectionsController } from 'controllers';
 import { ValidatorBody, ValidatorId } from 'validations';
+import AuthMiddleware from 'middlewares/auth';
+import { roles } from 'constants';
 
 const router = express.Router();
 
@@ -17,9 +19,21 @@ router.get('/:id', ValidatorId, SectionsController.get);
 
 router.get('/:id/videos', ValidatorId, SectionsController.getVideos);
 
-router.post('/', ValidatorBody('section'), SectionsController.create);
+router.post(
+  '/',
+  AuthMiddleware.isRequired,
+  AuthMiddleware.isRole(roles.INSTRUCTOR_ROLE),
+  ValidatorBody('section'),
+  SectionsController.create
+);
 
-router.put('/:id', ValidatorBody('section'), SectionsController.update);
+router.put(
+  '/:id',
+  AuthMiddleware.isRequired,
+  AuthMiddleware.isRole(roles.INSTRUCTOR_ROLE),
+  ValidatorBody('section'),
+  SectionsController.update
+);
 
 router.delete('/:id', ValidatorId, SectionsController.delete);
 

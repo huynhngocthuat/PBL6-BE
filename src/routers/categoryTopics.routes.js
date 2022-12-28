@@ -8,7 +8,6 @@ import {
   ValidatorName,
   ValidatorNameUpdate,
 } from 'validations';
-import AuthMiddleware from 'middlewares/auth';
 
 const router = express.Router();
 
@@ -69,7 +68,7 @@ const router = express.Router();
  *              schema:
  *                $ref: '#/components/schemas/ErrorBadRequest'
  */
-router.get('/', AuthMiddleware.isRequired, CategoryTopicsController.get);
+router.get('/', CategoryTopicsController.get);
 
 /**
  * @swagger

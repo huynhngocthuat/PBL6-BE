@@ -409,7 +409,12 @@ router.post(
  *              schema:
  *                $ref: '#/components/schemas/ErrorBadRequest'
  */
-router.post('/', ValidatorBody('course'), CoursesController.create);
+router.post(
+  '/',
+  AuthMiddleware.isRole(roles.INSTRUCTOR_ROLE),
+  ValidatorBody('course'),
+  CoursesController.create
+);
 
 // instructor of course
 /**
